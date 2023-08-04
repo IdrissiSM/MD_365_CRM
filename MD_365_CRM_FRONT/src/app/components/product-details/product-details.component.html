@@ -1,0 +1,124 @@
+<div class="grid">
+    <div class="col-12 md:col-6">
+        <div class="card p-fluid">
+            <h5>Summary</h5>
+            <div class="flex">
+                <p class="col-4 mb-0">Name</p>
+                <p class="col-8 font-medium">{{ product?.name }}</p>
+            </div>
+            <div class="flex">
+                <p class="col-4 mb-0">Product ID</p>
+                <p class="col-8 font-medium">{{ product?.productNumber }}</p>
+            </div>
+            <div class="flex">
+                <p class="col-4 mb-0">Version</p>
+                <p class="col-8 font-medium">{{ product?.versionNumber }}</p>
+            </div>
+            <div class="flex">
+                <p class="col-4 mb-0">Valid From</p>
+                <p class="col-8">{{ product?.validFromDate | date }}</p>
+            </div>
+            <div class="flex">
+                <p class="col-4 mb-0">Valid To</p>
+                <p class="col-8">{{ product?.validToDate | date }}</p>
+            </div>
+            <div class="flex">
+                <p class="col-4 mb-0">Description</p>
+                <p class="col-8 font-medium">{{ product?.description }}</p>
+            </div>
+            <div class="flex">
+                <p class="col-4 mb-0">Created On</p>
+                <p class="col-8">{{ product?.createdOn | date }}</p>
+            </div>
+        </div>
+
+        <div class="card p-fluid">
+            <h5>Stock</h5>
+            <div class="flex">
+                <p class="col-4 mb-0">Quantity On Hand</p>
+                <p class="col-8 font-medium">{{ product?.quantityOnHand }}</p>
+            </div>
+            <div class="flex">
+                <p class="col-4 mb-0">Stock Volume</p>
+                <p class="col-8 font-medium">{{ product?.stockVolume }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 md:col-6">
+        <div class="card">
+            <h5>Product</h5>
+            <div class="flex">
+                <p class="col-4 mb-0">state</p>
+                <p class="col-8">
+                    <span
+                        class="px-5 customer-badge"
+                        [ngClass]="{
+                            'status-qualified': product?.stateCode === 0,
+                            'status-unqualified': product?.stateCode === 1,
+                            'status-proposal': product?.stateCode === 2,
+                            'status-new': product?.stateCode === 3
+                        }"
+                        >{{ getStateLabel(product?.stateCode) }}</span
+                    >
+                </p>
+            </div>
+            <div class="flex">
+                <p class="col-4 mb-0">Type</p>
+                <p class="col-8">
+                    {{ getTypeLabel(product?.productTypeCode) }}
+                </p>
+            </div>
+            <div class="flex">
+                <p class="col-4 mb-0">Structure</p>
+                <p class="col-8">
+                    {{ getStructureLabel(product?.productStructure) }}
+                </p>
+            </div>
+        </div>
+
+        <div class="card p-fluid">
+            <h5>Pricing</h5>
+            <div class="flex">
+                <p class="col-4 mb-0">Price</p>
+                <p class="col-8 font-medium">
+                    {{ product?.price | currency : "USD" }}
+                </p>
+            </div>
+            <div class="flex">
+                <p class="col-4 mb-0">Price Base</p>
+                <p class="col-8 font-medium">
+                    {{ product?.price_Base | currency : "USD" }}
+                </p>
+            </div>
+            <div class="flex">
+                <p class="col-4 mb-0">Standard Cost</p>
+                <p class="col-8 font-medium">
+                    {{ product?.standardCost | currency : "USD" }}
+                </p>
+            </div>
+            <div class="flex">
+                <p class="col-4 mb-0">Standard Cost Base</p>
+                <p class="col-8 font-medium">
+                    {{ product?.standardCost_Base | currency : "USD" }}
+                </p>
+            </div>
+            <div class="flex">
+                <p class="col-4 mb-0">Current Cost</p>
+                <p class="col-8 font-medium">
+                    {{ product?.currentCost | currency : "USD" }}
+                </p>
+            </div>
+            <div class="flex">
+                <p class="col-4 mb-0">current Cost Base</p>
+                <p class="col-8 font-medium">
+                    {{ product?.currentCost_Base | currency : "USD" }}
+                </p>
+            </div>
+            <div class="flex">
+                <p class="col-4 mb-0">Exchange Rate</p>
+                <p class="col-8">{{ product?.exchangeRate }}</p>
+            </div>
+        </div>
+    </div>
+</div>

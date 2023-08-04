@@ -1,0 +1,276 @@
+<div class="grid">
+    <div class="col-12 md:col-6">
+        <div class="card p-fluid">
+            <h5>Summary</h5>
+            <div class="flex">
+                <p class="col-3 mb-0">Title</p>
+                <p class="col-1 mb-0">:</p>
+                <p class="col-8">
+                    <span *ngIf="!loading; else loadingSkeleton">
+                        <span *ngIf="title !== null">
+                            {{ incident.title }}
+                        </span>
+                    </span>
+                    <ng-template #title>
+                        <span>--</span>
+                    </ng-template>
+                </p>
+            </div>
+            <div class="flex">
+                <p class="col-3 mb-0">Service Stage</p>
+                <p class="col-1 mb-0">:</p>
+                <p class="col-8" *ngIf="!loading; else loadingSkeleton">
+                    <span
+                        *ngIf="
+                            incident.servicestage !== null;
+                            else servicestage
+                        "
+                        [class]="
+                            'customer-badge  status-' +
+                            getServicesStageSeverity(
+                                ServicesStage[incident.servicestage]
+                            )
+                        "
+                        >{{ ServicesStage[incident.servicestage] }}</span
+                    >
+                </p>
+                <ng-template #servicestage>
+                    <span>--</span>
+                </ng-template>
+            </div>
+            <div class="flex">
+                <p class="col-3 mb-0">Resolved By</p>
+                <p class="col-1 mb-0">:</p>
+                <p class="col-8">
+                    <span *ngIf="!loading; else loadingSkeleton">
+                        <span
+                            *ngIf="incident.resolveby !== null; else resolveby"
+                        >
+                            {{ incident.resolveby | date : "MM/dd/yyyy" }}
+                        </span>
+                    </span>
+                    <ng-template #resolveby>
+                        <span>--</span>
+                    </ng-template>
+                </p>
+            </div>
+            <div class="flex">
+                <p class="col-3 mb-0">Created on</p>
+                <p class="col-1 mb-0">:</p>
+                <p class="col-8">
+                    <span *ngIf="!loading; else loadingSkeleton">
+                        <span
+                            *ngIf="incident.createdon !== null; else createdon"
+                        >
+                            {{ incident.createdon | date : "MM/dd/yyyy" }}
+                        </span>
+                    </span>
+                    <ng-template #createdon>
+                        <span>--</span>
+                    </ng-template>
+                </p>
+            </div>
+            <div class="flex">
+                <p class="col-3 mb-0">Description</p>
+                <p class="col-1 mb-0">:</p>
+                <p class="col-8">
+                    <span *ngIf="!loading; else loadingSkeleton">
+                        <span
+                            *ngIf="
+                                incident.description !== null;
+                                else description
+                            "
+                        >
+                            {{ incident.description }}
+                        </span>
+                    </span>
+                    <ng-template #description>
+                        <span>--</span>
+                    </ng-template>
+                </p>
+            </div>
+            <div class="flex">
+                <p class="col-3 mb-0">State code</p>
+                <p class="col-1 mb-0">:</p>
+                <p class="col-8" *ngIf="!loading; else loadingSkeleton">
+                    <span
+                        *ngIf="incident.statecode !== null; else statecode"
+                        [class]="
+                            'customer-badge  status-' +
+                            getStateCodeSeverity(StateCode[incident.statecode])
+                        "
+                        >{{ StateCode[incident.statecode] }}</span
+                    >
+                </p>
+                <ng-template #statecode>
+                    <span>--</span>
+                </ng-template>
+            </div>
+            <div class="flex">
+                <p class="col-3 mb-0">Case origin</p>
+                <p class="col-1 mb-0">:</p>
+                <p class="col-8" *ngIf="!loading; else loadingSkeleton">
+                    <span
+                        *ngIf="
+                            incident.caseorigincode !== null;
+                            else caseorigincode
+                        "
+                        [class]="
+                            'flex  align-items-center customer-badge  status-' +
+                            getCaseOriginIconSeverity(
+                                CaseOriginCode[incident.caseorigincode]
+                            )
+                        "
+                        style="width: fit-content"
+                    >
+                        <i
+                            class="mr-2 pi {{
+                                getCaseOriginIcon(
+                                    CaseOriginCode[incident.caseorigincode]
+                                )
+                            }}"
+                        ></i>
+                        <span class="text-base">{{
+                            CaseOriginCode[incident.caseorigincode]
+                        }}</span>
+                    </span>
+                </p>
+                <ng-template #caseorigincode>
+                    <span>--</span>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 md:col-6">
+        <div class="card p-fluid">
+            <h5>status</h5>
+            <div class="flex">
+                <p class="col-3 mb-0">state</p>
+                <p class="col-1 mb-0">:</p>
+                <p class="col-8" *ngIf="!loading; else loadingSkeleton">
+                    <span
+                        *ngIf="incident.statecode !== null; else statecode"
+                        [class]="
+                            'customer-badge  status-' +
+                            getStateCodeSeverity(StateCode[incident.statecode])
+                        "
+                        >{{ StateCode[incident.statecode] }}</span
+                    >
+                </p>
+                <ng-template #statecode>
+                    <span>--</span>
+                </ng-template>
+            </div>
+            <div class="flex">
+                <p class="col-3 mb-0">Priority</p>
+                <p class="col-1 mb-0">:</p>
+                <p class="col-8" *ngIf="!loading; else loadingSkeleton">
+                    <span
+                        *ngIf="
+                            incident.prioritycode !== null;
+                            else prioritycode
+                        "
+                        [class]="
+                            'customer-badge  status-' +
+                            getPrioritySeverity(
+                                PriorityCode[incident.prioritycode]
+                            )
+                        "
+                        >{{ PriorityCode[incident.prioritycode] }}</span
+                    >
+                </p>
+                <ng-template #prioritycode>
+                    <span>--</span>
+                </ng-template>
+            </div>
+        </div>
+
+        <div class="card">
+            <h5>Other</h5>
+            <div class="flex">
+                <p class="col-3">Case Type</p>
+                <p class="col-1">:</p>
+                <p class="col-8" *ngIf="!loading; else loadingSkeleton">
+                    <span
+                        *ngIf="
+                            incident.casetypecode !== null;
+                            else casetypecode
+                        "
+                        [class]="
+                            'customer-badge  status-' +
+                            getCaseCodeSeverity(
+                                CaseTypeCode[incident.casetypecode]
+                            )
+                        "
+                        >{{ CaseTypeCode[incident.casetypecode] }}</span
+                    >
+                </p>
+                <ng-template #casetypecode>
+                    <span>--</span>
+                </ng-template>
+            </div>
+            <div class="flex">
+                <p class="col-3">Deactivate on</p>
+                <p class="col-1">:</p>
+                <p class="col-8">
+                    <span *ngIf="!loading; else loadingSkeleton">
+                        <span
+                            *ngIf="
+                                incident.deactivatedon !== null;
+                                else deactivatedon
+                            "
+                        >
+                            {{ incident.deactivatedon | date : "MM/dd/yyyy" }}
+                        </span>
+                    </span>
+                    <ng-template #deactivatedon>
+                        <span>--</span>
+                    </ng-template>
+                </p>
+            </div>
+        </div>
+        <div class="card p-fluid">
+            <h5>Product</h5>
+            <div class="flex">
+                <p class="col-5 mb-0">Ticket number</p>
+                <p class="col-1 mb-0">:</p>
+                <p class="col-6">
+                    <span *ngIf="!loading; else loadingSkeleton">
+                        <span *ngIf="incident.ticketnumber">
+                            {{ incident.ticketnumber }}
+                        </span>
+                    </span>
+                    <ng-template #ticketnumber>
+                        <span>--</span>
+                    </ng-template>
+                </p>
+            </div>
+            <div class="flex">
+                <p class="col-5 mb-0">Product Serial Number</p>
+                <p class="col-1 mb-0">:</p>
+                <p class="col-6">
+                    <span *ngIf="!loading; else loadingSkeleton">
+                        <span
+                            *ngIf="
+                                incident.productserialnumber !== null;
+                                else productserialnumber
+                            "
+                        >
+                            {{ incident.productserialnumber }}
+                        </span>
+                    </span>
+                    <ng-template #productserialnumber>
+                        <span>--</span>
+                    </ng-template>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #loadingSkeleton>
+    <p class="col-8">
+        <p-skeleton styleClass="mb-2"></p-skeleton>
+    </p>
+</ng-template>

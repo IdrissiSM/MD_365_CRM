@@ -1,0 +1,498 @@
+<div class="grid">
+    <div class="col-12 pb-0">
+        <div class="grid">
+            <div class="md:col-6">
+                <div class="card grid m-0">
+                    <div class="md:col-6">
+                        <p-chart
+                            *ngIf="!loading"
+                            type="pie"
+                            [data]="stateChartData"
+                            [options]="stateChartOptions"
+                        ></p-chart>
+                        <p-skeleton
+                            *ngIf="loading"
+                            shape="circle"
+                            width="100%"
+                            height="150px"
+                        ></p-skeleton>
+                    </div>
+                    <div class="md:col-6">
+                        <p-chart
+                            *ngIf="!loading"
+                            type="doughnut"
+                            [data]="ratingChartData"
+                            [options]="ratingChartOptions"
+                        ></p-chart>
+                        <p-skeleton
+                            *ngIf="loading"
+                            shape="circle"
+                            width="100%"
+                            height="150px"
+                        ></p-skeleton>
+                    </div>
+                </div>
+            </div>
+            <div class="md:col-6">
+                <div class="card">
+                    <p-chart
+                        *ngIf="!loading"
+                        type="bar"
+                        [data]="revenueChartData"
+                        [options]="revenueChartOptions"
+                    ></p-chart>
+                    <p-skeleton
+                        *ngIf="loading"
+                        width="100%"
+                        height="175px"
+                    ></p-skeleton>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <p-toast></p-toast>
+            <p-table
+                #opportunitiesTable
+                [value]="opportunities"
+                dataKey="opportunityId"
+                [expandedRowKeys]="expandedRows"
+                [globalFilterFields]="['name', 'emailAddress']"
+                responsiveLayout="scroll"
+                [rows]="10"
+                [paginator]="true"
+            >
+                <ng-template pTemplate="caption">
+                    <div
+                        class="flex justify-content-between flex-column sm:flex-row"
+                    >
+                        <div class="">
+                            <button
+                                pButton
+                                class="mb-2 mr-2"
+                                icon="pi pi-fw {{
+                                    isExpanded ? 'pi-minus' : 'pi-plus'
+                                }}"
+                                label="{{
+                                    isExpanded ? 'Collapse All' : 'Expand All'
+                                }}"
+                                (click)="expandAll()"
+                            ></button>
+                            <button
+                                pButton
+                                label="Clear"
+                                class="p-button-outlined mb-2"
+                                icon="pi pi-filter-slash"
+                                (click)="clear(opportunitiesTable)"
+                            ></button>
+                        </div>
+                        <span class="p-input-icon-left mb-2">
+                            <i class="pi pi-search"></i>
+                            <input
+                                pInputText
+                                type="text"
+                                #filter
+                                (input)="
+                                    onGlobalFilter(opportunitiesTable, $event)
+                                "
+                                placeholder="Search Keyword"
+                                class="w-full"
+                            />
+                        </span>
+                    </div>
+                    <div class="flex table-header"></div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem"></th>
+                        <th>
+                            <div
+                                class="flex justify-content-between align-items-center"
+                            >
+                                Name
+                                <p-columnFilter
+                                    type="text"
+                                    field="name"
+                                    display="menu"
+                                    placeholder="Search by name"
+                                ></p-columnFilter>
+                            </div>
+                        </th>
+                        <th>
+                            <div
+                                class="flex justify-content-between align-items-center"
+                            >
+                                State
+                                <p-columnFilter
+                                    field="stateCode"
+                                    matchMode="equals"
+                                    display="menu"
+                                >
+                                    <ng-template
+                                        pTemplate="filter"
+                                        let-value
+                                        let-filter="filterCallback"
+                                    >
+                                        <p-dropdown
+                                            [ngModel]="value"
+                                            [options]="states"
+                                            (onChange)="filter($event.value)"
+                                            placeholder="Any"
+                                            [style]="{ 'min-width': '12rem' }"
+                                        >
+                                            <ng-template
+                                                let-option
+                                                pTemplate="item"
+                                            >
+                                                <span
+                                                    [class]="
+                                                        'customer-badge status-' +
+                                                        option.style
+                                                    "
+                                                    >{{ option.label }}</span
+                                                >
+                                            </ng-template>
+                                        </p-dropdown>
+                                    </ng-template>
+                                </p-columnFilter>
+                            </div>
+                        </th>
+                        <th>
+                            <div
+                                class="flex justify-content-between align-items-center"
+                            >
+                                Rating
+                                <p-columnFilter
+                                    field="opportunityRatingCode"
+                                    matchMode="equals"
+                                    display="menu"
+                                >
+                                    <ng-template
+                                        pTemplate="filter"
+                                        let-value
+                                        let-filter="filterCallback"
+                                    >
+                                        <p-dropdown
+                                            [ngModel]="value"
+                                            [options]="ratings"
+                                            (onChange)="filter($event.value)"
+                                            placeholder="Any"
+                                            [style]="{ 'min-width': '12rem' }"
+                                        >
+                                            <ng-template
+                                                let-option
+                                                pTemplate="item"
+                                            >
+                                                <span
+                                                    [class]="
+                                                        'customer-badge status-' +
+                                                        option.style
+                                                    "
+                                                    >{{ option.label }}</span
+                                                >
+                                            </ng-template>
+                                        </p-dropdown>
+                                    </ng-template>
+                                </p-columnFilter>
+                            </div>
+                        </th>
+                        <th>
+                            <div
+                                class="flex justify-content-between align-items-center"
+                            >
+                                Email
+                                <p-columnFilter
+                                    type="text"
+                                    field="emailAddress"
+                                    display="menu"
+                                    placeholder="Search by email"
+                                ></p-columnFilter>
+                            </div>
+                        </th>
+                        <th pSortableColumn="estimatedValue">
+                            Estimated Revenue
+                            <p-sortIcon field="estimatedValue"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="closeProbability">
+                            Close Probability
+                            <p-sortIcon field="closeProbability"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="estimatedCloseDate">
+                            Estimated Close Date
+                            <p-sortIcon field="estimatedCloseDate"></p-sortIcon>
+                        </th>
+                        <th>
+                            <div
+                                class="flex justify-content-between align-items-center"
+                            >
+                                Status
+                                <p-columnFilter
+                                    field="statusCode"
+                                    matchMode="equals"
+                                    display="menu"
+                                >
+                                    <ng-template
+                                        pTemplate="filter"
+                                        let-value
+                                        let-filter="filterCallback"
+                                    >
+                                        <p-dropdown
+                                            [ngModel]="value"
+                                            [options]="statuses"
+                                            (onChange)="filter($event.value)"
+                                            placeholder="Any"
+                                            [style]="{ 'min-width': '12rem' }"
+                                        >
+                                            <ng-template
+                                                let-option
+                                                pTemplate="item"
+                                            >
+                                                <span
+                                                    [class]="
+                                                        'customer-badge status-' +
+                                                        option.style
+                                                    "
+                                                    >{{ option.label }}</span
+                                                >
+                                            </ng-template>
+                                        </p-dropdown>
+                                    </ng-template>
+                                </p-columnFilter>
+                            </div>
+                        </th>
+                        <th></th>
+                    </tr>
+                    <ng-container *ngIf="loading">
+                        <tr *ngFor="let i of repeat(10)">
+                            <td class="px-2 py-3">
+                                <p-skeleton></p-skeleton>
+                            </td>
+                            <td class="px-2 py-3">
+                                <p-skeleton></p-skeleton>
+                            </td>
+                            <td class="px-2 py-3">
+                                <p-skeleton></p-skeleton>
+                            </td>
+                            <td class="px-2 py-3">
+                                <p-skeleton></p-skeleton>
+                            </td>
+                            <td class="px-2 py-3">
+                                <p-skeleton></p-skeleton>
+                            </td>
+                            <td class="px-2 py-3">
+                                <p-skeleton></p-skeleton>
+                            </td>
+                            <td class="px-2 py-3">
+                                <p-skeleton></p-skeleton>
+                            </td>
+                            <td class="px-2 py-3">
+                                <p-skeleton></p-skeleton>
+                            </td>
+                            <td class="px-2 py-3">
+                                <p-skeleton></p-skeleton>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </ng-template>
+                <ng-template
+                    pTemplate="body"
+                    let-opportunity
+                    let-expanded="expanded"
+                >
+                    <tr>
+                        <td>
+                            <button
+                                type="button"
+                                pButton
+                                pRipple
+                                [pRowToggler]="opportunity"
+                                class="p-button-text p-button-rounded p-button-plain"
+                                [icon]="
+                                    expanded
+                                        ? 'pi pi-chevron-down'
+                                        : 'pi pi-chevron-right'
+                                "
+                            ></button>
+                        </td>
+                        <td style="min-width: 12rem">
+                            {{ opportunity.name }}
+                        </td>
+                        <td>
+                            <span
+                                class="customer-badge status-{{
+                                    getStateStyle(opportunity.stateCode)
+                                }}"
+                            >
+                                {{ getStateLabel(opportunity.stateCode) }}
+                            </span>
+                        </td>
+                        <td>
+                            <span
+                                class="customer-badge status-{{
+                                    getRatingStyle(
+                                        opportunity.opportunityRatingCode
+                                    )
+                                }}"
+                            >
+                                {{
+                                    getRatingLabel(
+                                        opportunity.opportunityRatingCode
+                                    )
+                                }}
+                            </span>
+                        </td>
+                        <td style="min-width: 10rem">
+                            {{ opportunity.emailAddress }}
+                        </td>
+                        <td style="min-width: 8rem">
+                            <span class="customer-badge status-negotiation">
+                                {{
+                                    opportunity.estimatedValue
+                                        | currency : "USD"
+                                }}
+                            </span>
+                        </td>
+                        <td style="min-width: 12rem">
+                            <p-progressBar
+                                [value]="opportunity.closeProbability"
+                            ></p-progressBar>
+                        </td>
+                        <td style="min-width: 8rem">
+                            {{
+                                opportunity.estimatedCloseDate
+                                    | date : "MM/dd/yyyy"
+                            }}
+                        </td>
+                        <td style="min-width: 10rem">
+                            <span
+                                class="customer-badge status-{{
+                                    getStatusStyle(opportunity.statusCode)
+                                }}"
+                            >
+                                {{ getStatusLabel(opportunity.statusCode) }}
+                            </span>
+                        </td>
+                        <td>
+                            <button
+                                pButton
+                                pRipple
+                                class="p-button-sm p-button-rounded"
+                                label="Details"
+                                icon="pi pi-info-circle"
+                                (click)="
+                                    opportunityDetails(
+                                        opportunity.opportunityId
+                                    )
+                                "
+                            ></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="rowexpansion" let-opportunity>
+                    <tr>
+                        <td colspan="10">
+                            <div class="px-2 py-3">
+                                <p-table
+                                    [value]="opportunity.product_opportunities"
+                                    dataKey="opportunityProductId"
+                                    responsiveLayout="scroll"
+                                >
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th>#ID</th>
+                                            <th>
+                                                <div
+                                                    class="flex justify-content-between align-items-center"
+                                                >
+                                                    Name
+                                                    <p-columnFilter
+                                                        type="text"
+                                                        field="productName"
+                                                        display="menu"
+                                                        placeholder="Search by name"
+                                                    ></p-columnFilter>
+                                                </div>
+                                            </th>
+                                            <th pSortableColumn="pricePerUnit">
+                                                Price Per Unit
+                                                <p-sortIcon
+                                                    field="pricePerUnit"
+                                                ></p-sortIcon>
+                                            </th>
+                                            <th pSortableColumn="quantity">
+                                                Quantity
+                                                <p-sortIcon
+                                                    field="quantity"
+                                                ></p-sortIcon>
+                                            </th>
+                                            <th pSortableColumn="totalPrice">
+                                                Total Price
+                                                <p-sortIcon
+                                                    field="totalPrice"
+                                                ></p-sortIcon>
+                                            </th>
+                                            <th pSortableColumn="createdOn">
+                                                Creation Date
+                                                <p-sortIcon
+                                                    field="createdOn"
+                                                ></p-sortIcon>
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template
+                                        pTemplate="body"
+                                        let-order
+                                        let-rowIndex="rowIndex"
+                                    >
+                                        <tr>
+                                            <td>{{ rowIndex }}</td>
+                                            <td>{{ order.productName }}</td>
+                                            <td>
+                                                <span
+                                                    class="customer-badge status-negotiation"
+                                                >
+                                                    {{
+                                                        order.pricePerUnit
+                                                            | currency : "USD"
+                                                    }}
+                                                </span>
+                                            </td>
+                                            <td>{{ order.quantity }}</td>
+                                            <td>
+                                                <span
+                                                    class="customer-badge status-negotiation"
+                                                >
+                                                    {{
+                                                        order.quantity *
+                                                            order.pricePerUnit
+                                                            | currency : "USD"
+                                                    }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {{
+                                                    order.createdOn
+                                                        | date : "MM/dd/yyyy"
+                                                }}
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="emptymessage">
+                                        <tr>
+                                            <td colspan="6">
+                                                There are no order for this
+                                                product yet.
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
+<p-scrollTop></p-scrollTop>

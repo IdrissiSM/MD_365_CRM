@@ -1,0 +1,251 @@
+<div class="grid">
+    <div class="col-12 md:col-6">
+        <div class="card p-fluid">
+            <h5>Summary {{ loading }}</h5>
+
+            <div class="flex">
+                <span class="col-4 mb-0">Name</span>
+                <span
+                    *ngIf="!loading; else skeletonLarge100"
+                    class="col-8 font-medium"
+                >
+                    {{ opportunity?.name }}
+                </span>
+            </div>
+            <div class="flex">
+                <span class="col-4 mb-0">Email</span>
+                <span
+                    *ngIf="!loading; else skeleton100"
+                    class="col-8 font-medium"
+                    >{{ opportunity?.emailAddress }}</span
+                >
+            </div>
+            <div class="flex">
+                <span class="col-4 mb-0">Creation Date</span>
+                <span
+                    *ngIf="!loading; else skeleton100"
+                    class="col-8 font-medium"
+                >
+                    {{ opportunity?.createdOn | date }}
+                </span>
+            </div>
+            <div class="flex">
+                <span class="col-4 mb-0">Last update</span>
+                <span
+                    *ngIf="!loading; else skeleton100"
+                    class="col-8 font-medium"
+                >
+                    {{ opportunity?.modifiedOn | date }}
+                </span>
+            </div>
+        </div>
+
+        <div class="card p-fluid">
+            <h5>Situation Details</h5>
+            <div class="flex">
+                <span class="col-4 mb-0">Customer Need</span>
+                <span
+                    *ngIf="!loading; else skeletonLarge100"
+                    class="col-8 font-medium"
+                    >{{ opportunity?.customerNeed }}</span
+                >
+            </div>
+            <div class="flex">
+                <span class="col-4 mb-0">Current Situation</span>
+                <span
+                    *ngIf="!loading; else skeletonLarge100"
+                    class="col-8 font-medium"
+                >
+                    {{ opportunity?.currentSituation }}
+                </span>
+            </div>
+            <div class="flex">
+                <span class="col-4 mb-0">Proposed Solution</span>
+                <span
+                    *ngIf="!loading; else skeletonLarge100"
+                    class="col-8 font-medium"
+                >
+                    {{ opportunity?.proposedSolution }}
+                </span>
+            </div>
+            <div class="flex">
+                <span class="col-4 mb-0">Description</span>
+                <span
+                    *ngIf="!loading; else skeletonLarge100"
+                    class="col-8 font-medium"
+                    >{{ opportunity?.description }}</span
+                >
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 md:col-6">
+        <div class="card p-fluid">
+            <h5>Status</h5>
+            <div class="flex">
+                <span class="col-4 mb-0">State</span>
+                <span *ngIf="!loading; else skeleton80" class="col-8">
+                    <span
+                        class="customer-badge status-{{
+                            getStateStyle(opportunity?.stateCode)
+                        }}"
+                    >
+                        {{ getStateLabel(opportunity?.stateCode) }}
+                    </span>
+                </span>
+            </div>
+            <div class="flex">
+                <span class="col-4 mb-0">Status</span>
+                <span *ngIf="!loading; else skeleton80" class="col-8">
+                    <span
+                        class="customer-badge status-{{
+                            getStatusStyle(opportunity?.statusCode)
+                        }}"
+                    >
+                        {{ getStatusLabel(opportunity?.statusCode) }}
+                    </span>
+                </span>
+            </div>
+            <div class="flex">
+                <span class="col-4 mb-0">Rating</span>
+                <span *ngIf="!loading; else skeleton80" class="col-8">
+                    <span
+                        class="customer-badge status-{{
+                            getRatingStyle(opportunity?.opportunityRatingCode)
+                        }}"
+                    >
+                        {{ getRatingLabel(opportunity?.opportunityRatingCode) }}
+                    </span>
+                </span>
+            </div>
+            <div class="flex">
+                <span class="col-4 mb-0">Review</span>
+                <span *ngIf="!loading; else skeleton80" class="col-8">
+                    <span
+                        class="customer-badge"
+                        [ngClass]="{
+                            'status-qualified':
+                                opportunity?.completeInternalReview,
+                            'status-proposal':
+                                !opportunity?.completeInternalReview
+                        }"
+                    >
+                        {{
+                            opportunity?.completeInternalReview
+                                ? "Completed"
+                                : "Not completed"
+                        }}
+                    </span>
+                </span>
+            </div>
+            <div class="flex">
+                <span class="col-4 mb-0">Step Name</span>
+                <span *ngIf="!loading; else skeleton80" class="col-8">
+                    {{ opportunity?.stepName }}
+                </span>
+            </div>
+        </div>
+
+        <div class="card p-fluid">
+            <h5>Pricing</h5>
+            <div class="flex">
+                <span class="col-6 mb-0">Estimated Price</span>
+                <span
+                    *ngIf="!loading; else skeleton80"
+                    class="col-6 font-medium"
+                >
+                    <span
+                        [ngClass]="{
+                            'customer-badge status-negotiation':
+                                opportunity?.estimatedValue
+                        }"
+                    >
+                        {{
+                            opportunity?.estimatedValue
+                                ? (opportunity?.estimatedValue
+                                  | currency : "USD")
+                                : "-"
+                        }}
+                    </span>
+                </span>
+            </div>
+            <div class="flex">
+                <span class="col-6 mb-0">Actual Price</span>
+                <span
+                    *ngIf="!loading; else skeleton80"
+                    class="col-6 font-medium"
+                >
+                    <span
+                        [ngClass]="{
+                            'customer-badge status-negotiation':
+                                opportunity?.actualValue
+                        }"
+                    >
+                        {{
+                            opportunity?.actualValue
+                                ? (opportunity?.actualValue | currency : "USD")
+                                : "-"
+                        }}
+                    </span>
+                </span>
+            </div>
+            <div class="flex">
+                <span class="col-6 mb-0">Estimated Close Date</span>
+                <span
+                    *ngIf="!loading; else skeleton80"
+                    class="col-6 font-medium"
+                >
+                    {{
+                        opportunity?.estimatedCloseDate
+                            ? (opportunity?.estimatedCloseDate | date)
+                            : "-"
+                    }}
+                </span>
+            </div>
+            <div class="flex">
+                <span class="col-6 mb-0">Actual Close Date</span>
+                <span
+                    *ngIf="!loading; else skeleton80"
+                    class="col-6 font-medium"
+                >
+                    {{
+                        opportunity?.actualCloseDate
+                            ? (opportunity?.actualCloseDate | date)
+                            : "-"
+                    }}
+                </span>
+            </div>
+            <div class="flex">
+                <span class="col-6 mb-0">Close Probability</span>
+                <span
+                    *ngIf="!loading; else skeleton80"
+                    class="col-6 font-medium"
+                >
+                    <p-progressBar
+                        [value]="opportunity?.closeProbability"
+                    ></p-progressBar>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #skeleton80>
+    <span class="col-8">
+        <p-skeleton width="80%"></p-skeleton>
+    </span>
+</ng-template>
+<ng-template #skeleton100>
+    <span class="col-8">
+        <p-skeleton width="100%"></p-skeleton>
+    </span>
+</ng-template>
+<ng-template #skeletonLarge80>
+    <span class="col-8">
+        <p-skeleton width="80%" height="30px"></p-skeleton>
+    </span>
+</ng-template>
+<ng-template #skeletonLarge100>
+    <span class="col-8">
+        <p-skeleton width="100%" height="30px"></p-skeleton>
+    </span>
+</ng-template>

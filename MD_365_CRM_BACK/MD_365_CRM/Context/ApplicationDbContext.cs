@@ -10,5 +10,7 @@ namespace MD_365_CRM.Context
         {
 
         }
+
+        public DbSet<Otp> Otps { get; set; }
     }
 }

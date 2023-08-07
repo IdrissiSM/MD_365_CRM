@@ -22,6 +22,7 @@ import { ChartModule } from 'primeng/chart';
 import { ScrollTopModule } from 'primeng/scrolltop';
 import { SkeletonModule } from 'primeng/skeleton';
 import { DividerModule } from 'primeng/divider';
+import {AutoCompleteModule} from "primeng/autocomplete";
 
 @NgModule({
     exports: [
@@ -81,6 +82,7 @@ import { DividerModule } from 'primeng/divider';
         ScrollTopModule,
         SkeletonModule,
         DividerModule,
+        AutoCompleteModule,
     ],
 })
 export class PrimeNGModule {}

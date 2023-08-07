@@ -5,9 +5,14 @@ namespace MD_365_CRM.Models
 {
     public class User : IdentityUser
     {
-        [MaxLength(50)]
-        public required string Firstname { get; set; } = String.Empty;
-        [MaxLength(50)]
-        public required string Lastname { get; set; } = String.Empty;
+        public Guid ContactId { get; set; }
+        [RegularExpression(@"^[A-Za-z]+( [A-Za-z]+)?( [A-Za-z]+)?$", ErrorMessage = "Invalid first name format.")]
+        public string Firstname { get; set; } = String.Empty;
+        [RegularExpression(@"^[A-Za-z]+( [A-Za-z]+)?( [A-Za-z]+)?$", ErrorMessage = "Invalid last name format.")]
+        public string Lastname { get; set; } = String.Empty;
+        [RegularExpression(@"^[A-Za-z]+( [A-Za-z]+)?( [A-Za-z]+)?( [A-Za-z]+)?$", ErrorMessage = "Invalid jobtitle format.")]
+        public string? Jobtitle { get; set; }
+        public bool? Gendercode { get; set; }
+        public bool? Statecode { get; set; }
     }
 }

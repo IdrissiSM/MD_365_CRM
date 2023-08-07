@@ -8,11 +8,18 @@ import { OpportunityComponent } from './components/opportunity/opportunity.compo
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { DetailComponent } from './components/incident/detail/detail.component';
 import { IncidentComponent } from './components/incident/incident.component';
+import { LoginComponent } from './components/login/login.component';
+import { EmailVerificationComponent } from './components/email-verification/email-verification.component';
+import { RegisterComponent } from './components/register/register.component';
+import { VerificationCodeComponent } from './components/verification-code/verification-code.component';
+import { AuthGuard } from './guards/auth.guard';
+import { LoggedInGuard } from './guards/logged-in.guard';
 
 const routes: Routes = [
     {
         path: '',
         component: AppLayoutComponent,
+        canActivate: [AuthGuard],
         children: [
             { path: 'opportunities', component: OpportunitiesComponent },
             { path: 'opportunity', component: OpportunityComponent },
@@ -22,6 +29,26 @@ const routes: Routes = [
             { path: 'incidents/detail/:id', component: DetailComponent },
         ],
     },
+    {
+        path : 'login',
+        component: LoginComponent,
+        canActivate: [LoggedInGuard],
+    },
+    {
+        path: 'email-verification',
+        component: EmailVerificationComponent,
+        canActivate: [LoggedInGuard],
+    },
+    {
+        path: 'register',
+        component: RegisterComponent,
+        canActivate: [LoggedInGuard],
+    },
+    {
+        path: 'verification-code',
+        component: VerificationCodeComponent,
+        canActivate: [LoggedInGuard],
+    }
 ];
 @NgModule({
     imports: [RouterModule.forRoot(routes)],

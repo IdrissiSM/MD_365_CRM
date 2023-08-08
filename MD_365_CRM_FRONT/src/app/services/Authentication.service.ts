@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { VerifyEmail } from '../Models/VerifyEmail';
 import { ConfirmEmail } from '../Models/ConfirmEmail';
 import { Contact } from '../Models/Contact';
+import { ResetPassword } from '../Models/ResetPassword';
 
 @Injectable({
   providedIn: 'root',
@@ -32,5 +33,9 @@ export class AuthenticationService {
 
   emailConfirmation(confirmEmailRequest: ConfirmEmail): Observable<Contact | null> {
     return this.http.post<Contact | null>(`${this.apiUrl}/Auth/email_confirmation`, confirmEmailRequest);
+  }
+
+  resetPassword(resetPasswordRequest: ResetPassword): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/Auth/reset_password`, resetPasswordRequest);
   }
 }

@@ -53,4 +53,8 @@ export class LoginComponent {
   InitializeRegistration() {
     this.appState.registrationStep = 1;
   }
+
+  InitializePasswordReset() {
+    this.appState.resetPasswordStep = 1;
+  }
 }

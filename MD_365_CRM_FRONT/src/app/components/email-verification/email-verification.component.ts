@@ -23,8 +23,9 @@ export class EmailVerificationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.appState.registrationStep != 1) {
+    if(this.appState.registrationStep != 1 && this.appState.resetPasswordStep != 1) {
       this.appState.registrationStep = -1;
+      this.appState.resetPasswordStep = -1;
       this.router.navigate(['']);
     }
   }
@@ -42,7 +43,8 @@ export class EmailVerificationComponent implements OnInit {
     ).subscribe(
       () => {
         console.log("verification email sent successfully!")
-        this.appState.registrationStep = 2;
+        if(this.appState.registrationStep == 1) this.appState.registrationStep = 2;
+        if(this.appState.resetPasswordStep == 1) this.appState.resetPasswordStep = 2;
         this.router.navigate(['verification-code'], { queryParams: { email: this.verificationForm.get('email')!.value } });
       },
       (error) => {

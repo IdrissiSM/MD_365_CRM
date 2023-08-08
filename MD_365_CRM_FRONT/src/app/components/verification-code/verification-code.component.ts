@@ -39,11 +39,12 @@ export class VerificationCodeComponent implements OnInit{
 
 ngOnInit(): void {
   this.route.queryParams.subscribe( params => {
-      if(params && params['email'] && this.appState.registrationStep == 2) {
+      if(params && params['email'] && (this.appState.registrationStep == 2 || this.appState.resetPasswordStep == 2)) {
         this.email = params['email'];
       } else {
         console.log("no right was given to you to access this page");
         this.appState.registrationStep = -1;
+        this.appState.resetPasswordStep = -1;
         this.router.navigate(['']);
       }
     }
@@ -143,17 +144,19 @@ ngOnInit(): void {
         if(contact == null) {
           console.log("your otp has expired!");
           this.router.navigate(['email-verification']);
-          this.appState.registrationStep = 2;
+          this.appState.registrationStep == 2 ?this.appState.registrationStep = 1: this.appState.resetPasswordStep = 1;
           return
         }
         console.log("verification complete!");
-        this.appState.registrationStep = 3;
+        this.appState.otp = this.assembleOtp();
         this.appState.contact = contact;
+
+        this.appState.registrationStep == 2? this.appState.registrationStep = 3 : this.appState.resetPasswordStep = 3;
         console.log(contact);
-        this.router.navigate(['register']);
+        this.appState.registrationStep == 3? this.router.navigate(['register']) : this.router.navigate(['reset-password']);
       },
       (error) => {
-        console.log("something went wrong while verifying your codes"+error);
+        console.log("something went wrong while verifying your email"+error);
       }
     )
   }

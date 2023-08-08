@@ -26,7 +26,7 @@
               <label for="rememberme1">Remember me</label>
             </div>
             <a class="font-medium no-underline ml-2 text-right cursor-pointer"
-              style="color: var(--primary-color)">Forgot password?</a>
+              style="color: var(--primary-color)" routerLink="/email-verification" (click)="InitializePasswordReset()">Forgot password?</a>
           </div>
           <button pButton pRipple label="Sign In" type="submit" [disabled]="!loginForm.valid" class="w-full p-3 text-xl {{!loginForm.valid ? 'cursor-invalid' : ''}}"></button>
         </form>

@@ -14,6 +14,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { VerificationCodeComponent } from './components/verification-code/verification-code.component';
 import { AuthGuard } from './guards/auth.guard';
 import { LoggedInGuard } from './guards/logged-in.guard';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 const routes: Routes = [
     {
@@ -48,7 +49,12 @@ const routes: Routes = [
         path: 'verification-code',
         component: VerificationCodeComponent,
         canActivate: [LoggedInGuard],
-    }
+    },
+    {
+        path: 'reset-password',
+        component: ResetPasswordComponent,
+        canActivate: [LoggedInGuard],
+    },
 ];
 @NgModule({
     imports: [RouterModule.forRoot(routes)],

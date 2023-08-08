@@ -12,7 +12,9 @@ export class AppStateService {
 
   authState!: any;
   registrationStep: number = -1;
+  resetPasswordStep: number = -1;
   contact!: Contact;
+  otp: number = -1;
 
   getAuthState() {
     const authStateString = localStorage.getItem('authState') ?? sessionStorage.getItem('authState');
@@ -30,9 +32,10 @@ export class AppStateService {
     this.authState = {
       isAuthenticated: true,
       uid: decodedJWT.uid,
-      username: decodedJWT.sub,
+      email: decodedJWT.sub,
       roles: decodedJWT.roles,
       token: token,
+      contactId: decodedJWT.contactid,
       expiresOn: new Date(decodedJWT.exp * 1000),
     };
     localStorage.removeItem('authState');
@@ -44,9 +47,10 @@ export class AppStateService {
     this.authState = {
       isAuthenticated: true,
       uid: decodedJWT.uid,
-      username: decodedJWT.sub,
+      email: decodedJWT.sub,
       roles: decodedJWT.roles,
       token: token,
+      contactId: decodedJWT.contactid,
       expiresOn: new Date(decodedJWT.exp * 1000),
     };
     sessionStorage.removeItem('authState');

@@ -197,12 +197,6 @@ namespace MD_365_CRM.Services
             return contact.FirstOrDefault();
         }
 
-        public int GenerateOTP()
-        {
-            return RandomNumberGenerator.GetInt32(111111, 1000000);
-
-        }
-
         public async Task SendEmail(string email, string body)
         {
             Console.WriteLine($"Email: {config.GetValue<string>("EmailService:email")}");
@@ -224,13 +218,16 @@ namespace MD_365_CRM.Services
         {
             Otp? otp = context.Otps.SingleOrDefault(otp => otp.Email == email);
 
+            Console.WriteLine($"{otp == null} || {otp.Value != otpValue} otp.Value: {otp.Value}, otpValue: {otpValue} || { (DateTime.Now - otp.CreationDate).TotalMinutes >= config.GetValue<int>("Otp:validFor") }");
+
             if (otp == null || otp.Value != otpValue || (DateTime.Now - otp.CreationDate).TotalMinutes >= config.GetValue<int>("Otp:validFor")) return false;
 
             return true;
         }
 
-        public bool CreateOtp(string email, int otp)
-        {
+        public int CreateOtp(string email)
+        {   // don't use this method unless you checked the authenticity of the email beforehand!
+            var otp = RandomNumberGenerator.GetInt32(111111, 1000000);
             var outcasts = context.Otps.Where(otp => otp.Email == email);
             context.Otps.RemoveRange(outcasts);
 
@@ -241,10 +238,57 @@ namespace MD_365_CRM.Services
                 Value = otp
             });
 
-            return context.SaveChanges() > 0;
+            return context.SaveChanges() > 0 ? otp: -1;
         }
 
         public int OtpValidFor() =>
             config.GetValue<int>("Otp:validFor");
+
+        public async Task<AuthResponse> ResetPassword(ResetPasswordRequest request)
+        {
+            var passwordValidator = _userManager.PasswordValidators.First();
+
+            var identityResult = await passwordValidator.ValidateAsync(_userManager, null, request.Password);
+
+            if (!identityResult.Succeeded)
+                return new AuthResponse()
+                {
+                    IsAuthenticated = false,
+                    Message = identityResult.Errors.ToString()!
+                };
+
+            Contact? contact = await GetContactByEmail(request.Email);
+
+            User? user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (contact is null || user is null || !IsOtpValid(request.Email, request.Otp))
+                return new AuthResponse()
+                {
+                    IsAuthenticated = false,
+                    Message = "It looks like either your account is no more, or the otp has expired"
+                };
+
+            var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            var result = await _userManager.ResetPasswordAsync(user, resetToken, request.Password);
+
+            if (result.Succeeded)
+            {
+                JwtSecurityToken jwt = await CreateJwtToken(user);
+
+                return new AuthResponse
+                {
+                    IsAuthenticated = true,
+                    Token = new JwtSecurityTokenHandler().WriteToken(jwt)
+                };
+            }
+
+            return new AuthResponse()
+            {
+                IsAuthenticated = false,
+                Message = "The reset failed"
+            };
+                
+        }
     }
 }

@@ -2,6 +2,7 @@
 using MD_365_CRM.Requests;
 using MD_365_CRM.Services.IServices;
 using MD_365_CRM.Models;
+using MD_365_CRM.Responses;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -71,7 +72,13 @@ namespace MD_365_CRM.Controllers
                 return StatusCode(403, ModelState);
             }
 
-            int storedOtp = _authService.GenerateOTP();
+            int otp = _authService.CreateOtp(contact.emailaddress1);
+
+            if(otp == -1)
+            {
+                ModelState.AddModelError("", "Uh Oh! Something went wrong while processing your request");
+                return StatusCode(500, ModelState);
+            }
 
             await _authService.SendEmail(emailVerification.Email, $@"
                 <div style=""font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2"">
@@ -82,7 +89,7 @@ namespace MD_365_CRM.Controllers
                         <img src=""https://office24by7.com/assets/img/Email.png"" alt=""Mail Svg Img"" height=""250"">
                         <p style=""font-size:1.1em"">Hi,</p>
                         <p>To complete your Sign Up procedures. This code is valid for {_authService.OtpValidFor()} minutes</p>
-                        <h2 style=""letter-spacing: 2px;background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;"">{storedOtp}</h2>
+                        <h2 style=""letter-spacing: 2px;background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;"">{otp}</h2>
                         <p style=""font-size:0.9em;"">Regards,<br />Mobs</p>
                         <hr style=""border:none;border-top:1px solid #eee"" />
                         <div style=""float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300"">
@@ -94,8 +101,6 @@ namespace MD_365_CRM.Controllers
                 </div>
             ");
 
-            _authService.CreateOtp(contact.emailaddress1, storedOtp);
-
             return Ok();
 
         }
@@ -104,8 +109,14 @@ namespace MD_365_CRM.Controllers
         [ProducesResponseType(200, Type = typeof(Contact))]
         public async Task<IActionResult> EmailConfirmation([FromBody] EmailConfirmation emailConfirmation)
         {
-            if (!ModelState.IsValid || emailConfirmation.Otp < 111111 || emailConfirmation.Otp > 999999)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            if (emailConfirmation.Otp < 111111 || emailConfirmation.Otp > 999999)
+            {
+                ModelState.AddModelError("", "The 'otp' field must be a value between 111111 and 999999.");
+                return StatusCode(400, ModelState);
+            }
 
             Contact contact = await _authService.GetContactByEmail(emailConfirmation.Email);
 
@@ -119,6 +130,34 @@ namespace MD_365_CRM.Controllers
             return Ok(_authService.IsOtpValid(contact.emailaddress1, emailConfirmation.Otp) ? contact : null);
         }
 
+        [HttpPost("reset_password")]
+        [ProducesResponseType(200, Type = typeof(AuthResponse))]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest resetPasswordRequest)
+        {
+            if (!ModelState.IsValid || resetPasswordRequest == null || resetPasswordRequest.Password == "" || resetPasswordRequest.Email == "")
+                return BadRequest(ModelState);
+
+            if (resetPasswordRequest.Otp < 111111 || resetPasswordRequest.Otp > 999999)
+            {
+                ModelState.AddModelError("", "The 'otp' field must be a value between 111111 and 999999.");
+                return StatusCode(400, ModelState);
+            }
+
+            AuthResponse authState = await _authService.ResetPassword(resetPasswordRequest);
+
+            if(authState.IsAuthenticated)
+            {
+                return Ok(authState);
+            }
+
+            ModelState.AddModelError("", authState.Message);
+
+            if (authState.Message == "The reset failed")
+                return StatusCode(500, ModelState);
+
+            return StatusCode(400, ModelState);
+
+        }
 
     }
 }

@@ -32,6 +32,7 @@ export class AppStateService {
       uid: decodedJWT.uid,
       username: decodedJWT.sub,
       roles: decodedJWT.roles,
+      contactid: decodedJWT.contactid,
       token: token,
       expiresOn: new Date(decodedJWT.exp * 1000),
     };
@@ -46,6 +47,7 @@ export class AppStateService {
       uid: decodedJWT.uid,
       username: decodedJWT.sub,
       roles: decodedJWT.roles,
+      contactid: decodedJWT.contactid,
       token: token,
       expiresOn: new Date(decodedJWT.exp * 1000),
     };

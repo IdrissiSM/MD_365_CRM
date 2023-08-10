@@ -41,6 +41,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { VerificationCodeComponent } from './components/verification-code/verification-code.component';
 import { AuthenticationService } from './services/Authentication.service';
 import { AppStateService } from './services/app-state.service';
+import { UsersComponent } from './components/users/users.component';
 
 @NgModule({
     declarations: [
@@ -59,6 +60,7 @@ import { AppStateService } from './services/app-state.service';
         LoginComponent,
         RegisterComponent,
         VerificationCodeComponent,
+        UsersComponent,
     ],
     imports: [
         AppRoutingModule,

@@ -57,6 +57,19 @@ namespace MD_365_CRM.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BlacklistedUsers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BlacklistedUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Otps",
                 columns: table => new
                 {
@@ -234,6 +247,9 @@ namespace MD_365_CRM.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "BlacklistedUsers");
 
             migrationBuilder.DropTable(
                 name: "Otps");

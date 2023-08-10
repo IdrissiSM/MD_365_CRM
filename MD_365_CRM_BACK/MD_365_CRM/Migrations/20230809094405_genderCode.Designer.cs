@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MD_365_CRM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230806215531_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230809094405_genderCode")]
+    partial class genderCode
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,23 @@ namespace MD_365_CRM.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("MD_365_CRM.Models.BlacklistedUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BlacklistedUsers");
+                });
 
             modelBuilder.Entity("MD_365_CRM.Models.Otp", b =>
                 {
@@ -74,8 +91,8 @@ namespace MD_365_CRM.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("Gendercode")
-                        .HasColumnType("bit");
+                    b.Property<int?>("Gendercode")
+                        .HasColumnType("int");
 
                     b.Property<string>("Jobtitle")
                         .HasColumnType("nvarchar(max)");

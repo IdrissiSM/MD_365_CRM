@@ -14,6 +14,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { VerificationCodeComponent } from './components/verification-code/verification-code.component';
 import { AuthGuard } from './guards/auth.guard';
 import { LoggedInGuard } from './guards/logged-in.guard';
+import { UsersComponent } from './components/users/users.component';
+import { AdminGuard } from './guards/admin.guard';
 
 const routes: Routes = [
     {
@@ -27,6 +29,7 @@ const routes: Routes = [
             { path: 'product-details', component: ProductDetailsComponent },
             { path: 'incidents', component: IncidentComponent },
             { path: 'incidents/detail/:id', component: DetailComponent },
+            { path: 'users', component: UsersComponent, canActivate: [AdminGuard] },
         ],
     },
     {

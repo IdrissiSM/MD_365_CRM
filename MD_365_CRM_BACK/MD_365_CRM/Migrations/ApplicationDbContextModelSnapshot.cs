@@ -22,6 +22,23 @@ namespace MD_365_CRM.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("MD_365_CRM.Models.BlacklistedUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BlacklistedUsers");
+                });
+
             modelBuilder.Entity("MD_365_CRM.Models.Otp", b =>
                 {
                     b.Property<int>("Id")
@@ -71,8 +88,8 @@ namespace MD_365_CRM.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("Gendercode")
-                        .HasColumnType("bit");
+                    b.Property<int?>("Gendercode")
+                        .HasColumnType("int");
 
                     b.Property<string>("Jobtitle")
                         .HasColumnType("nvarchar(max)");
@@ -107,8 +124,8 @@ namespace MD_365_CRM.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("Statecode")
-                        .HasColumnType("bit");
+                    b.Property<int?>("Statecode")
+                        .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");

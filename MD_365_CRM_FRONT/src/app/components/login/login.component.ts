@@ -40,7 +40,6 @@ export class LoginComponent {
           if(response.isAuthenticated)
             if(this.loginForm.get('checkbox')!.value) this.appState.setAuthStateLocal(response.token)
             else this.appState.setAuthStateSession(response.token)
-
           this.router.navigate(['']);
 
         },

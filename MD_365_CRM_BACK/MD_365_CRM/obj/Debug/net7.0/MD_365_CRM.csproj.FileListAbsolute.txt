@@ -250,6 +250,90 @@ C:\Users\acer\Desktop\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\ref
 C:\Users\acer\Desktop\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\MD_365_CRM.pdb
 C:\Users\acer\Desktop\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\MD_365_CRM.genruntimeconfig.cache
 C:\Users\acer\Desktop\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\ref\MD_365_CRM.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\appsettings.Development.json
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\appsettings.json
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\MD_365_CRM.exe
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\MD_365_CRM.deps.json
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\MD_365_CRM.runtimeconfig.json
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\MD_365_CRM.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\MD_365_CRM.pdb
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Azure.Core.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Azure.Identity.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Humanizer.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.Data.SqlClient.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.Identity.Client.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.Identity.Client.Extensions.Msal.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.OpenApi.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.SqlServer.Server.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Mono.TextTemplating.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\System.CodeDom.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\System.Configuration.ConfigurationManager.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\System.Drawing.Common.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\System.Memory.Data.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\System.Runtime.Caching.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\System.Security.Permissions.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\System.Windows.Extensions.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\runtimes\unix\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\MD_365_CRM.csproj.AssemblyReference.cache
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\MD_365_CRM.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\MD_365_CRM.AssemblyInfoInputs.cache
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\MD_365_CRM.AssemblyInfo.cs
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\MD_365_CRM.csproj.CoreCompileInputs.cache
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\MD_365_CRM.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\MD_365_CRM.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\staticwebassets\msbuild.MD_365_CRM.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\staticwebassets\msbuild.build.MD_365_CRM.props
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.MD_365_CRM.props
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.MD_365_CRM.props
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\staticwebassets.pack.json
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\staticwebassets.build.json
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\staticwebassets.development.json
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\scopedcss\bundle\MD_365_CRM.styles.css
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\MD_365_CRM.csproj.CopyComplete
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\MD_365_CRM.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\refint\MD_365_CRM.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\MD_365_CRM.pdb
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\MD_365_CRM.genruntimeconfig.cache
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\obj\Debug\net7.0\ref\MD_365_CRM.dll
 C:\Users\bahib\OneDrive\Desktop\Prog\dotnet\MD_365_CRM - master - sprint 1\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\appsettings.Development.json
 C:\Users\bahib\OneDrive\Desktop\Prog\dotnet\MD_365_CRM - master - sprint 1\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\appsettings.json
 C:\Users\bahib\OneDrive\Desktop\Prog\dotnet\MD_365_CRM - master - sprint 1\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\MD_365_CRM.exe
@@ -339,3 +423,8 @@ C:\Users\bahib\OneDrive\Desktop\Prog\dotnet\MD_365_CRM - master - sprint 1\MD_36
 C:\Users\bahib\OneDrive\Desktop\Prog\dotnet\MD_365_CRM - master - sprint 1\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\MimeKit.dll
 C:\Users\bahib\OneDrive\Desktop\Prog\dotnet\MD_365_CRM - master - sprint 1\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\bahib\OneDrive\Desktop\Prog\dotnet\MD_365_CRM - master - sprint 1\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\BouncyCastle.Cryptography.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\MailKit.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\MimeKit.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\soukaina\Desktop\Nouveau dossier\MD_365_CRM\MD_365_CRM_BACK\MD_365_CRM\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.Pkcs.dll

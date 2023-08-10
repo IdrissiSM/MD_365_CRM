@@ -17,6 +17,7 @@ using MimeKit;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MD_365_CRM.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace MD_365_CRM.Services
 {
@@ -27,17 +28,19 @@ namespace MD_365_CRM.Services
         private readonly DynamicsCRM dynamicsCRM;
         private readonly IConfiguration config;
         private readonly ApplicationDbContext context;
+        private readonly IBlacklistedUserService _blacklistedUserService;
         private readonly JWT _jwt;
         private readonly string baseUrl;
 
 
-        public AuthService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt, DynamicsCRM crmConfig, IConfiguration config, ApplicationDbContext context)
+        public AuthService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt, DynamicsCRM crmConfig, IConfiguration config, ApplicationDbContext context, IBlacklistedUserService blacklistedUserService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             dynamicsCRM = crmConfig;
             this.config = config;
             this.context = context;
+            _blacklistedUserService = blacklistedUserService;
             _jwt = jwt.Value;
             baseUrl = $"{config.GetValue<string>("DynamicsCrmSettings:Scope")}/api/data/v9.2";
         }
@@ -46,6 +49,12 @@ namespace MD_365_CRM.Services
         // TODO: Modify the registered user data in crm
         public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
         {
+            if (await _blacklistedUserService.IsUserBlacklisted(request.Email))
+                return new AuthResponse
+                {
+                    Message = "Registration Denied !",
+                    IsAuthenticated = false,
+                };
             if (await _userManager.FindByEmailAsync(request.Email) is not null)
                 return new AuthResponse
                 {
@@ -67,8 +76,8 @@ namespace MD_365_CRM.Services
                 Firstname = request.Firstname,
                 Lastname = request.Lastname,
                 Jobtitle = request.Jobtitle,
-                Gendercode = request.Gendercode != 0,
-                Statecode = request.Statecode != 0,
+                Gendercode = request.Gendercode,
+                Statecode = request.Statecode,
                 ContactId = contact.contactId,
                 UserName = request.Username
             };
@@ -107,7 +116,6 @@ namespace MD_365_CRM.Services
                 authResponse.Message = "Email or password is incorrect !";
                 return authResponse;
             }
-
 
             var jwtSecurityToken = await CreateJwtToken(user);
             //var rolesList = await _userManager.GetRolesAsync(user);

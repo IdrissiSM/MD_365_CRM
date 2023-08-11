@@ -1,26 +1,30 @@
-<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+<div class="surface-ground flex align-items-center justify-content-center min-h-full min-w-full overflow-hidden">
   <div class="flex flex-column align-items-center justify-content-center">
 
-    <img src="assets/images/dynamics-365-logo-trans.png"
-      alt="Dynamics 365 Logo" class="mb-5 w-6rem flex-shrink-0">
+    <img src="assets/images/dynamics-365-logo-trans.png" alt="Dynamics 365 Logo" class="mb-5 w-6rem flex-shrink-0">
 
     <div
       style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
       <div class="w-full surface-card py-4 px-5 sm:px-8" style="border-radius:53px">
         <div class="text-center mb-5">
-          <img src="assets/images/{{'light' === 'light' ? 'mail-icon-dark' : 'mail-icon-light'}}.svg" alt="Image" height="150" class="mb-3">
+          <img src="assets/images/{{'light' === 'light' ? 'mail-icon-dark' : 'mail-icon-light'}}.svg" alt="Image"
+            height="150" class="mb-3">
           <div class="text-900 text-3xl font-medium mb-3">Welcome!</div>
           <span class="text-600 font-medium">Verify your email address to continue</span>
         </div>
 
         <form [formGroup]="verificationForm" (ngSubmit)="submit()">
-          <label for="email1" class="block text-900 text-xl font-medium mb-2">Email</label>
-          <input id="email1" formControlName="email" type="text" placeholder="Email address" pInputText
-            class="w-full md:w-30rem mb-5" style="padding:1rem">
+          <label for="email" class="block text-900 text-xl font-medium mb-2">Email</label>
+          <input id="email" formControlName="email" type="text" placeholder="Email address" pInputText
+            class="w-full md:w-30rem mb-2" style="padding:1rem">
+          <small id="email-help" class="text-red-600 block mb-5">{{verificationFailedMessage}}</small>
+
 
           <div class="flex align-items-center justify-content-between gap-0"></div>
-          
-          <button pButton pRipple label="Send verification code" [loading]="loading" [disabled]="!verificationForm.valid" type="submit" class="{{!verificationForm.valid ? 'cursor-invalid' : ''}} w-full p-3 mb-5"></button>
+
+          <button pButton pRipple label="Send verification code" [loading]="loading"
+            [disabled]="!verificationForm.valid || loading" type="submit"
+            class="{{!verificationForm.valid ? 'cursor-invalid' : ''}} w-full p-3 mb-5"></button>
         </form>
       </div>
     </div>

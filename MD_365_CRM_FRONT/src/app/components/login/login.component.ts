@@ -14,6 +14,9 @@ export class LoginComponent {
 
   loginForm!: FormGroup;
 
+  loading = false;
+
+  loginFailedMessage = "";
 
 
   constructor(private auth: AuthenticationService, private router: Router, private appState: AppStateService) {
@@ -27,25 +30,29 @@ export class LoginComponent {
 
   submit() {
 
-    if(!this.loginForm.valid)
+    if (!this.loginForm.valid)
       return;
 
-      this.auth.login( // passing the values
-        {
-          email: this.loginForm.get('email')!.value,
-          password: this.loginForm.get('password')!.value
-        }).subscribe( // subscribing to the returned observable
+      this.loading = true;
+
+    this.auth.login( // passing the values
+      {
+        email: this.loginForm.get('email')!.value,
+        password: this.loginForm.get('password')!.value
+      }).subscribe( // subscribing to the returned observable
         (response: AuthResponse) => {
 
-          if(response.isAuthenticated)
-            if(this.loginForm.get('checkbox')!.value) this.appState.setAuthStateLocal(response.token)
+          if (response.isAuthenticated) {
+            if (this.loginForm.get('checkbox')!.value) this.appState.setAuthStateLocal(response.token)
             else this.appState.setAuthStateSession(response.token)
-
-          this.router.navigate(['']);
+            this.router.navigate(['']);
+          }
 
         },
         (error) => {
+          this.loginFailedMessage = error.error.message.length > 80 ? error.error.message.substring(0, 73) + "..." : error.error.message;
           console.error('Error occurred while logging:', error);
+          this.loading = false;
         }
       );
   }

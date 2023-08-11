@@ -3,6 +3,9 @@ using MD_365_CRM.Requests;
 using MD_365_CRM.Services.IServices;
 using MD_365_CRM.Models;
 using MD_365_CRM.Responses;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.Win32;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -21,25 +24,85 @@ namespace MD_365_CRM.Controllers
         }
         // TODO: Modify the registered user data in crm
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest model)
+        [ProducesResponseType(200, Type = typeof(AuthResponse))]
+        [ProducesResponseType(400, Type = typeof(AuthResponse))]
+        [ProducesResponseType(403, Type = typeof(AuthResponse))]
+        [ProducesResponseType(409, Type = typeof(AuthResponse))]
+
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest register)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            {
+                string errorsString = string.Join("; ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+                return BadRequest(new AuthResponse()
+                {
+                    Message = errorsString,
+                    IsAuthenticated = false
+                });
+            }
 
-            var result = await _authService.RegisterAsync(model);
+            if (!_authService.IsSecretValid(register.Email, register.Secret))
+            {
+                return StatusCode(400, new AuthResponse()
+                {
+                    Message = "The registration session has expired. Please request a new OTP and try again.",
+                    IsAuthenticated = false
+                });
+            }
+
+            var result = await _authService.RegisterAsync(register);
+
+            if(!result.IsAuthenticated)
+            {
+                if(result.Message == "65498Xsa")
+                {
+                    result.Message = "Email is already registred !";
+                    return StatusCode(409, result);
+                }
+
+                else if(result.Message == "65269Lwd")
+                {
+                    result.Message =  "The registration process cannot proceed because the required resource has been deleted. Please contact an administrator for assistance";
+                    return StatusCode(403, result);
+                }
+                else
+                {
+                    result.Message =  result.Message;
+                    return StatusCode(400, result);
+                }
+
+            }
 
             return Ok(result);
         }
 
         [HttpPost("login")]
+        [ProducesResponseType(200, Type = typeof(AuthResponse))]
+        [ProducesResponseType(400, Type = typeof(AuthResponse))]
+        [ProducesResponseType(401, Type = typeof(AuthResponse))]
+        [ProducesResponseType(500, Type = typeof(AuthResponse))]
         public async Task<IActionResult> LoginAsync([FromBody] LoginRequest model)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            {
+                string errorsString = string.Join("; ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+                return BadRequest(new AuthResponse()
+                {
+                    Message = errorsString,
+                    IsAuthenticated = false
+                });
+            }
 
             var result = await _authService.LoginAsync(model);
 
-            return Ok(result);
+            if(result.IsAuthenticated)
+                return Ok(result);
+
+            return BadRequest(result);
         }
 
         [HttpPost("role")]
@@ -58,26 +121,39 @@ namespace MD_365_CRM.Controllers
 
         [HttpPost("email_verification")]
         [ProducesResponseType(200, Type = typeof(void))]
-        public async Task<IActionResult> EmailVerification([FromBody] EmailVerification emailVerification)
+        public async Task<IActionResult> EmailVerification([FromBody] EmailVerificationRequest emailVerification)
         {
 
-            if (!ModelState.IsValid || emailVerification == null || emailVerification.Email == "")
-                return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+            {
+                string errorsString = string.Join("; ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+                return BadRequest(new EmailVerificationResponse()
+                {
+                    Message = errorsString,
+                    IsEligible = false
+                });
+            }
 
             Contact contact = await _authService.GetContactByEmail(emailVerification.Email);
 
             if (contact is null)
-            {
-                ModelState.AddModelError("", "Uh Oh! It sounds like that email of yours is not eligible");
-                return StatusCode(403, ModelState);
-            }
+                return StatusCode(403, new EmailVerificationResponse()
+                {
+                    Message = "The provided email does not meet the eligibility criteria for creating an account.",
+                    IsEligible = false
+                });
 
             int otp = _authService.CreateOtp(contact.emailaddress1);
 
             if(otp == -1)
             {
-                ModelState.AddModelError("", "Uh Oh! Something went wrong while processing your request");
-                return StatusCode(500, ModelState);
+                return StatusCode(500, new EmailVerificationResponse()
+                {
+                    Message = "There seems to be an internal issue while processing your request. Please understand that our system is experiencing technical difficulties at the moment. We kindly ask you to consider trying again later.",
+                    IsEligible = false
+                });
             }
 
             await _authService.SendEmail(emailVerification.Email, $@"
@@ -107,10 +183,19 @@ namespace MD_365_CRM.Controllers
 
         [HttpPost("email_confirmation")]
         [ProducesResponseType(200, Type = typeof(Contact))]
-        public async Task<IActionResult> EmailConfirmation([FromBody] EmailConfirmation emailConfirmation)
+        public async Task<IActionResult> EmailConfirmation([FromBody] EmailConfirmationRequest emailConfirmation)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            {
+                string errorsString = string.Join("; ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+                return BadRequest(new AuthResponse()
+                {
+                    Message = errorsString,
+                    IsAuthenticated = false
+                });
+            }
 
             if (emailConfirmation.Otp < 111111 || emailConfirmation.Otp > 999999)
             {
@@ -122,40 +207,70 @@ namespace MD_365_CRM.Controllers
 
             if (contact == null)
             {
-                ModelState.AddModelError("", "Uh Oh! Something went really wrong while processing your request");
+                ModelState.AddModelError("", "The registration process cannot proceed because the required resource has been deleted. Please contact an administrator for assistance");
                 return StatusCode(500, ModelState);
             }
-            // null will be returned in one and only scenario: when the otp is not valid. hence the front can handle it.
-            Console.WriteLine("otp is valid? " + _authService.IsOtpValid(contact.emailaddress1, emailConfirmation.Otp));
-            return Ok(_authService.IsOtpValid(contact.emailaddress1, emailConfirmation.Otp) ? contact : null);
+
+            Otp otp = _authService.IsOtpValid(contact.emailaddress1, emailConfirmation.Otp);
+
+            if (otp is null)
+            {
+                ModelState.AddModelError("", "The provided OTP has expired. Please request a new OTP and try again.");
+                return StatusCode(400, ModelState);
+            }
+
+            contact.secret = otp.Secret;
+
+            return Ok(contact);
         }
 
         [HttpPost("reset_password")]
-        [ProducesResponseType(200, Type = typeof(AuthResponse))]
+        [ProducesResponseType(200, Type = typeof(ResetPasswordResponse))]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest resetPasswordRequest)
         {
-            if (!ModelState.IsValid || resetPasswordRequest == null || resetPasswordRequest.Password == "" || resetPasswordRequest.Email == "")
-                return BadRequest(ModelState);
-
-            if (resetPasswordRequest.Otp < 111111 || resetPasswordRequest.Otp > 999999)
+            if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "The 'otp' field must be a value between 111111 and 999999.");
-                return StatusCode(400, ModelState);
+                string errorsString = string.Join("; ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+                return BadRequest(new ResetPasswordResponse()
+                {
+                    IsReseted = false,
+                    Message = errorsString
+                });
+            }
+
+            if (!_authService.IsSecretValid(resetPasswordRequest.Email, resetPasswordRequest.Secret))
+            {
+                return StatusCode(400, new AuthResponse()
+                {
+                    Message = "The registration session has expired. Please request a new OTP and try again.",
+                    IsAuthenticated = false
+                });
             }
 
             AuthResponse authState = await _authService.ResetPassword(resetPasswordRequest);
 
             if(authState.IsAuthenticated)
             {
-                return Ok(authState);
+                return Ok(new ResetPasswordResponse()
+                {
+                    IsReseted = true
+                });
             }
 
-            ModelState.AddModelError("", authState.Message);
+            if (authState.Message == "500")
+                return StatusCode(500, new ResetPasswordResponse()
+                {
+                    IsReseted = false,
+                    Message = "The reset failed due to some internal reasons"
+                });
 
-            if (authState.Message == "The reset failed")
-                return StatusCode(500, ModelState);
-
-            return StatusCode(400, ModelState);
+            return StatusCode(400, new ResetPasswordResponse()
+            {
+                IsReseted = false,
+                Message = authState.Message
+            });
 
         }
 

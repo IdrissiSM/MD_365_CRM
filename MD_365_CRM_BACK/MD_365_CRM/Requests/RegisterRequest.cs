@@ -13,7 +13,7 @@ namespace MD_365_CRM.Requests
         [Required, StringLength(50)]
         public string Username { get; set; }
 
-        [Required, StringLength(128)]
+        [Required, StringLength(128), EmailAddress]
         public string Email { get; set; }
 
         [Required, StringLength(256)]
@@ -24,5 +24,8 @@ namespace MD_365_CRM.Requests
         public Int32? Gendercode { get; set; }
 
         public int? Statecode { get; set; }
+
+        [Required]
+        public string Secret { get; set; }
     }
 }

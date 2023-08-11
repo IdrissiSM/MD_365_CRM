@@ -15,6 +15,8 @@ export class EmailVerificationComponent implements OnInit {
 
   loading =false;
 
+  verificationFailedMessage = "";
+
   constructor(private route: ActivatedRoute, private auth: AuthenticationService, private router: Router, private appState: AppStateService) {
 
     this.verificationForm = new FormGroup({
@@ -48,7 +50,9 @@ export class EmailVerificationComponent implements OnInit {
         this.router.navigate(['verification-code'], { queryParams: { email: this.verificationForm.get('email')!.value } });
       },
       (error) => {
-        console.log(error);
+        this.verificationFailedMessage = error.error.message.length > 85 ? error.error.message.substring(0, 73) + "..." : error.error.message;
+        console.error('Error occurred while verifying email:', error);
+        this.loading = false;
       }
     )
   }

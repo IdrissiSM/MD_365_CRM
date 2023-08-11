@@ -9,5 +9,7 @@
         public DateTime CreationDate { get; set; }
 
         public int Value { get; set; }
+
+        public string Secret { get; set; }
     }
 }

@@ -2,10 +2,12 @@
 
 #nullable disable
 
-namespace JWTAuth.Migrations
+namespace MD_365_CRM.Migrations
 {
-    public partial class seedRoles : Migration
+    /// <inheritdoc />
+    public partial class SeedRoles : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.InsertData(
@@ -21,6 +23,7 @@ namespace JWTAuth.Migrations
             );
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql("DELETE FROM [AspNetRoles]");

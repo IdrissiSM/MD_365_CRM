@@ -75,14 +75,14 @@ ngOnInit(): void {
 
   onPaste(event: ClipboardEvent) {
     event.preventDefault();
-    console.log("oncopy here!")
+    // console.log("oncopy here!")
     const clipboardData = event.clipboardData;
     if (!clipboardData) {
       return;
     }
 
     const copiedValue = clipboardData.getData('text')
-    console.log(`copied data: ${copiedValue}`);
+    // console.log(`copied data: ${copiedValue}`);
     if (!copiedValue) {
       return;
     }
@@ -91,9 +91,9 @@ ngOnInit(): void {
     const numbersOnly = copiedValue.replace(/\D/g, '');
     const numberArray = numbersOnly.split('').slice(0, 6); // Take up to 6 numbers
 
-    console.log(`number array: ${numberArray}`)
+    // console.log(`number array: ${numberArray}`)
 
-    console.log(`resulting array: ${numberArray}`)
+    // console.log(`resulting array: ${numberArray}`)
 
     const inputFields: {[key: number]: (num: number) => void} = {
       1: (num) => this.verificationForm.get('input1')!.setValue(num),
@@ -134,6 +134,8 @@ ngOnInit(): void {
     if(!this.verificationForm.valid)
       return;
 
+    this.loading = true;
+
     this.auth.emailConfirmation(
       {
         email: this.email,
@@ -148,11 +150,10 @@ ngOnInit(): void {
           return
         }
         console.log("verification complete!");
-        this.appState.otp = this.assembleOtp();
         this.appState.contact = contact;
 
         this.appState.registrationStep == 2? this.appState.registrationStep = 3 : this.appState.resetPasswordStep = 3;
-        console.log(contact);
+        // console.log(contact);
         this.appState.registrationStep == 3? this.router.navigate(['register']) : this.router.navigate(['reset-password']);
       },
       (error) => {

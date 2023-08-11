@@ -49,7 +49,7 @@ namespace MD_365_CRM.Services
             if (await _userManager.FindByEmailAsync(request.Email) is not null)
                 return new AuthResponse
                 {
-                    Message = "Email is already registred !",
+                    Message = "65498Xsa", //Email is already registred !
                     IsAuthenticated = false,
                 };
 
@@ -57,7 +57,7 @@ namespace MD_365_CRM.Services
 
             if (contact is null) return new AuthResponse
             {
-                Message = "Access denied",
+                Message = "65269Lwd", // The registration process cannot proceed because the required resource has been deleted. Please contact an administrator for assistance
                 IsAuthenticated = false,
             };
 
@@ -100,22 +100,35 @@ namespace MD_365_CRM.Services
 
         public async Task<AuthResponse> LoginAsync(LoginRequest request)
         {
-            var authResponse = new AuthResponse();
             User user = await _userManager.FindByEmailAsync(request.Email);
+
             if (user is null || !await _userManager.CheckPasswordAsync(user, request.Password))
-            {
-                authResponse.Message = "Email or password is incorrect !";
-                return authResponse;
-            }
+                return new AuthResponse()
+                {
+                    Message = "Credentials error: The given combination of email and password does not exist",
+                    IsAuthenticated = false,
+                };
 
+            //if (!await _userManager.CheckPasswordAsync(user, request.Password))
+            //{
+            //    var errors = _userManager.PasswordValidators.Select(v => v.ValidateAsync(_userManager, user, request.Password).Result.Errors);
 
+            //    return new AuthResponse()
+            //    {
+            //        Message = "Credentials error: " + (errors.First().IsNullOrEmpty() ? "The given combination of email and password does not exist" : string.Join("\n", errors.SelectMany(e => e.Select(err => err.Description)))),
+            //        IsAuthenticated = false
+            //    };
+            //}
+
+            
             var jwtSecurityToken = await CreateJwtToken(user);
             //var rolesList = await _userManager.GetRolesAsync(user);
 
-            authResponse.IsAuthenticated = true;
-            authResponse.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-
-            return authResponse;
+            return new AuthResponse()
+            {
+                IsAuthenticated = true,
+                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken)
+            };
         }
 
         public async Task<string> AddRoleAsync(AddRoleRequest request)
@@ -214,15 +227,15 @@ namespace MD_365_CRM.Services
             smtp.Disconnect(true);
         }
 
-        public bool IsOtpValid(string email, int otpValue)
+        public Otp IsOtpValid(string email, int otpValue)
         {
             Otp? otp = context.Otps.SingleOrDefault(otp => otp.Email == email);
 
             Console.WriteLine($"{otp == null} || {otp.Value != otpValue} otp.Value: {otp.Value}, otpValue: {otpValue} || { (DateTime.Now - otp.CreationDate).TotalMinutes >= config.GetValue<int>("Otp:validFor") }");
 
-            if (otp == null || otp.Value != otpValue || (DateTime.Now - otp.CreationDate).TotalMinutes >= config.GetValue<int>("Otp:validFor")) return false;
+            if (otp == null || otp.Value != otpValue || (DateTime.Now - otp.CreationDate).TotalMinutes >= config.GetValue<int>("Otp:validFor")) return null;
 
-            return true;
+            return otp;
         }
 
         public int CreateOtp(string email)
@@ -230,12 +243,14 @@ namespace MD_365_CRM.Services
             var otp = RandomNumberGenerator.GetInt32(111111, 1000000);
             var outcasts = context.Otps.Where(otp => otp.Email == email);
             context.Otps.RemoveRange(outcasts);
+            var secret = Guid.NewGuid().ToString("N");
 
             context.Otps.Add(new Otp()
             {
                 CreationDate = DateTime.Now,
                 Email = email,
-                Value = otp
+                Value = otp,
+                Secret = secret
             });
 
             return context.SaveChanges() > 0 ? otp: -1;
@@ -261,7 +276,7 @@ namespace MD_365_CRM.Services
 
             User? user = await _userManager.FindByEmailAsync(request.Email);
 
-            if (contact is null || user is null || !IsOtpValid(request.Email, request.Otp))
+            if (contact is null || user is null || !IsSecretValid(request.Email, request.Secret))
                 return new AuthResponse()
                 {
                     IsAuthenticated = false,
@@ -286,9 +301,19 @@ namespace MD_365_CRM.Services
             return new AuthResponse()
             {
                 IsAuthenticated = false,
-                Message = "The reset failed"
+                Message = "500"
             };
                 
         }
+
+        public bool IsSecretValid(string email, string secret)
+        {
+            Otp? otp = context.Otps.SingleOrDefault(otp => otp.Email == email);
+
+            if (otp == null || otp.Secret != secret || (DateTime.Now - otp.CreationDate).TotalMinutes >= config.GetValue<int>("Otp:validFor")) return false;
+
+            return true;
+        }
+
     }
 }

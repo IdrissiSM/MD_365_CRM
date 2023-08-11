@@ -64,7 +64,8 @@ namespace MD_365_CRM.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Value = table.Column<int>(type: "int", nullable: false)
+                    Value = table.Column<int>(type: "int", nullable: false),
+                    Secret = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

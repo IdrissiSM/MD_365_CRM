@@ -14,7 +14,6 @@ export class AppStateService {
   registrationStep: number = -1;
   resetPasswordStep: number = -1;
   contact!: Contact;
-  otp: number = -1;
 
   getAuthState() {
     const authStateString = localStorage.getItem('authState') ?? sessionStorage.getItem('authState');

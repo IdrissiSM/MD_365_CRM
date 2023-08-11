@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MD_365_CRM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230806215531_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230809105339_SeedRoles")]
+    partial class SeedRoles
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,6 +37,10 @@ namespace MD_365_CRM.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Secret")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

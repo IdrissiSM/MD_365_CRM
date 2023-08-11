@@ -11,9 +11,10 @@ namespace MD_365_CRM.Services.IServices
         Task<AuthResponse> LoginAsync(LoginRequest model);
         public Task<Contact> GetContactByEmail(string email);
         Task SendEmail(string email, string body);
-        bool IsOtpValid(string email, int otp);
+        Otp IsOtpValid(string email, int otp);
         int CreateOtp(string email);
         int OtpValidFor();
         Task<AuthResponse> ResetPassword(ResetPasswordRequest request);
+        bool IsSecretValid(string email, string secret);
     }
 }

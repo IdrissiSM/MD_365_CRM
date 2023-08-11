@@ -5,19 +5,15 @@
                 <div
                     class="card p-0 pb-1 pt-4 ml-1 mt-2 grid align-items-center justify-content-evenly h-full"
                 >
-                    <div class="col-6" >
+                    <div class="col-6">
                         <app-polar></app-polar>
                     </div>
                     <div class="col-6">
                         <app-doughnut></app-doughnut>
                     </div>
-                    <div *ngIf="loading" class="w-full flex align-items-center justify-content-evenly">
-                        <p-skeleton shape="circle" size="15rem"></p-skeleton>
-                        <p-skeleton shape="circle" size="15rem"></p-skeleton>
-                    </div>
                 </div>
             </div>
-            <div class="md:col-6 mt-2">
+            <div class="md:col-6 h-full">
                 <app-basic></app-basic>
             </div>
         </div>
@@ -27,6 +23,7 @@
                 [value]="incidents"
                 dataKey="id"
                 [rows]="10"
+                [loading]="loading"
                 [rowHover]="true"
                 styleClass="p-datatable-gridlines"
                 [paginator]="true"
@@ -345,32 +342,6 @@
                         </th>
                         <th></th>
                     </tr>
-                    <ng-container *ngIf="loading">
-                        <tr *ngFor="let i of repeat(10)">
-                            <td class="px-2 py-3">
-                                <p-skeleton></p-skeleton>
-                            </td>
-                            <td class="px-2 py-3">
-                                <p-skeleton></p-skeleton>
-                            </td>
-                            <td class="px-2 py-3">
-                                <p-skeleton></p-skeleton>
-                            </td>
-                            <td class="px-2 py-3">
-                                <p-skeleton></p-skeleton>
-                            </td> <td class="px-2 py-3">
-                                <p-skeleton></p-skeleton>
-                            </td> <td class="px-2 py-3">
-                                <p-skeleton></p-skeleton>
-                            </td> <td class="px-2 py-3">
-                                <p-skeleton></p-skeleton>
-                            </td> <td class="px-2 py-3">
-                                <p-skeleton></p-skeleton>
-                            </td> <td class="px-2 py-3">
-                                <p-skeleton></p-skeleton>
-                            </td>
-                        </tr>
-                    </ng-container>
                 </ng-template>
                 <!--Table Body-->
                 <ng-template pTemplate="body" let-incident>
@@ -490,6 +461,11 @@
                                 "
                             ></button>
                         </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8">No incidents found.</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="loadingbody">

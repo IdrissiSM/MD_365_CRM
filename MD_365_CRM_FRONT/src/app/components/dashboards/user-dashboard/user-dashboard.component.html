@@ -1,0 +1,314 @@
+<div class="grid">
+    <!--Boxes-->
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0 box-2">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3 box-title"
+                        >Opportunities</span
+                    >
+                    <div class="text-900 font-medium text-xl">
+                        {{ opportunities.length }}
+                    </div>
+                </div>
+                <div
+                    class="flex align-items-center justify-content-center bg-orange-100 border-round"
+                    [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
+                >
+                    <i class="pi pi-briefcase text-orange-500 text-xl"></i>
+                </div>
+            </div>
+            <span class="text-green-500 font-medium">%{{ wonRatingOpp }} </span>
+            <span class="text-500">won | </span>
+            <span class="text-green-500 font-medium"
+                >%{{ lostRatingOpp }}
+            </span>
+            <span class="text-500">lost </span>
+        </div>
+    </div>
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0 box-1">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3 box-title"
+                        >Products</span
+                    >
+                    <div class="text-900 font-medium text-xl">
+                        {{ opprtunitiesProducts.length }}
+                    </div>
+                </div>
+                <div
+                    class="flex align-items-center justify-content-center bg-blue-100 border-round"
+                    [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
+                >
+                    <i class="pi pi-users text-blue-500 text-xl"></i>
+                </div>
+            </div>
+            <span class="text-green-500 font-medium"
+                >{{ totalProductsQuantity }}
+            </span>
+            <span class="text-500">units</span>
+        </div>
+    </div>
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0 box-3">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3 box-title"
+                        >Actual Amount</span
+                    >
+                    <div class="text-900 font-medium text-xl">
+                        {{ totalActualRevenue | currency }}
+                    </div>
+                </div>
+                <div
+                    class="flex align-items-center justify-content-center bg-cyan-100 border-round"
+                    [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
+                >
+                    <i class="pi pi-dollar text-cyan-500 text-xl"></i>
+                </div>
+            </div>
+            <span class="text-green-500 font-medium"
+                >{{ totalEstimatedRevenue | currency }}
+            </span>
+            <span class="text-500">estimated</span>
+        </div>
+    </div>
+    <div class="col-12 lg:col-6 xl:col-3">
+        <div class="card mb-0 box-4">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3 box-title"
+                        >Incidents</span
+                    >
+                    <div class="text-900 font-medium text-xl">
+                        {{ incidents.length }}
+                    </div>
+                </div>
+                <div
+                    class="flex align-items-center justify-content-center bg-purple-100 border-round"
+                    [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
+                >
+                    <i class="pi pi-wrench text-purple-500 text-xl"></i>
+                </div>
+            </div>
+            <span class="text-green-500 font-medium"
+                >{{ resolvedIncidents }}
+            </span>
+            <span class="text-500">resolved</span>
+        </div>
+    </div>
+    <div class="col-12 xl:col-6">
+        <!-- Last Opportunities -->
+        <div class="card pb-3">
+            <h5>Last Opportunities</h5>
+            <p-timeline
+                [value]="lastOpportunities"
+                align="alternate"
+                styleClass="customized-timeline"
+            >
+                <ng-template pTemplate="marker" let-opportunity>
+                    <span
+                        class="custom-marker shadow-2 flex w-2rem h-2rem align-items-center justify-content-center text-white border-circle"
+                        [style.backgroundColor]="
+                            getStateColor(opportunity.stateCode)
+                        "
+                    >
+                        <i [ngClass]="getStateIcon(opportunity.stateCode)"></i>
+                    </span>
+                </ng-template>
+                <ng-template pTemplate="content" let-opportunity>
+                    <p-card
+                        [header]="opportunity.name"
+                        [subheader]="
+                            getDtate(opportunity.createdOn).toLocaleString()
+                        "
+                    >
+                        <p>
+                            {{ opportunity.description }}
+                        </p>
+                        <button
+                            pButton
+                            label="Read more"
+                            class="p-button-text"
+                            (click)="
+                                opportunityDetails(opportunity.opportunityId)
+                            "
+                        ></button>
+                    </p-card>
+                </ng-template>
+            </p-timeline>
+            <!-- skeltonOpportunities -->
+            <ng-container *ngIf="mostBoughtProducts.length === 0">
+                <p-timeline
+                    [value]="skeltonOpportunities"
+                    align="alternate"
+                    styleClass="customized-timeline"
+                >
+                    <ng-template pTemplate="marker" let-opportunity>
+                        <span
+                            class="custom-marker shadow-2 flex w-2rem h-2rem align-items-center justify-content-center text-white border-circle"
+                        >
+                            <i></i>
+                        </span>
+                    </ng-template>
+                    <ng-template pTemplate="content" let-opportunity>
+                        <p-card>
+                            <p>
+                                <p-skeleton
+                                    width="100%"
+                                    height="20px"
+                                ></p-skeleton>
+                            </p>
+                            <p>
+                                <p-skeleton
+                                    width="90%"
+                                    height="10px"
+                                ></p-skeleton>
+                            </p>
+                            <p>
+                                <p-skeleton
+                                    width="100%"
+                                    height="40px"
+                                ></p-skeleton>
+                            </p>
+                            <button
+                                pButton
+                                label="Read more"
+                                class="p-button-text"
+                            ></button>
+                        </p-card>
+                    </ng-template>
+                </p-timeline>
+            </ng-container>
+            <div class="mt-3 flex justify-content-end align-items-center">
+                <p-button
+                    label="View All"
+                    icon="pi pi-briefcase"
+                    routerLink="/opportunities"
+                ></p-button>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 xl:col-6">
+        <!-- Most Bought Products -->
+        <div class="card">
+            <h5>Most Bought Products</h5>
+            <ul class="list-none p-0 m-0">
+                <li
+                    *ngFor="let product of mostBoughtProducts"
+                    class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4"
+                >
+                    <div>
+                        <span
+                            class="text-900 font-medium mr-2 mb-1 md:mb-0 cursor-pointer"
+                            (click)="productDetails(product._productId_value)"
+                        >
+                            {{ product.productName }}
+                        </span>
+                        <div class="mt-1 text-600">
+                            Total :
+                            {{
+                                product.pricePerUnit * product.quantity
+                                    | currency
+                            }}
+                        </div>
+                        <div class="mt-1 text-500">
+                            Price per unit :
+                            {{ product.pricePerUnit | currency }}
+                        </div>
+                    </div>
+                    <div class="mt-2 md:mt-0 flex align-items-center">
+                        <div
+                            class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
+                            [ngStyle]="{ height: '8px' }"
+                        >
+                            <div
+                                class="h-full"
+                                [class]="
+                                    getProductPercentageColor(
+                                        product.quantity,
+                                        'bg'
+                                    )
+                                "
+                                [ngStyle]="{
+                                    width: getProductPercentage(
+                                        product.quantity
+                                    )
+                                }"
+                            ></div>
+                        </div>
+                        <span
+                            class="ml-3 font-medium"
+                            [class]="
+                                getProductPercentageColor(
+                                    product.quantity,
+                                    'text'
+                                )
+                            "
+                        >
+                            {{ product.quantity }} units
+                        </span>
+                    </div>
+                </li>
+                <!-- skeleton -->
+                <ng-container *ngIf="mostBoughtProducts.length === 0">
+                    <li
+                        *ngFor="let i of repeat(7)"
+                        class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4"
+                    >
+                        <div>
+                            <span class="text-900 font-medium mr-2 mb-0">
+                                <p-skeleton
+                                    width="12rem"
+                                    height="15px"
+                                ></p-skeleton>
+                            </span>
+                            <div class="text-600">
+                                <p-skeleton
+                                    width="8rem"
+                                    height="10px"
+                                ></p-skeleton>
+                            </div>
+                            <div class="mt-1 text-500">
+                                <p-skeleton
+                                    width="8rem"
+                                    height="10px"
+                                ></p-skeleton>
+                            </div>
+                        </div>
+                        <div class="mt-2 md:mt-0 flex align-items-center">
+                            <div
+                                class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
+                                [ngStyle]="{ height: '8px' }"
+                            >
+                                <p-skeleton
+                                    width="15rem"
+                                    height="10px"
+                                ></p-skeleton>
+                            </div>
+                            <span class="ml-3 font-medium">
+                                <p-skeleton width="3rem" height="12px">
+                                </p-skeleton>
+                            </span>
+                        </div>
+                    </li>
+                </ng-container>
+            </ul>
+        </div>
+        <div class="card">
+            <h5 class="mb-4">Revenue Statistiques</h5>
+            <p-chart
+                *ngIf="!loading"
+                type="bar"
+                [data]="revenueChartData"
+                [options]="revenueChartOptions"
+            ></p-chart>
+            <p-skeleton
+                *ngIf="loading"
+                width="100%"
+                height="175px"
+            ></p-skeleton>
+        </div>
+    </div>
+</div>

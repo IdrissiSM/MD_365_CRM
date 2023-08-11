@@ -1,0 +1,435 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="col-12 p-0" *ngIf="!loading">
+            <div class="grid">
+                <div class="col-12 xl:col-6 flex flex-column justify-content-between">
+                    <div class="card mb-0">
+                        <div class="flex justify-content-between mb-3">
+                            <div>
+                                <span class="block text-500 font-medium mb-3">Users</span>
+                                <div class="text-900 font-medium text-xl">{{totalUsers}}</div>
+                            </div>
+                            <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                                <i class="pi pi-user text-blue-500 text-xl"></i>
+                            </div>
+                        </div>
+                        <span class="text-500">Total </span>
+                        <span class="text-green-500 font-medium">App Users</span>
+                    </div> 
+                    <div class="card mb-0">
+                        <div class="flex justify-content-between mb-3">
+                            <div>
+                                <span class="block text-500 font-medium mb-3">Blacklisted Emails</span>
+                                <div class="text-900 font-medium text-xl">{{totalBlacklistedUsers}}</div>
+                            </div>
+                            <div class="flex align-items-center justify-content-center bg-orange-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                                <i class="pi pi-ban text-orange-500 text-xl"></i>
+                            </div>
+                        </div>
+                        <span class="text-500">Total </span>
+                        <span class="text-red-500 font-medium">Emails In Blacklist</span>
+                    </div>
+                </div>
+                <div class="col-12 xl:col-6">
+                    <div class="card grid m-0 p-3">
+                        <div class="col-6">
+                            <p-chart
+                                type="pie"
+                                [data]="genderChart"
+                                [options]="pieOptions"
+                            ></p-chart>
+                        </div>
+                        <div class="col-6">
+                            <p-chart
+                                type="pie"
+                                [data]="stateChart"
+                                [options]="pieOptions"
+                            ></p-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <h5>Users</h5>
+            <p-table
+                #usersTable
+                [value]="users"
+                dataKey="userId"
+                [rows]="10"
+                [loading]="loading"
+                [rowHover]="true"
+                styleClass="p-datatable-gridlines"
+                [paginator]="true"
+                [globalFilterFields]="[
+                    'firstname',
+                    'lastname',
+                    'jobtitle',
+                    'email'
+                ]"
+                responsiveLayout="scroll"
+            >
+                <ng-template pTemplate="caption">
+                    <div
+                        class="flex justify-content-between flex-column sm:flex-row"
+                    >
+                        <div>
+                            <button
+                                pButton
+                                label="Clear"
+                                class="p-button-outlined mb-2 mr-2"
+                                icon="pi pi-filter-slash"
+                                (click)="clear(usersTable)"
+                            ></button>
+                        </div>
+                        <span class="p-input-icon-left mb-2">
+                            <i class="pi pi-search"></i>
+                            <input
+                                pInputText
+                                type="text"
+                                #filter
+                                (input)="onGlobalFilter(usersTable, $event)"
+                                placeholder="Search Keyword"
+                                class="w-full"
+                            />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="min-width: 12rem">
+                            <div
+                                class="flex justify-content-between align-items-center"
+                            >
+                                Firstname
+                                <p-columnFilter
+                                    type="text"
+                                    field="firstname"
+                                    display="menu"
+                                    placeholder="Search by firstname"
+                                ></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div
+                                class="flex justify-content-between align-items-center"
+                            >
+                                Lastname
+                                <p-columnFilter
+                                    type="text"
+                                    field="lastname"
+                                    display="menu"
+                                    placeholder="Search by lastname"
+                                ></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 10rem">
+                            <div
+                                class="flex justify-content-between align-items-center"
+                            >
+                                Gender
+                                <p-columnFilter
+                                    field="gendercode"
+                                    matchMode="equals"
+                                    display="menu"
+                                >
+                                    <ng-template
+                                        pTemplate="filter"
+                                        let-value
+                                        let-filter="filterCallback"
+                                    >
+                                        <p-dropdown
+                                            [ngModel]="value"
+                                            [options]="genders"
+                                            (onChange)="filter($event.value)"
+                                            placeholder="Any"
+                                            [style]="{ 'min-width': '12rem' }"
+                                        >
+                                            <ng-template
+                                                let-option
+                                                pTemplate="item"
+                                            >
+                                                <span
+                                                class="customer-badge"
+                                                    [ngClass]="{
+                                                        'status-new':
+                                                            option.value === 1,
+                                                        'status-proposal':
+                                                            option.value === 2,
+                                                    }"
+                                                >{{ option.label }}</span>
+                                            </ng-template>
+                                        </p-dropdown>
+                                    </ng-template>
+                                </p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 10rem">
+                            <div
+                                class="flex justify-content-between align-items-center"
+                            >
+                                Job Title
+                                <p-columnFilter
+                                    type="text"
+                                    field="jobtitle"
+                                    display="menu"
+                                    placeholder="Search by email"
+                                ></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 10rem">
+                            <div
+                                class="flex justify-content-between align-items-center"
+                            >
+                                Email
+                                <p-columnFilter
+                                    type="text"
+                                    field="email"
+                                    display="menu"
+                                    placeholder="Search by job title"
+                                ></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 10rem">
+                            <div
+                                class="flex justify-content-between align-items-center"
+                            >
+                                Username
+                                <p-columnFilter
+                                    type="text"
+                                    field="email"
+                                    display="menu"
+                                    placeholder="Search by username"
+                                ></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 10rem">
+                            <div
+                                class="flex justify-content-between align-items-center"
+                            >
+                                State
+                                <p-columnFilter
+                                    field="statecode"
+                                    matchMode="equals"
+                                    display="menu"
+                                >
+                                    <ng-template
+                                        pTemplate="filter"
+                                        let-value
+                                        let-filter="filterCallback"
+                                    >
+                                        <p-dropdown
+                                            [ngModel]="value"
+                                            [options]="states"
+                                            (onChange)="filter($event.value)"
+                                            placeholder="Any"
+                                            [style]="{ 'min-width': '12rem' }"
+                                        >
+                                            <ng-template
+                                                let-option
+                                                pTemplate="item"
+                                            >
+                                                <span
+                                                class="customer-badge"
+                                                    [ngClass]="{
+                                                        'status-qualified':
+                                                            option.value === 0,
+                                                        'status-unqualified':
+                                                            option.value === 1,
+                                                    }"
+                                                >{{ option.label }}</span>
+                                            </ng-template>
+                                        </p-dropdown>
+                                    </ng-template>
+                                </p-columnFilter>
+                            </div>
+                        </th>
+                        <th>
+                            <div
+                                class="flex justify-content-between align-items-center"
+                            ></div>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-user>
+                    <tr>
+                        <td>
+                            <span class="image-text ml-2">{{
+                                user.firstname
+                            }}</span>
+                        </td>
+                        <td>
+                            {{ user.lastname }}
+                        </td>
+                        <td>
+                            <span
+                            class="customer-badge"
+                            [ngClass]="{
+                                'status-proposal': user.gendercode === 2,
+                                'status-new':
+                                    user.gendercode === 1
+                            }"
+                        >
+                            {{ getGenderLabel(user.gendercode) }}
+                        </span>
+                        </td>
+                        <td>
+                            {{ user.jobtitle }}
+                        </td>
+                        <td>
+                            {{ user.email }}
+                        </td>
+                        <td>
+                            {{ user.userName }}
+                        </td>
+                        <td>
+                            <span
+                            class="customer-badge"
+                            [ngClass]="{
+                                'status-qualified': user.statecode === 0,
+                                'status-unqualified':
+                                    user.statecode === 1
+                            }"
+                        >
+                            {{ getStateLabel(user.statecode) }}
+                        </span>
+                        </td>
+                        <td>
+                            <div class="flex align-items-center gap-2">
+                                <button
+                                    pButton
+                                    pRipple
+                                    type="button"
+                                    icon="pi pi-trash"
+                                    class="p-button-rounded p-button-sm p-button-danger"
+                                    (click)="deleteUser(user.id)"
+                                >
+                                    <span class="ml-2">Delete</span>
+                                </button>
+                                <button
+                                    pButton
+                                    pRipple
+                                    type="button"
+                                    icon="pi pi-user-plus"
+                                    class="p-button-rounded p-button-sm p-button-secondary"
+                                    (click)="addToBlacklist(user.email)"
+                                >
+                                    <span class="ml-2">Blacklist</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8">No user found.</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="loadingbody">
+                    <tr>
+                        <td colspan="8">Loading users data. Please wait.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <div class="card">
+            <h5>Blacklisted Emails</h5>
+            <p-table
+                #blacklistedUsersTable
+                [value]="blacklistedUsers"
+                dataKey="id"
+                [rows]="10"
+                [loading]="loading"
+                [rowHover]="true"
+                styleClass="p-datatable-gridlines"
+                [paginator]="true"
+                [globalFilterFields]="[
+                    'email'
+                ]"
+                responsiveLayout="scroll"
+            >
+                <ng-template pTemplate="caption">
+                    <div
+                        class="flex justify-content-between flex-column sm:flex-row"
+                    >
+                        <div>
+                            <button
+                                pButton
+                                label="Clear"
+                                class="p-button-outlined mb-2 mr-2"
+                                icon="pi pi-filter-slash"
+                                (click)="clear(blacklistedUsersTable)"
+                            ></button>
+                        </div>
+                        <span class="p-input-icon-left mb-2">
+                            <i class="pi pi-search"></i>
+                            <input
+                                pInputText
+                                type="text"
+                                #filter
+                                (input)="onGlobalFilter(blacklistedUsersTable, $event)"
+                                placeholder="Search Keyword"
+                                class="w-full"
+                            />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="min-width: 10rem">
+                            <div
+                                class="flex justify-content-between align-items-center"
+                            >
+                                Email
+                                <p-columnFilter
+                                    type="text"
+                                    field="email"
+                                    display="menu"
+                                    placeholder="Search by email"
+                                ></p-columnFilter>
+                            </div>
+                        </th>
+                        <th>
+                            <div
+                                class="flex justify-content-between align-items-center"
+                            ></div>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-email>
+                    <tr>
+                        
+                        <td>
+                            {{ email.email }}
+                        </td>
+                        
+                        <td>
+                            <div class="flex align-items-center gap-2">
+                                <button
+                                    pButton
+                                    pRipple
+                                    type="button"
+                                    icon="pi pi-user-minus"
+                                    class="p-button-rounded p-button-sm p-button-info"
+                                    (click)="removeFromBlacklist(email.email)"
+                                >
+                                    <span class="ml-2">Whitelist</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8">No blacklisted emails found.</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="loadingbody">
+                    <tr>
+                        <td colspan="8">Loading blacklisted emails . Please wait.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

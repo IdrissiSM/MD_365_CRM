@@ -18,18 +18,17 @@ export class IncidentService {
    private basicData : number[] = [0,0,0,0];
    private stateDate : number[] = [0,0,0];
    private caseTypeData : number[] = [0,0,0];
-   private groupedIncident! : any[];
    public incidentsSubject  = new Subject<Incident[]>();
    public basicDataSubject  = new Subject<number[]>();
    public stateDateSubject  = new Subject<number[]>();
    public caseTypeDataSubject  = new Subject<number[]>();
-   public groupedIncidentSubject  = new Subject<any[]>();
    private errorMeassge!: string;
 
 
    private baseUrl : string = "https://localhost:7118/api/Incident/";
   constructor(private http : HttpClient) { }
-    async getIncidents(contactId : string){
+
+  async getIncidents(contactId : string){
       let isSuccess : boolean = false;
         await firstValueFrom(this.http.get<APIResponse>(`${this.baseUrl}${contactId}`))
             .then(value => {
@@ -53,28 +52,7 @@ export class IncidentService {
         }
   }
 
-    async GetGroupedByContactIncidents(){
-        let isSuccess : boolean = false;
-       await firstValueFrom(this.http.get<APIResponse>(`${this.baseUrl}GetGroupedByContactIncidents`))
-           .then(value => {
-               this.groupedIncident = value.result;
-               isSuccess = !isSuccess;
-               this.groupedIncidentSubject.next(this.groupedIncident);
-           })
-           .catch(reason => {
-               this.errorMeassge = reason.errorMeassge.errorMeassge[0];
-           });
-        if (isSuccess){
-            return Promise.resolve();
-        }
-        else {
-
-            return Promise.reject(this.errorMeassge);
-        }
-
-  }
-
-  getIncidentById(incidentId : string){
+    getIncidentById(incidentId : string){
       return this.http.get<APIResponse>(`${this.baseUrl}GetIncidentById/${incidentId}`);
     }
   CalculateBasicData(){

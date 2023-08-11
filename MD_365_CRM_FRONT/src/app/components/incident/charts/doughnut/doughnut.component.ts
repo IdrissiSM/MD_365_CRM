@@ -11,7 +11,6 @@ export class DoughnutComponent implements OnInit{
     data: any;
     options: any;
     temp: number[] = [];
-    isloading : boolean = true;
     constructor(private incidentService: IncidentService) {
     }
     async ngOnInit() {
@@ -20,14 +19,9 @@ export class DoughnutComponent implements OnInit{
 
 
         await firstValueFrom(this.incidentService.stateDateSubject).then(
-            value => {
-                this.temp = value;
-
-            }
+            value => { this.temp = value;}
 
         );
-
-        this.isloading = !this.isloading;
 
 
         this.data = {

@@ -1,5 +1,4 @@
 ﻿using MD_365_CRM.Models;
-using MD_365_CRM.Requests;
 
 namespace MD_365_CRM.Services.IServices
 {
@@ -8,6 +7,5 @@ namespace MD_365_CRM.Services.IServices
         Task<List<Incident>> GetAllIncidentsAsync();
         Task<List<Incident>> GetIncidentsAsync(Guid contactId);
         Task<Incident> GetIncidentByIdAsync(Guid incidentId);
-        Task<IEnumerable<GroupedIncidentsDTO>> GetGroupedByContactIncidentsAsync();
     }
 }

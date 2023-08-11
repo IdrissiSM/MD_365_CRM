@@ -13,8 +13,6 @@ export class BasicComponent implements OnInit{
 
     temp : number[] = [];
 
-    isLoading : boolean = true;
-
     constructor(private incidentService : IncidentService) {
 
     }
@@ -28,7 +26,6 @@ export class BasicComponent implements OnInit{
         this.incidentService.basicDataSubject.subscribe({
             next: value => {
                 value.forEach(v => this.temp.push(v));
-                this.isLoading = !this.isLoading;
             },
             error: err => {
                 console.log(err);

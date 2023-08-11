@@ -103,8 +103,6 @@ export class Incident {
      */
     public prioritycode: number | null;
 
-    public customerid_contact : string;
-
     constructor(
         incidentid : string,
         title : string,
@@ -123,8 +121,7 @@ export class Incident {
         routecase : boolean,
         prioritycode : number,
         _customerid_value : string,
-        casetypecode : number,
-        customerid_contact : string
+        casetypecode : number
     ) {
         this.incidentid = incidentid;
         this.title = title;
@@ -144,6 +141,5 @@ export class Incident {
         this.prioritycode = prioritycode;
         this._customerid_value = _customerid_value;
         this.casetypecode = casetypecode;
-        this.customerid_contact = customerid_contact
     }
 }

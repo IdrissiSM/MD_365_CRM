@@ -1,7 +1,3 @@
 <div class="card">
-    <p-chart *ngIf="!isLoading;else incidentLoading" type="bar" [data]="basicData" [options]="basicOptions"></p-chart>
+    <p-chart type="bar" [data]="basicData" [options]="basicOptions"></p-chart>
 </div>
-
-<ng-template #incidentLoading>
-    <p-skeleton  width="100%" height="15rem"></p-skeleton>
-</ng-template>

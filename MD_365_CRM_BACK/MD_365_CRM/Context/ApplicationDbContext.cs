@@ -10,5 +10,9 @@ namespace MD_365_CRM.Context
         {
 
         }
+
+        public DbSet<Otp> Otps { get; set; }
+        public DbSet<BlacklistedUser> BlacklistedUsers { get; set; }
+
     }
 }

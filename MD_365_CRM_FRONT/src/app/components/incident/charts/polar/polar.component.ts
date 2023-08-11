@@ -13,7 +13,6 @@ export class PolarComponent implements OnInit{
     options: any;
 
     temp : number[] = [];
-    isLoading : boolean = true;
 
     constructor(private incidentService:IncidentService) {
     }
@@ -28,9 +27,7 @@ export class PolarComponent implements OnInit{
             })
             .catch(reason => {
                 console.log(reason);
-            });
-
-        this.isLoading = !this.isLoading;
+            })
         this.data = {
             datasets: [
                 {

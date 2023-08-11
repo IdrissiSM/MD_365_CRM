@@ -17,21 +17,21 @@ namespace MD_365_CRM.Controllers
         {
             _productService = productService;
         }
-        [HttpGet("GetProducts/{contactId}")]
-        public async Task<IActionResult> GetProducts(Guid contactId)
+        [HttpGet("GetProducts")]
+        public async Task<IActionResult> GetProducts()
         {
             APIResponse response = new();
-            List<Product> products = await _productService.GetProducts(contactId); 
-            //if (products is null)
-            //{
-            //    response.httpStatusCode = HttpStatusCode.NotFound;
-            //    response.Success = false;
-            //    response.ErrorMessages = new List<string>()
-            //    {
-            //        "no product found"
-            //    };
-            //    return BadRequest(response);
-            //}
+            List<Product> products = await _productService.GetProducts(); 
+            if (products is null)
+            {
+                response.httpStatusCode = HttpStatusCode.NotFound;
+                response.Success = false;
+                response.ErrorMessages = new List<string>()
+                {
+                    "no product found"
+                };
+                return BadRequest(response);
+            }
             response.httpStatusCode = HttpStatusCode.OK;
             response.Success = true;
             response.Result = products;

@@ -4,7 +4,6 @@ import {
     HashLocationStrategy,
     LocationStrategy,
 } from '@angular/common';
-
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppLayoutModule } from './layout/app.layout.module';
@@ -31,19 +30,6 @@ import { DetailComponent } from './components/incident/detail/detail.component';
 import { BasicComponent } from './components/incident/charts/basic/basic.component';
 import { DoughnutComponent } from './components/incident/charts/doughnut/doughnut.component';
 import { PolarComponent } from './components/incident/charts/polar/polar.component';
-import { LoggedInGuard } from './guards/logged-in.guard';
-import { AuthGuard } from './guards/auth.guard';
-import { JWtAuthInterceptor } from './services/jwt-auth-interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { EmailVerificationComponent } from './components/email-verification/email-verification.component';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
-import { VerificationCodeComponent } from './components/verification-code/verification-code.component';
-import { AuthenticationService } from './services/Authentication.service';
-import { AppStateService } from './services/app-state.service';
-import { UsersComponent } from './components/users/users.component';
-import { UserDashboardComponent } from './components/dashboards/user-dashboard/user-dashboard.component';
-import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 @NgModule({
     declarations: [
@@ -58,13 +44,6 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
         BasicComponent,
         DoughnutComponent,
         PolarComponent,
-        EmailVerificationComponent,
-        LoginComponent,
-        RegisterComponent,
-        VerificationCodeComponent,
-        UsersComponent,
-        UserDashboardComponent,
-        ResetPasswordComponent,
     ],
     imports: [
         AppRoutingModule,
@@ -89,11 +68,6 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
         ConfirmationService,
         MessageService,
         DialogService,
-        AuthenticationService,
-        AppStateService,
-        LoggedInGuard,
-        AuthGuard,
-        { provide: HTTP_INTERCEPTORS, useClass: JWtAuthInterceptor, multi: true}
     ],
     bootstrap: [AppComponent],
 })

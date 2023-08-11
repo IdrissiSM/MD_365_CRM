@@ -1,5 +1,4 @@
-﻿using MD_365_CRM.CRM;
-using MD_365_CRM.Helpers;
+﻿using MD_365_CRM.Helpers;
 using MD_365_CRM.Models;
 using MD_365_CRM.Requests;
 using MD_365_CRM.Responses;
@@ -8,16 +7,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Security.Cryptography;
-using MimeKit;
-using MailKit.Net.Smtp;
-using MailKit.Security;
-using MD_365_CRM.Context;
-using Microsoft.EntityFrameworkCore;
 
 namespace MD_365_CRM.Services
 {
@@ -25,76 +17,48 @@ namespace MD_365_CRM.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly DynamicsCRM dynamicsCRM;
-        private readonly IConfiguration config;
-        private readonly ApplicationDbContext context;
-        private readonly IBlacklistedUserService _blacklistedUserService;
         private readonly JWT _jwt;
-        private readonly string baseUrl;
-
-
-        public AuthService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt, DynamicsCRM crmConfig, IConfiguration config, ApplicationDbContext context, IBlacklistedUserService blacklistedUserService)
+        public AuthService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            dynamicsCRM = crmConfig;
-            this.config = config;
-            this.context = context;
-            _blacklistedUserService = blacklistedUserService;
             _jwt = jwt.Value;
-            baseUrl = $"{config.GetValue<string>("DynamicsCrmSettings:Scope")}/api/data/v9.2";
         }
 
-        /* TODO: Add contact id to claims */
-        // TODO: Modify the registered user data in crm
         public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
         {
-            if (await _blacklistedUserService.IsUserBlacklisted(request.Email))
+            if( await _userManager.FindByEmailAsync(request.Email) is not null )
                 return new AuthResponse
                 {
-                    Message = "Registration Denied !",
-                    IsAuthenticated = false,
+                    Message = "Email is already registred !",
+                    IsAuthenticated= false,
                 };
-            if (await _userManager.FindByEmailAsync(request.Email) is not null)
+            if (await _userManager.FindByNameAsync(request.Username) is not null)
                 return new AuthResponse
                 {
-                    Message = "65498Xsa", //Email is already registred !
+                    Message = "Username is already registred !",
                     IsAuthenticated = false,
                 };
-
-            var contact = await GetContactByEmail(request.Email);
-
-            if (contact is null) return new AuthResponse
-            {
-                Message = "65269Lwd", // The registration process cannot proceed because the required resource has been deleted. Please contact an administrator for assistance
-                IsAuthenticated = false,
-            };
-
             User user = new()
             {
+                UserName = request.Username,
                 Email = request.Email,
                 Firstname = request.Firstname,
-                Lastname = request.Lastname,
-                Jobtitle = request.Jobtitle,
-                Gendercode = request.Gendercode,
-                Statecode = request.Statecode,
-                ContactId = contact.contactId,
-                UserName = request.Username
+                Lastname = request.Lastname
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
 
             if (!result.Succeeded)
             {
-                string errors = string.Empty;
-                foreach (var error in result.Errors)
+                string errors = String.Empty;
+                foreach(var error in result.Errors)
                 {
                     errors += $"{error.Description}\n";
                 }
                 return new AuthResponse
                 {
                     Message = errors,
-                    IsAuthenticated = false,
                 };
             }
 
@@ -109,34 +73,22 @@ namespace MD_365_CRM.Services
 
         public async Task<AuthResponse> LoginAsync(LoginRequest request)
         {
-            User user = await _userManager.FindByEmailAsync(request.Email);
-
+            var authResponse = new AuthResponse();
+            var user = await _userManager.FindByEmailAsync(request.Email);
             if (user is null || !await _userManager.CheckPasswordAsync(user, request.Password))
-                return new AuthResponse()
-                {
-                    Message = "Credentials error: The given combination of email and password does not exist",
-                    IsAuthenticated = false,
-                };
+            {
+                authResponse.Message= "Email or password is incorrect !";
+                return authResponse;
+            }
 
-            //if (!await _userManager.CheckPasswordAsync(user, request.Password))
-            //{
-            //    var errors = _userManager.PasswordValidators.Select(v => v.ValidateAsync(_userManager, user, request.Password).Result.Errors);
-
-            //    return new AuthResponse()
-            //    {
-            //        Message = "Credentials error: " + (errors.First().IsNullOrEmpty() ? "The given combination of email and password does not exist" : string.Join("\n", errors.SelectMany(e => e.Select(err => err.Description)))),
-            //        IsAuthenticated = false
-            //    };
-            //}
 
             var jwtSecurityToken = await CreateJwtToken(user);
             //var rolesList = await _userManager.GetRolesAsync(user);
 
-            return new AuthResponse()
-            {
-                IsAuthenticated = true,
-                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken)
-            };
+            authResponse.IsAuthenticated= true;
+            authResponse.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+
+            return authResponse;
         }
 
         public async Task<string> AddRoleAsync(AddRoleRequest request)
@@ -165,11 +117,10 @@ namespace MD_365_CRM.Services
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Email!),
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserName!),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Name, user.UserName!),
-                new Claim("uid", user.Id),
-                new Claim("contactid", user.ContactId.ToString())
+                new Claim(JwtRegisteredClaimNames.Email, user.Email!),
+                new Claim("uid", user.Id)
             }
             .Union(userClaims)
             .Union(roleClaims);
@@ -199,129 +150,5 @@ namespace MD_365_CRM.Services
             },
             };
         }
-
-        public async Task<Contact> GetContactByEmail(string email)
-        {
-            // get access token
-            string accessToken = await dynamicsCRM.GetAccessTokenAsync();
-            // Set xrm request params
-            var response = await dynamicsCRM.CrmRequest(
-                HttpMethod.Get,
-                accessToken,
-                $"{baseUrl}/contacts?$filter=emailaddress1 eq '{email}'");
-
-            var json = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<dynamic>(json);
-            List<Contact> contact = result!.value.ToObject<List<Contact>>();
-
-            Console.WriteLine(contact);
-            return contact.FirstOrDefault();
-        }
-
-        public async Task SendEmail(string email, string body)
-        {
-            Console.WriteLine($"Email: {config.GetValue<string>("EmailService:email")}");
-            var mail = new MimeMessage();
-            mail.From.Add(MailboxAddress.Parse(config.GetValue<string>("EmailService:email")));
-            mail.To.Add(MailboxAddress.Parse(email));
-            mail.Subject = "Email Confirmation";
-            mail.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = body };
-
-            using var smtp = new SmtpClient();
-            smtp.Connect(config.GetValue<string>("EmailService:host"), 587, SecureSocketOptions.StartTls);
-            smtp.AuthenticationMechanisms.Remove("XOAUTH2");
-            smtp.Authenticate(config.GetValue<string>("EmailService:email"), config.GetValue<string>("EmailService:password"));
-            await smtp.SendAsync(mail);
-            smtp.Disconnect(true);
-        }
-
-        public Otp IsOtpValid(string email, int otpValue)
-        {
-            Otp? otp = context.Otps.SingleOrDefault(otp => otp.Email == email);
-
-            Console.WriteLine($"{otp == null} || {otp.Value != otpValue} otp.Value: {otp.Value}, otpValue: {otpValue} || { (DateTime.Now - otp.CreationDate).TotalMinutes >= config.GetValue<int>("Otp:validFor") }");
-
-            if (otp == null || otp.Value != otpValue || (DateTime.Now - otp.CreationDate).TotalMinutes >= config.GetValue<int>("Otp:validFor")) return null;
-
-            return otp;
-        }
-
-        public int CreateOtp(string email)
-        {   // don't use this method unless you checked the authenticity of the email beforehand!
-            var otp = RandomNumberGenerator.GetInt32(111111, 1000000);
-            var outcasts = context.Otps.Where(otp => otp.Email == email);
-            context.Otps.RemoveRange(outcasts);
-            var secret = Guid.NewGuid().ToString("N");
-
-            context.Otps.Add(new Otp()
-            {
-                CreationDate = DateTime.Now,
-                Email = email,
-                Value = otp,
-                Secret = secret
-            });
-
-            return context.SaveChanges() > 0 ? otp: -1;
-        }
-
-        public int OtpValidFor() =>
-            config.GetValue<int>("Otp:validFor");
-
-        public async Task<AuthResponse> ResetPassword(ResetPasswordRequest request)
-        {
-            var passwordValidator = _userManager.PasswordValidators.First();
-
-            var identityResult = await passwordValidator.ValidateAsync(_userManager, null, request.Password);
-
-            if (!identityResult.Succeeded)
-                return new AuthResponse()
-                {
-                    IsAuthenticated = false,
-                    Message = identityResult.Errors.ToString()!
-                };
-
-            Contact? contact = await GetContactByEmail(request.Email);
-
-            User? user = await _userManager.FindByEmailAsync(request.Email);
-
-            if (contact is null || user is null || !IsSecretValid(request.Email, request.Secret))
-                return new AuthResponse()
-                {
-                    IsAuthenticated = false,
-                    Message = "It looks like either your account is no more, or the otp has expired"
-                };
-
-            var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
-
-            var result = await _userManager.ResetPasswordAsync(user, resetToken, request.Password);
-
-            if (result.Succeeded)
-            {
-                JwtSecurityToken jwt = await CreateJwtToken(user);
-
-                return new AuthResponse
-                {
-                    IsAuthenticated = true,
-                    Token = new JwtSecurityTokenHandler().WriteToken(jwt)
-                };
-            }
-
-            return new AuthResponse()
-            {
-                IsAuthenticated = false,
-                Message = "500"
-            };
-                
-        }
-
-        public bool IsSecretValid(string email, string secret)
-        {
-            Otp? otp = context.Otps.SingleOrDefault(otp => otp.Email == email);
-
-            if (otp == null || otp.Secret != secret || (DateTime.Now - otp.CreationDate).TotalMinutes >= config.GetValue<int>("Otp:validFor")) return false;
-
-            return true;
-        }
-
     }
 }

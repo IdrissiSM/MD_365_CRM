@@ -1,14 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MD_365_CRM.Requests
+﻿namespace MD_365_CRM.Requests
 {
     public class LoginRequest
     {
-        [EmailAddress]
-        [Required]
-        public string Email { get; set; }
-        [DataType(DataType.Password)]
-        [Required]
-        public string Password { get; set; }
+        public string Email { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
     }
 }

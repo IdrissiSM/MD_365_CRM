@@ -5,7 +5,7 @@
 namespace MD_365_CRM.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedRoles : Migration
+    public partial class seedRoles : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

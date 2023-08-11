@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MD_365_CRM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230808092407_SeedRoles")]
-    partial class SeedRoles
+    [Migration("20230811095715_initialCreate")]
+    partial class initialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -91,8 +91,8 @@ namespace MD_365_CRM.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("Gendercode")
-                        .HasColumnType("bit");
+                    b.Property<int?>("Gendercode")
+                        .HasColumnType("int");
 
                     b.Property<string>("Jobtitle")
                         .HasColumnType("nvarchar(max)");
@@ -127,8 +127,8 @@ namespace MD_365_CRM.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("Statecode")
-                        .HasColumnType("bit");
+                    b.Property<int?>("Statecode")
+                        .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");

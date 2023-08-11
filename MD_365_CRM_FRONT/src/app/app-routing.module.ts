@@ -16,6 +16,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { LoggedInGuard } from './guards/logged-in.guard';
 import { UsersComponent } from './components/users/users.component';
 import { AdminGuard } from './guards/admin.guard';
+import { UserDashboardComponent } from './components/dashboards/user-dashboard/user-dashboard.component';
 
 const routes: Routes = [
     {
@@ -29,11 +30,16 @@ const routes: Routes = [
             { path: 'product-details', component: ProductDetailsComponent },
             { path: 'incidents', component: IncidentComponent },
             { path: 'incidents/detail/:id', component: DetailComponent },
-            { path: 'users', component: UsersComponent, canActivate: [AdminGuard] },
+            {
+                path: 'users',
+                component: UsersComponent,
+                canActivate: [AdminGuard],
+            },
+            { path: 'dashboard', component: UserDashboardComponent },
         ],
     },
     {
-        path : 'login',
+        path: 'login',
         component: LoginComponent,
         canActivate: [LoggedInGuard],
     },
@@ -51,7 +57,7 @@ const routes: Routes = [
         path: 'verification-code',
         component: VerificationCodeComponent,
         canActivate: [LoggedInGuard],
-    }
+    },
 ];
 @NgModule({
     imports: [RouterModule.forRoot(routes)],

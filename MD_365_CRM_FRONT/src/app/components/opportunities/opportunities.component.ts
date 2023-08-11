@@ -1,3 +1,4 @@
+import { AppStateService } from 'src/app/services/app-state.service';
 import { OpportunityService } from './../../services/opportunity.service';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -29,6 +30,8 @@ export class OpportunitiesComponent {
 
     loading: boolean = true;
 
+    contactid?: string;
+
     repeat(count: number): number[] {
         return Array(count).fill(0);
     }
@@ -40,10 +43,12 @@ export class OpportunitiesComponent {
         private confirmationService: ConfirmationService,
         private messageService: MessageService,
         private dialogService: DialogService,
+        private appStateService: AppStateService,
         private router: Router
     ) {}
 
     ngOnInit() {
+        this.contactid = this.appStateService.authState.contactid;
         this.getOpportunities();
     }
 
@@ -52,7 +57,7 @@ export class OpportunitiesComponent {
         this.opportunityService
             .getAllOpportunities()
             .subscribe((response: APIResponse) => {
-                console.log(response);
+                // console.log(response);
                 if (response.success) {
                     this.opportunities = response.result;
                     this.loading = false;
@@ -212,7 +217,7 @@ export class OpportunitiesComponent {
         this.months = months;
         this.estimatedRevenue = estimatedRevenue;
         this.actualRevenue = actualRevenue;
-        console.log(this.months, this.estimatedRevenue, this.actualRevenue);
+        // console.log(this.months, this.estimatedRevenue, this.actualRevenue);
     }
 
     revenueChartData!: any;

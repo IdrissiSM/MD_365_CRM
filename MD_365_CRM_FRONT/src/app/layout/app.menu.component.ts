@@ -9,22 +9,25 @@ import { AppStateService } from '../services/app-state.service';
 })
 export class AppMenuComponent implements OnInit {
     model: any[] = [];
-    role = ""
+    role = '';
 
-    constructor(public layoutService: LayoutService, private appStateService: AppStateService) {
-        this.role = this.appStateService.authState.roles
-        console.log(this.role === "Admin")
+    constructor(
+        public layoutService: LayoutService,
+        private appStateService: AppStateService
+    ) {
+        this.role = this.appStateService.authState.roles;
+        console.log(this.role === 'Admin');
     }
 
     ngOnInit() {
         this.model = [
             {
-                label: 'Home',
+                label: 'Dashboard',
                 items: [
                     {
                         label: 'Dashboard',
                         icon: 'pi pi-fw pi-home',
-                        routerLink: ['/home'],
+                        routerLink: ['/dashboard'],
                     },
                 ],
             },
@@ -58,16 +61,18 @@ export class AppMenuComponent implements OnInit {
                     },
                 ],
             },
-            this.role === "Admin" ?{
-                label: 'Users',
-                items: [
-                    {
-                        label: 'Users',
-                        icon: 'pi pi-fw pi-users',
-                        routerLink: ['/users'],
-                    },
-                ],
-            }: null,
+            this.role === 'Admin'
+                ? {
+                      label: 'Users',
+                      items: [
+                          {
+                              label: 'Users',
+                              icon: 'pi pi-fw pi-users',
+                              routerLink: ['/users'],
+                          },
+                      ],
+                  }
+                : null,
         ];
     }
 }

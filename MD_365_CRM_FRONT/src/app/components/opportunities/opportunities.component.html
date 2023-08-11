@@ -265,31 +265,7 @@
                     </tr>
                     <ng-container *ngIf="loading">
                         <tr *ngFor="let i of repeat(10)">
-                            <td class="px-2 py-3">
-                                <p-skeleton></p-skeleton>
-                            </td>
-                            <td class="px-2 py-3">
-                                <p-skeleton></p-skeleton>
-                            </td>
-                            <td class="px-2 py-3">
-                                <p-skeleton></p-skeleton>
-                            </td>
-                            <td class="px-2 py-3">
-                                <p-skeleton></p-skeleton>
-                            </td>
-                            <td class="px-2 py-3">
-                                <p-skeleton></p-skeleton>
-                            </td>
-                            <td class="px-2 py-3">
-                                <p-skeleton></p-skeleton>
-                            </td>
-                            <td class="px-2 py-3">
-                                <p-skeleton></p-skeleton>
-                            </td>
-                            <td class="px-2 py-3">
-                                <p-skeleton></p-skeleton>
-                            </td>
-                            <td class="px-2 py-3">
+                            <td class="px-2 py-3" *ngFor="let i of repeat(9)">
                                 <p-skeleton></p-skeleton>
                             </td>
                         </tr>

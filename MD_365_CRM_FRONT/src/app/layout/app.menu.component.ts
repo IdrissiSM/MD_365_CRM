@@ -1,6 +1,7 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
+import { AppStateService } from '../services/app-state.service';
 
 @Component({
     selector: 'app-menu',
@@ -8,18 +9,25 @@ import { LayoutService } from './service/app.layout.service';
 })
 export class AppMenuComponent implements OnInit {
     model: any[] = [];
+    role = '';
 
-    constructor(public layoutService: LayoutService) {}
+    constructor(
+        public layoutService: LayoutService,
+        private appStateService: AppStateService
+    ) {
+        this.role = this.appStateService.authState.roles;
+        console.log(this.role === 'Admin');
+    }
 
     ngOnInit() {
         this.model = [
             {
-                label: 'Home',
+                label: 'Dashboard',
                 items: [
                     {
                         label: 'Dashboard',
                         icon: 'pi pi-fw pi-home',
-                        routerLink: ['/home'],
+                        routerLink: ['/dashboard'],
                     },
                 ],
             },
@@ -53,16 +61,18 @@ export class AppMenuComponent implements OnInit {
                     },
                 ],
             },
-            {
-                label: 'Users',
-                items: [
-                    {
-                        label: 'Users',
-                        icon: 'pi pi-fw pi-users',
-                        routerLink: ['/users'],
-                    },
-                ],
-            },
+            this.role === 'Admin'
+                ? {
+                      label: 'Users',
+                      items: [
+                          {
+                              label: 'Users',
+                              icon: 'pi pi-fw pi-users',
+                              routerLink: ['/users'],
+                          },
+                      ],
+                  }
+                : null,
         ];
     }
 }

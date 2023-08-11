@@ -21,9 +21,9 @@ namespace MD_365_CRM.Requests
 
         public string Jobtitle { get; set; }
 
-        public int? Gendercode { get; set; }
+        public int Gendercode { get; set; }
 
-        public int? Statecode { get; set; }
+        public int Statecode { get; set; }
 
         [Required]
         public string Secret { get; set; }

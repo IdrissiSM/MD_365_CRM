@@ -18,6 +18,8 @@ import { UsersComponent } from './components/users/users.component';
 import { AdminGuard } from './guards/admin.guard';
 import { UserDashboardComponent } from './components/dashboards/user-dashboard/user-dashboard.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import {AdminDashboardComponent} from "./components/dashboards/admin-dashboard/admin-dashboard.component";
+
 
 const routes: Routes = [
     {
@@ -37,6 +39,7 @@ const routes: Routes = [
                 canActivate: [AdminGuard],
             },
             { path: 'dashboard', component: UserDashboardComponent },
+            {path: 'admin-dashboard' ,component: AdminDashboardComponent}
         ],
     },
     {

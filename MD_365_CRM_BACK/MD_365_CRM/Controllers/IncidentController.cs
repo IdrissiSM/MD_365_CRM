@@ -40,6 +40,18 @@ namespace MD_365_CRM.Controllers
             return Ok(_response);
         }
 
+        [HttpGet("GetGroupedByContactIncidents")]
+        public async Task<ActionResult<APIResponse>> GetGroupedByContactIncidents()
+        {
+            IEnumerable<Requests.GroupedIncidentsDTO> groupedIncidents = await _incidentService.GetGroupedByContactIncidentsAsync();
+
+            _response.httpStatusCode = HttpStatusCode.OK;
+            _response.Result = groupedIncidents;
+
+            return Ok(_response);
+        }
+
+
         [HttpGet("GetIncidentById/{incidentId:Guid}")]
         public async Task<ActionResult<APIResponse>> GetIncidentById(Guid incidentId)
         {

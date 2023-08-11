@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using MD_365_CRM.CRM;
 using MD_365_CRM.Models;
+using MD_365_CRM.Responses;
 using MD_365_CRM.Services.IServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,13 +14,15 @@ namespace MD_365_CRM.Services
     {
         private readonly DynamicsCRM _dynamicsCRM;
         private readonly UserManager<User> _userManager;
+        private readonly IOpportunityService _opportunityService;
         private string _baseUrl;
 
-        public ProductService(DynamicsCRM dynamicsCRM, IConfiguration configuration, UserManager<User> userManager)
+        public ProductService(DynamicsCRM dynamicsCRM, IConfiguration configuration, UserManager<User> userManager, IOpportunityService opportunityService)
         {
             _dynamicsCRM = dynamicsCRM;
             _baseUrl = $"{configuration.GetValue<string>("DynamicsCrmSettings:Scope")}api/data/v9.2";
             _userManager = userManager;
+            _opportunityService = opportunityService;
         }
 
         public async Task<List<Product>> GetProducts(Guid contactId)
@@ -97,5 +100,33 @@ namespace MD_365_CRM.Services
                 return null;
             }
         }
+
+        public async Task<IEnumerable<BestSellingProducts>> GetBestSellingProducts()
+        {
+            {
+                List<Opportunity> opportunities = await this._opportunityService.GetOpportunities();
+                List<ProductOpportunity> productOpportunities = new List<ProductOpportunity>();
+
+                opportunities.ForEach(o =>
+                {
+                    o.Product_opportunities.ForEach(x =>
+                    {
+                        productOpportunities.Add(x);
+                    });
+                });
+
+                IEnumerable<BestSellingProducts> bestSellingProducts = productOpportunities.GroupBy(o => o.ProductName)
+                    .Select(group => new BestSellingProducts()
+                    {
+                        ProductName = group.Key,
+                        Quantity = group.Select(x => x.Quantity).Sum(),
+                        PricePerUnit = group.First(x => true).PricePerUnit
+                    })
+                    .OrderByDescending(p => p.Quantity).Take(6);
+                return bestSellingProducts;
+            }
+        }
+
+      
     }
 }

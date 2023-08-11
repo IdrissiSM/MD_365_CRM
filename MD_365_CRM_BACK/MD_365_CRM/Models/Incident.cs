@@ -1,9 +1,11 @@
-﻿namespace MD_365_CRM.Models
+﻿using MD_365_CRM.Requests;
+
+namespace MD_365_CRM.Models
 {
     public class Incident
     {
         public Guid incidentid { get; set; }
-        public string title { get; set; }
+        public string? title { get; set; }
         /// <summary>
         /// Sélectionnez la phase de l'incident dans le processus de résolution de l'incident.
         /// 0 => Identify, 1 => Research, 2 => Resolve
@@ -73,6 +75,7 @@
         /// 1 => High, 2 => Normal, 3 => Low
         /// </summary>
         public Int32? prioritycode { get; set; }
+        public ContactDTO? customerid_contact { get; set; }
 
         public static string Properties()
         {

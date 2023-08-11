@@ -202,4 +202,7 @@ export class IncidentComponent implements OnInit {
             .navigate(['/incidents', 'detail', incidentId])
             .catch((reason) => {});
     }
+    repeat(count: number): number[] {
+        return Array(count).fill(0);
+    }
 }

@@ -79,8 +79,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IOpportunityService, OpportunityService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IIncidentService, IncidentService>();
-builder.Services.AddScoped<IBlacklistedUserService, BlacklistedUserService>();
-builder.Services.AddScoped<IUsersService, UsersService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IStatsService, StatsService>();
 builder.Services.AddScoped<DynamicsCRM>();
 
 builder.Services.AddAuthentication(options =>
@@ -108,7 +108,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowOrigin", builder =>
     {
-        builder.AllowAnyOrigin()
+        builder.WithOrigins("https://localhost:44351", "http://localhost:4200")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });

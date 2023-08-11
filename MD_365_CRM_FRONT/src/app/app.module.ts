@@ -4,7 +4,6 @@ import {
     HashLocationStrategy,
     LocationStrategy,
 } from '@angular/common';
-
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppLayoutModule } from './layout/app.layout.module';
@@ -31,19 +30,14 @@ import { DetailComponent } from './components/incident/detail/detail.component';
 import { BasicComponent } from './components/incident/charts/basic/basic.component';
 import { DoughnutComponent } from './components/incident/charts/doughnut/doughnut.component';
 import { PolarComponent } from './components/incident/charts/polar/polar.component';
-import { LoggedInGuard } from './guards/logged-in.guard';
-import { AuthGuard } from './guards/auth.guard';
-import { JWtAuthInterceptor } from './services/jwt-auth-interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { EmailVerificationComponent } from './components/email-verification/email-verification.component';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
-import { VerificationCodeComponent } from './components/verification-code/verification-code.component';
-import { AuthenticationService } from './services/Authentication.service';
-import { AppStateService } from './services/app-state.service';
-import { UsersComponent } from './components/users/users.component';
-import { UserDashboardComponent } from './components/dashboards/user-dashboard/user-dashboard.component';
-import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { AdminDashboardComponent } from './components/dashboards/admin-dashboard/admin-dashboard.component';
+import {MenuModule} from "primeng/menu";
+import {AvatarModule} from "primeng/avatar";
+import {BasicComponent2} from "./components/dashboards/admin-dashboard/charts/basic2/basic.component";
+import { VerticalBarComponent } from './components/dashboards/admin-dashboard/charts/vertical-bar/vertical-bar.component';
+import { BubbleComponent } from './components/dashboards/admin-dashboard/charts/bubble/bubble.component';
+import {NgChartsModule} from "ng2-charts";
+
 
 @NgModule({
     declarations: [
@@ -58,13 +52,10 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
         BasicComponent,
         DoughnutComponent,
         PolarComponent,
-        EmailVerificationComponent,
-        LoginComponent,
-        RegisterComponent,
-        VerificationCodeComponent,
-        UsersComponent,
-        UserDashboardComponent,
-        ResetPasswordComponent,
+        AdminDashboardComponent,
+        BasicComponent2,
+        VerticalBarComponent,
+        BubbleComponent
     ],
     imports: [
         AppRoutingModule,
@@ -76,6 +67,9 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
         FormsModule,
         ReactiveFormsModule,
         CommonModule,
+        MenuModule,
+        AvatarModule,
+        NgChartsModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
@@ -89,11 +83,6 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
         ConfirmationService,
         MessageService,
         DialogService,
-        AuthenticationService,
-        AppStateService,
-        LoggedInGuard,
-        AuthGuard,
-        { provide: HTTP_INTERCEPTORS, useClass: JWtAuthInterceptor, multi: true}
     ],
     bootstrap: [AppComponent],
 })

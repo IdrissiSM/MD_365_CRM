@@ -3,8 +3,4 @@ export interface User {
   firstname: string;
   lastname: string;
   email: string;
-  jobtitle: string;
-  userName: string;
-  gendercode: number;
-  statecode: number;
 }

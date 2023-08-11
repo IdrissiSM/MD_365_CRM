@@ -1,5 +1,5 @@
 {
-  "name": "md-365-sales",
+  "name": "sakai-ng",
   "version": "15.0.0",
   "scripts": {
     "ng": "ng",
@@ -20,8 +20,9 @@
     "@angular/platform-browser": "^15.1.0",
     "@angular/platform-browser-dynamic": "^15.1.0",
     "@angular/router": "^15.1.0",
-    "chart.js": "^3.3.2",
+    "chart.js": "^3.9.1",
     "jwt-decode": "^3.1.2",
+    "ng2-charts": "4.0",
     "primeflex": "^3.2.1",
     "primeicons": "^6.0.1",
     "primeng": "15.1.1",

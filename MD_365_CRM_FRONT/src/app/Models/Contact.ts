@@ -7,4 +7,5 @@ export interface Contact {
   jobtitle: string;
   gendercode: number;
   statuscode: number;
+  secret: string
 }

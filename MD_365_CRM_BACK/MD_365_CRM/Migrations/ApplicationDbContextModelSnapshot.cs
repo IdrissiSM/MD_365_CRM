@@ -54,6 +54,10 @@ namespace MD_365_CRM.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Secret")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Value")
                         .HasColumnType("int");
 

@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AppStateService } from './app-state.service';
-import { Login } from '../Models/login';
-import { Register } from '../Models/register';
+import { Login } from '../Models/LoginRequest';
+import { Register } from '../Models/RegisterRequest';
 import { AuthResponse } from '../Models/AuthResponse';
 import { Observable } from 'rxjs';
-import { VerifyEmail } from '../Models/VerifyEmail';
-import { ConfirmEmail } from '../Models/ConfirmEmail';
+import { VerifyEmail } from '../Models/EmailVerificationRequest';
+import { ConfirmEmail } from '../Models/EmailConfirmationRequest';
 import { Contact } from '../Models/Contact';
+import { ResetPassword } from '../Models/ResetPasswordRequest';
 
 @Injectable({
   providedIn: 'root',
@@ -32,5 +33,9 @@ export class AuthenticationService {
 
   emailConfirmation(confirmEmailRequest: ConfirmEmail): Observable<Contact | null> {
     return this.http.post<Contact | null>(`${this.apiUrl}/Auth/email_confirmation`, confirmEmailRequest);
+  }
+
+  resetPassword(resetPasswordRequest: ResetPassword): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/Auth/reset_password`, resetPasswordRequest);
   }
 }

@@ -7,4 +7,5 @@ export interface Register {
   jobtitle: string,
   gendercode: number,
   statecode: number, // always true
+  secret: string
 }

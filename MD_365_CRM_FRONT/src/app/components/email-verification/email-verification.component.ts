@@ -15,6 +15,8 @@ export class EmailVerificationComponent implements OnInit {
 
   loading =false;
 
+  verificationFailedMessage = "";
+
   constructor(private route: ActivatedRoute, private auth: AuthenticationService, private router: Router, private appState: AppStateService) {
 
     this.verificationForm = new FormGroup({
@@ -23,8 +25,9 @@ export class EmailVerificationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.appState.registrationStep != 1) {
+    if(this.appState.registrationStep != 1 && this.appState.resetPasswordStep != 1) {
       this.appState.registrationStep = -1;
+      this.appState.resetPasswordStep = -1;
       this.router.navigate(['']);
     }
   }
@@ -42,11 +45,14 @@ export class EmailVerificationComponent implements OnInit {
     ).subscribe(
       () => {
         console.log("verification email sent successfully!")
-        this.appState.registrationStep = 2;
+        if(this.appState.registrationStep == 1) this.appState.registrationStep = 2;
+        if(this.appState.resetPasswordStep == 1) this.appState.resetPasswordStep = 2;
         this.router.navigate(['verification-code'], { queryParams: { email: this.verificationForm.get('email')!.value } });
       },
       (error) => {
-        console.log(error);
+        this.verificationFailedMessage = error.error.message.length > 85 ? error.error.message.substring(0, 73) + "..." : error.error.message;
+        console.error('Error occurred while verifying email:', error);
+        this.loading = false;
       }
     )
   }

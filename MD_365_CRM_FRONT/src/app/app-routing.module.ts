@@ -17,6 +17,7 @@ import { LoggedInGuard } from './guards/logged-in.guard';
 import { UsersComponent } from './components/users/users.component';
 import { AdminGuard } from './guards/admin.guard';
 import { UserDashboardComponent } from './components/dashboards/user-dashboard/user-dashboard.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 const routes: Routes = [
     {
@@ -56,6 +57,11 @@ const routes: Routes = [
     {
         path: 'verification-code',
         component: VerificationCodeComponent,
+        canActivate: [LoggedInGuard],
+    },
+    {
+        path: 'reset-password',
+        component: ResetPasswordComponent,
         canActivate: [LoggedInGuard],
     },
 ];

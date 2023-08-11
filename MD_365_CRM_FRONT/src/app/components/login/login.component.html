@@ -1,4 +1,4 @@
-<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+<div class="surface-ground flex align-items-center justify-content-center min-h-full min-w-full overflow-hidden">
   <div class="flex flex-column align-items-center justify-content-center">
 
     <img src="assets/images/dynamics-365-logo-trans.png" alt="Dynamics 365 Logo" class="mb-5 w-6rem flex-shrink-0">
@@ -16,9 +16,10 @@
           <input id="email1" formControlName="email" type="text" placeholder="Email address" pInputText
             class="w-full md:w-30rem mb-5" style="padding:1rem">
 
-          <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
-          <p-password id="password1" formControlName="password" placeholder="Password" [toggleMask]="true"
-            styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
+          <label for="password" class="block text-900 font-medium text-xl mb-2">Password</label>
+          <p-password id="password" formControlName="password" placeholder="Password" [toggleMask]="true"
+            styleClass="w-full mb-2" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
+          <small id="password-help" class="block text-red-600 block mb-5 mx-2">{{loginFailedMessage}}</small>
 
           <div class="flex align-items-center justify-content-between mb-5 gap-5">
             <div class="flex align-items-center">
@@ -26,11 +27,11 @@
               <label for="rememberme1">Remember me</label>
             </div>
             <a class="font-medium no-underline ml-2 text-right cursor-pointer"
-              style="color: var(--primary-color)">Forgot password?</a>
+              style="color: var(--primary-color)" routerLink="/email-verification" (click)="InitializePasswordReset()">Forgot password?</a>
           </div>
-          <button pButton pRipple label="Sign In" type="submit" [disabled]="!loginForm.valid" class="w-full p-3 text-xl {{!loginForm.valid ? 'cursor-invalid' : ''}}"></button>
+          <button pButton pRipple label="Sign In" type="submit" [loading]="loading" [disabled]="!loginForm.valid || loading" class="w-full p-3 text-xl {{!loginForm.valid ? 'cursor-invalid' : ''}}"></button>
         </form>
-        <div class="text-center mt-5 mb-5">
+        <div class="text-center mt-5 mb-3">
           <a class="font-medium cursor-pointer text-right hover:text-" style="color: var(--primary-color)"
             routerLink="/email-verification" (click)="InitializeRegistration()">Create an account now</a>
         </div>

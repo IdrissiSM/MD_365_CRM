@@ -43,6 +43,7 @@ import { AuthenticationService } from './services/Authentication.service';
 import { AppStateService } from './services/app-state.service';
 import { UsersComponent } from './components/users/users.component';
 import { UserDashboardComponent } from './components/dashboards/user-dashboard/user-dashboard.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 @NgModule({
     declarations: [
@@ -63,6 +64,7 @@ import { UserDashboardComponent } from './components/dashboards/user-dashboard/u
         VerificationCodeComponent,
         UsersComponent,
         UserDashboardComponent,
+        ResetPasswordComponent,
     ],
     imports: [
         AppRoutingModule,

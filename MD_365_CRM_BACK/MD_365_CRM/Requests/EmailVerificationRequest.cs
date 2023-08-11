@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MD_365_CRM.Models
+namespace MD_365_CRM.Requests
 {
-    public class EmailVerification
+    public class EmailVerificationRequest
     {
         [Required]
         [EmailAddress]

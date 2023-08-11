@@ -39,11 +39,12 @@ export class VerificationCodeComponent implements OnInit{
 
 ngOnInit(): void {
   this.route.queryParams.subscribe( params => {
-      if(params && params['email'] && this.appState.registrationStep == 2) {
+      if(params && params['email'] && (this.appState.registrationStep == 2 || this.appState.resetPasswordStep == 2)) {
         this.email = params['email'];
       } else {
         console.log("no right was given to you to access this page");
         this.appState.registrationStep = -1;
+        this.appState.resetPasswordStep = -1;
         this.router.navigate(['']);
       }
     }
@@ -74,14 +75,14 @@ ngOnInit(): void {
 
   onPaste(event: ClipboardEvent) {
     event.preventDefault();
-    console.log("oncopy here!")
+    // console.log("oncopy here!")
     const clipboardData = event.clipboardData;
     if (!clipboardData) {
       return;
     }
 
     const copiedValue = clipboardData.getData('text')
-    console.log(`copied data: ${copiedValue}`);
+    // console.log(`copied data: ${copiedValue}`);
     if (!copiedValue) {
       return;
     }
@@ -90,9 +91,9 @@ ngOnInit(): void {
     const numbersOnly = copiedValue.replace(/\D/g, '');
     const numberArray = numbersOnly.split('').slice(0, 6); // Take up to 6 numbers
 
-    console.log(`number array: ${numberArray}`)
+    // console.log(`number array: ${numberArray}`)
 
-    console.log(`resulting array: ${numberArray}`)
+    // console.log(`resulting array: ${numberArray}`)
 
     const inputFields: {[key: number]: (num: number) => void} = {
       1: (num) => this.verificationForm.get('input1')!.setValue(num),
@@ -133,6 +134,8 @@ ngOnInit(): void {
     if(!this.verificationForm.valid)
       return;
 
+    this.loading = true;
+
     this.auth.emailConfirmation(
       {
         email: this.email,
@@ -143,17 +146,18 @@ ngOnInit(): void {
         if(contact == null) {
           console.log("your otp has expired!");
           this.router.navigate(['email-verification']);
-          this.appState.registrationStep = 2;
+          this.appState.registrationStep == 2 ?this.appState.registrationStep = 1: this.appState.resetPasswordStep = 1;
           return
         }
         console.log("verification complete!");
-        this.appState.registrationStep = 3;
         this.appState.contact = contact;
-        console.log(contact);
-        this.router.navigate(['register']);
+
+        this.appState.registrationStep == 2? this.appState.registrationStep = 3 : this.appState.resetPasswordStep = 3;
+        // console.log(contact);
+        this.appState.registrationStep == 3? this.router.navigate(['register']) : this.router.navigate(['reset-password']);
       },
       (error) => {
-        console.log("something went wrong while verifying your codes"+error);
+        console.log("something went wrong while verifying your email"+error);
       }
     )
   }

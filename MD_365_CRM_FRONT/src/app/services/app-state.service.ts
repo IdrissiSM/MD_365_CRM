@@ -12,6 +12,7 @@ export class AppStateService {
 
   authState!: any;
   registrationStep: number = -1;
+  resetPasswordStep: number = -1;
   contact!: Contact;
 
   getAuthState() {
@@ -30,10 +31,11 @@ export class AppStateService {
     this.authState = {
       isAuthenticated: true,
       uid: decodedJWT.uid,
-      username: decodedJWT.sub,
+      email: decodedJWT.sub,
       roles: decodedJWT.roles,
       contactid: decodedJWT.contactid,
       token: token,
+      contactId: decodedJWT.contactid,
       expiresOn: new Date(decodedJWT.exp * 1000),
     };
     localStorage.removeItem('authState');
@@ -45,10 +47,11 @@ export class AppStateService {
     this.authState = {
       isAuthenticated: true,
       uid: decodedJWT.uid,
-      username: decodedJWT.sub,
+      email: decodedJWT.sub,
       roles: decodedJWT.roles,
       contactid: decodedJWT.contactid,
       token: token,
+      contactId: decodedJWT.contactid,
       expiresOn: new Date(decodedJWT.exp * 1000),
     };
     sessionStorage.removeItem('authState');

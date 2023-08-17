@@ -8,6 +8,7 @@ import { Contact } from '../Models/Contact';
 export class AppStateService {
   constructor() {
     this.getAuthState();
+    this.handleInstallApp();
   }
 
   authState!: any;
@@ -64,5 +65,16 @@ export class AppStateService {
     if(localStorage.getItem('authState'))
       localStorage.removeItem('authState');
     else sessionStorage.removeItem('authState');
+  }
+
+  displayInstall: boolean = false;
+  deferredPrompt: any;
+  handleInstallApp() {
+      this.displayInstall = false;
+      window.addEventListener('beforeinstallprompt', (e: Event) => {
+          e.preventDefault();
+          this.deferredPrompt = e;
+          this.displayInstall = true;
+      });
   }
 }

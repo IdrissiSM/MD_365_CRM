@@ -17,13 +17,14 @@ export class AppTopBarComponent {
 
     @ViewChild('topbarmenu') menu!: ElementRef;
 
+    
+    displayInstall = false
     constructor(
-        public layoutService: LayoutService,
-        private appState: AppStateService,
-        private router: Router,
-        private elementRef: ElementRef
-    ) {
-        this.handleInstallApp();
+      public layoutService: LayoutService,
+      private appState: AppStateService,
+      private appStateService: AppStateService,
+      ) {
+      this.displayInstall = this.appStateService.displayInstall
     }
 
     signOut() {
@@ -31,28 +32,28 @@ export class AppTopBarComponent {
         location.reload();
     }
 
-    displayInstall: boolean = false;
-    deferredPrompt: any;
-    handleInstallApp() {
-        this.displayInstall = false;
-        window.addEventListener('beforeinstallprompt', (e: Event) => {
-            e.preventDefault();
-            this.deferredPrompt = e;
-            this.displayInstall = true;
-        });
-    }
+    // displayInstall: boolean = false;
+    // deferredPrompt: any;
+    // handleInstallApp() {
+    //     this.displayInstall = false;
+    //     window.addEventListener('beforeinstallprompt', (e: Event) => {
+    //         e.preventDefault();
+    //         this.deferredPrompt = e;
+    //         this.displayInstall = true;
+    //     });
+    // }
 
     installApp() {
         console.log('tst');
-        this.displayInstall = false;
-        this.deferredPrompt?.prompt();
-        this.deferredPrompt?.userChoice.then((choiceResult: any) => {
-            if (choiceResult.outcome === 'accepted') {
+        this.appStateService.deferredPrompt?.prompt();
+        this.appStateService.deferredPrompt?.userChoice.then((choiceResult: any) => {
+          if (choiceResult.outcome === 'accepted') {
+              this.displayInstall = false;
                 console.log('User accepted the A2HS prompt');
             } else {
                 console.log('User dismissed the A2HS prompt');
             }
-            this.deferredPrompt = null;
+            this.appStateService.deferredPrompt = null;
         });
     }
 }

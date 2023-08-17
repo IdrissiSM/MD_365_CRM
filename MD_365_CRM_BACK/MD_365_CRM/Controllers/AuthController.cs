@@ -120,7 +120,7 @@ namespace MD_365_CRM.Controllers
         }
 
         [HttpPost("email_verification")]
-        [ProducesResponseType(200, Type = typeof(void))]
+        [ProducesResponseType(200, Type = typeof(EmailVerificationResponse))]
         public async Task<IActionResult> EmailVerification([FromBody] EmailVerificationRequest emailVerification)
         {
 
@@ -136,9 +136,25 @@ namespace MD_365_CRM.Controllers
                 });
             }
 
+            if(emailVerification.Registering && _authService.UserExists(emailVerification.Email))
+                return BadRequest(new EmailVerificationResponse()
+                {
+                    Message = "There is already an account with the given email",
+                    IsEligible = false,
+                    HasAccount = true,
+                });
+
+            if(!emailVerification.Registering && !_authService.UserExists(emailVerification.Email))
+                return BadRequest(new EmailVerificationResponse()
+                {
+                    Message = "There is no account with such an email.",
+                    IsEligible = false,
+                    HasAccount = false,
+                });
+
             Contact contact = await _authService.GetContactByEmail(emailVerification.Email);
 
-            if (contact is null)
+            if (contact is null || _authService.IsUserBlackListed(emailVerification.Email))
                 return StatusCode(403, new EmailVerificationResponse()
                 {
                     Message = "The provided email does not meet the eligibility criteria for creating an account.",
@@ -181,6 +197,8 @@ namespace MD_365_CRM.Controllers
 
         }
 
+  
+        
         [HttpPost("email_confirmation")]
         [ProducesResponseType(200, Type = typeof(Contact))]
         public async Task<IActionResult> EmailConfirmation([FromBody] EmailConfirmationRequest emailConfirmation)
@@ -198,24 +216,32 @@ namespace MD_365_CRM.Controllers
             }
 
             if (emailConfirmation.Otp < 111111 || emailConfirmation.Otp > 999999)
-            {
-                ModelState.AddModelError("", "The 'otp' field must be a value between 111111 and 999999.");
-                return StatusCode(400, ModelState);
-            }
+                return BadRequest(new AuthResponse() {
+                    Message = "The 'otp' field must be a value between 111111 and 999999.",
+                    IsAuthenticated = false
+                });
 
             Contact contact = await _authService.GetContactByEmail(emailConfirmation.Email);
 
             if (contact == null)
-            {
-                ModelState.AddModelError("", "The registration process cannot proceed because the required resource has been deleted. Please contact an administrator for assistance");
-                return StatusCode(500, ModelState);
-            }
+                return BadRequest(new AuthResponse()
+                {
+                    Message = "The registration process cannot proceed because the required resource has been deleted. Please contact an administrator for assistance",
+                    IsAuthenticated = false
+                });
+
+            //if (_authService.OtpExpired(emailConfirmation.Email))
+            //    return new AuthResponse()
+            //    {
+            //        IsAuthenticated = false,
+            //        Message = "Your otp has expired"
+            //    };
 
             Otp otp = _authService.IsOtpValid(contact.emailaddress1, emailConfirmation.Otp);
 
             if (otp is null)
             {
-                ModelState.AddModelError("", "The provided OTP has expired. Please request a new OTP and try again.");
+                ModelState.AddModelError("", "The given Otp is not valid. maybe you should request a new one.");
                 return StatusCode(400, ModelState);
             }
 
@@ -273,6 +299,5 @@ namespace MD_365_CRM.Controllers
             });
 
         }
-
     }
 }

@@ -2,6 +2,9 @@ import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
 import { AppStateService } from '../services/app-state.service';
+import jwt_decode from 'jwt-decode';
+import { Contact } from '../Models/Contact';
+
 
 @Component({
     selector: 'app-menu',
@@ -10,27 +13,46 @@ import { AppStateService } from '../services/app-state.service';
 export class AppMenuComponent implements OnInit {
     model: any[] = [];
     role = '';
+    decodedJWT: any;
+    authState!: any;
 
     constructor(
         public layoutService: LayoutService,
         private appStateService: AppStateService
     ) {
-        this.role = this.appStateService.authState.roles;
-        console.log(this.role === 'Admin');
+        // this.role = this.appStateService.authState.roles;
+        // console.log(this.role === 'Admin');
+        this.decodedJWT= jwt_decode(this.appStateService.authState.token);
+        this.role = this.decodedJWT.roles;
+        
     }
 
     ngOnInit() {
+
+        this.authState = this.appStateService.getAuthState();
+
         this.model = [
-            {
-                label: 'Dashboard',
-                items: [
-                    {
-                        label: 'Dashboard',
-                        icon: 'pi pi-fw pi-home',
-                        routerLink: ['/dashboard'],
-                    },
-                ],
-            },
+            this.role === 'Admin'
+                ? {
+                      label: 'Dashboard',
+                      items: [
+                          {
+                              label: 'Dashboard',
+                              icon: 'pi pi-fw pi-home',
+                              routerLink: ['/admin-dashboard'],
+                          },
+                      ],
+                  }
+                : {
+                    label: 'Dashboard',
+                    items: [
+                        {
+                            label: 'Dashboard',
+                            icon: 'pi pi-fw pi-home',
+                            routerLink: ['/dashboard'],
+                        },
+                    ],
+                },
             {
                 label: 'Opportunities',
                 items: [
@@ -73,6 +95,8 @@ export class AppMenuComponent implements OnInit {
                       ],
                   }
                 : null,
+            
+            
         ];
     }
 }

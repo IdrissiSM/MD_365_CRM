@@ -1,6 +1,8 @@
-﻿using MD_365_CRM.Models;
+﻿using Azure;
+using MD_365_CRM.Models;
 using MD_365_CRM.Responses;
 using MD_365_CRM.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -12,11 +14,14 @@ namespace MD_365_CRM.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
+        private APIResponse _response;
 
         public ProductController(IProductService productService)
         {
             _productService = productService;
+            _response = new APIResponse();
         }
+
         [HttpGet("GetProducts/{contactId}")]
         public async Task<IActionResult> GetProducts(Guid contactId)
         {
@@ -56,6 +61,17 @@ namespace MD_365_CRM.Controllers
             response.Success = true;
             response.Result = product;
             return Ok(response);
+        }
+
+        [HttpGet("GetBestSellingProducts")]
+        public async Task<ActionResult> GetBestSellingProducts()
+        {
+            IEnumerable<BestSellingProducts> bestSellingProducts = await _productService.GetBestSellingProducts();
+
+            _response.httpStatusCode = HttpStatusCode.OK;
+            _response.Result = bestSellingProducts;
+
+            return Ok(_response);
         }
     }
 }

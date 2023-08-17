@@ -7,5 +7,7 @@ namespace MD_365_CRM.Requests
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+
+        public bool Registering { get; set; }
     }
 }

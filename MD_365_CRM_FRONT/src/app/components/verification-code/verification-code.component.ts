@@ -22,6 +22,8 @@ export class VerificationCodeComponent implements OnInit{
   verificationForm!: FormGroup;
   email!: string;
   loading = false;
+  failureMessage = "";
+  initTime!: Date;
 
   constructor(private route: ActivatedRoute, private auth: AuthenticationService, private router: Router, private appState: AppStateService) {
 
@@ -38,6 +40,7 @@ export class VerificationCodeComponent implements OnInit{
   }
 
 ngOnInit(): void {
+  this.initTime = new Date();
   this.route.queryParams.subscribe( params => {
       if(params && params['email'] && (this.appState.registrationStep == 2 || this.appState.resetPasswordStep == 2)) {
         this.email = params['email'];
@@ -134,6 +137,13 @@ ngOnInit(): void {
     if(!this.verificationForm.valid)
       return;
 
+    if(new Date().getTime()-this.initTime.getTime() >= 10 * 60 * 1000) {
+      this.failureMessage = "Time out. Otp is no longer valid";
+      this.appState.registrationStep = -1;
+      this.appState.resetPasswordStep = -1;
+      this.router.navigate(['']);
+    }
+
     this.loading = true;
 
     this.auth.emailConfirmation(
@@ -157,6 +167,11 @@ ngOnInit(): void {
         this.appState.registrationStep == 3? this.router.navigate(['register']) : this.router.navigate(['reset-password']);
       },
       (error) => {
+        this.failureMessage = error.error?.message?.length > 85 ? error.error?.message?.substring(0, 73) + "..." : error.error?.message;
+        console.log(this.failureMessage)
+        if(this.failureMessage == undefined)
+          this.failureMessage = "The given otp is not valid"
+        this.loading = false;
         console.log("something went wrong while verifying your email"+error);
       }
     )

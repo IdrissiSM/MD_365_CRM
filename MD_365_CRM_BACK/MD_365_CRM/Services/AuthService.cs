@@ -18,6 +18,7 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using MD_365_CRM.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 
 namespace MD_365_CRM.Services
 {
@@ -139,6 +140,7 @@ namespace MD_365_CRM.Services
             };
         }
 
+        
         public async Task<string> AddRoleAsync(AddRoleRequest request)
         {
             var user = await _userManager.FindByIdAsync(request.UserId);
@@ -154,6 +156,7 @@ namespace MD_365_CRM.Services
             return result.Succeeded ? string.Empty : "Something went wrong";
         }
 
+        
         private async Task<JwtSecurityToken> CreateJwtToken(User user)
         {
             var userClaims = await _userManager.GetClaimsAsync(user);
@@ -187,6 +190,7 @@ namespace MD_365_CRM.Services
             return jwtSecurityToken;
         }
 
+        
         public AuthenticationProperties ConfigureExternalAuthenticationProperties(string provider, string redirectUrl)
         {
             return new AuthenticationProperties
@@ -200,6 +204,7 @@ namespace MD_365_CRM.Services
             };
         }
 
+        
         public async Task<Contact> GetContactByEmail(string email)
         {
             // get access token
@@ -218,6 +223,7 @@ namespace MD_365_CRM.Services
             return contact.FirstOrDefault();
         }
 
+        
         public async Task SendEmail(string email, string body)
         {
             Console.WriteLine($"Email: {config.GetValue<string>("EmailService:email")}");
@@ -235,16 +241,20 @@ namespace MD_365_CRM.Services
             smtp.Disconnect(true);
         }
 
+        
         public Otp IsOtpValid(string email, int otpValue)
         {
             Otp? otp = context.Otps.SingleOrDefault(otp => otp.Email == email);
-
-            Console.WriteLine($"{otp == null} || {otp.Value != otpValue} otp.Value: {otp.Value}, otpValue: {otpValue} || { (DateTime.Now - otp.CreationDate).TotalMinutes >= config.GetValue<int>("Otp:validFor") }");
 
             if (otp == null || otp.Value != otpValue || (DateTime.Now - otp.CreationDate).TotalMinutes >= config.GetValue<int>("Otp:validFor")) return null;
 
             return otp;
         }
+
+        public bool UserExists(string email)
+            => context.Users.Any(user => user.Email == email);
+        public bool OtpExpired(string email)
+            => (DateTime.Now - context.Otps.SingleOrDefault(otp => otp.Email == email)?.CreationDate)?.TotalMinutes >= config.GetValue<int>("Otp:validFor");
 
         public int CreateOtp(string email)
         {   // don't use this method unless you checked the authenticity of the email beforehand!
@@ -264,9 +274,11 @@ namespace MD_365_CRM.Services
             return context.SaveChanges() > 0 ? otp: -1;
         }
 
+        
         public int OtpValidFor() =>
             config.GetValue<int>("Otp:validFor");
 
+        
         public async Task<AuthResponse> ResetPassword(ResetPasswordRequest request)
         {
             var passwordValidator = _userManager.PasswordValidators.First();
@@ -314,6 +326,7 @@ namespace MD_365_CRM.Services
                 
         }
 
+        
         public bool IsSecretValid(string email, string secret)
         {
             Otp? otp = context.Otps.SingleOrDefault(otp => otp.Email == email);
@@ -323,5 +336,9 @@ namespace MD_365_CRM.Services
             return true;
         }
 
+
+
+        public bool IsUserBlackListed(string email)
+            => context.BlacklistedUsers.Any(user => user.Email == email);
     }
 }

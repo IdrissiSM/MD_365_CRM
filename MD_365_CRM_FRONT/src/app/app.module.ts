@@ -44,6 +44,12 @@ import { AppStateService } from './services/app-state.service';
 import { UsersComponent } from './components/users/users.component';
 import { UserDashboardComponent } from './components/dashboards/user-dashboard/user-dashboard.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import {VerticalBarComponent} from "./components/dashboards/admin-dashboard/charts/vertical-bar/vertical-bar.component";
+import {BubbleComponent} from "./components/dashboards/admin-dashboard/charts/bubble/bubble.component";
+import {AdminDashboardComponent} from "./components/dashboards/admin-dashboard/admin-dashboard.component";
+import {BasicComponent2} from "./components/dashboards/admin-dashboard/charts/basic2/basic.component";
+import {NgChartsModule} from "ng2-charts";
+
 
 @NgModule({
     declarations: [
@@ -65,6 +71,10 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
         UsersComponent,
         UserDashboardComponent,
         ResetPasswordComponent,
+        AdminDashboardComponent,
+        BasicComponent2,
+        VerticalBarComponent,
+        BubbleComponent
     ],
     imports: [
         AppRoutingModule,
@@ -76,6 +86,7 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
         FormsModule,
         ReactiveFormsModule,
         CommonModule,
+        NgChartsModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },

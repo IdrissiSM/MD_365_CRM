@@ -6,10 +6,11 @@ import { Login } from '../Models/LoginRequest';
 import { Register } from '../Models/RegisterRequest';
 import { AuthResponse } from '../Models/AuthResponse';
 import { Observable } from 'rxjs';
-import { VerifyEmail } from '../Models/EmailVerificationRequest';
+import { VerifyEmailRequest } from '../Models/EmailVerificationRequest';
 import { ConfirmEmail } from '../Models/EmailConfirmationRequest';
 import { Contact } from '../Models/Contact';
 import { ResetPassword } from '../Models/ResetPasswordRequest';
+import { EmailVerificationResponse } from '../Models/EmailVerificationResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -27,8 +28,8 @@ export class AuthenticationService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/Auth/register`, registerRequest);
   }
 
-  emailVerification(verifyEmailRequest: VerifyEmail): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/Auth/email_verification`, verifyEmailRequest);
+  emailVerification(verifyEmailRequest: VerifyEmailRequest): Observable<EmailVerificationResponse> {
+    return this.http.post<EmailVerificationResponse>(`${this.apiUrl}/Auth/email_verification`, verifyEmailRequest);
   }
 
   emailConfirmation(confirmEmailRequest: ConfirmEmail): Observable<Contact | null> {

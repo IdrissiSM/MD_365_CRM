@@ -13,8 +13,12 @@ namespace MD_365_CRM.Services.IServices
         Task SendEmail(string email, string body);
         Otp IsOtpValid(string email, int otp);
         int CreateOtp(string email);
+
+        public bool UserExists(string email);
+        bool OtpExpired(string email);
         int OtpValidFor();
         Task<AuthResponse> ResetPassword(ResetPasswordRequest request);
         bool IsSecretValid(string email, string secret);
+        bool IsUserBlackListed(string email);
     }
 }

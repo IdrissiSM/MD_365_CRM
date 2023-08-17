@@ -30,6 +30,7 @@ export class AppStateService {
     const decodedJWT: any = jwt_decode(token);
     this.authState = {
       isAuthenticated: true,
+      userName: decodedJWT.name,
       uid: decodedJWT.uid,
       email: decodedJWT.sub,
       roles: decodedJWT.roles,
@@ -46,6 +47,7 @@ export class AppStateService {
     const decodedJWT: any = jwt_decode(token);
     this.authState = {
       isAuthenticated: true,
+      userName: decodedJWT.name,
       uid: decodedJWT.uid,
       email: decodedJWT.sub,
       roles: decodedJWT.roles,
@@ -56,5 +58,11 @@ export class AppStateService {
     };
     sessionStorage.removeItem('authState');
     sessionStorage.setItem('authState', JSON.stringify(this.authState));
+  }
+
+  signOut() {
+    if(localStorage.getItem('authState'))
+      localStorage.removeItem('authState');
+    else sessionStorage.removeItem('authState');
   }
 }

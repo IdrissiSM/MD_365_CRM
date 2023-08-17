@@ -181,13 +181,11 @@ export class UserDashboardComponent {
 
     getStateIcon(value: number) {
         const icon = this.states.find((s) => s.value == value)?.icon;
-        console.log(icon);
         return icon;
     }
 
     getStateColor(value: number) {
         const color = this.states.find((s) => s.value == value)?.color;
-        console.log(color);
         return color;
     }
 

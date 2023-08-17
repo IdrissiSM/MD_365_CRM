@@ -12,7 +12,6 @@ using System.Net;
 
 namespace MD_365_CRM.Controllers
 {
-    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class BlacklistController : ControllerBase

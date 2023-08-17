@@ -21,8 +21,7 @@ namespace MD_365_CRM.Controllers
             this.opportunityService = opportunityService;
         }
 
-
-        [HttpGet("")]
+        [HttpGet]
         public async Task<IActionResult> GetOpportunities()
         {
             APIResponse response = new();

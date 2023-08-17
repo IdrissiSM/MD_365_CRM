@@ -1,3 +1,4 @@
-export interface VerifyEmail {
-  email: string
+export interface VerifyEmailRequest {
+  email: string,
+  registering: boolean
 }

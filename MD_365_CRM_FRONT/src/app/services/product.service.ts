@@ -25,4 +25,7 @@ export class ProductService {
             `${this.apiUrl}/Product/GetProductById/${id}`
         );
     }
+    getBestSellingProducts(){
+        return this.http.get<APIResponse>(`${this.apiUrl}/Product/GetBestSellingProducts`);
+    }
 }

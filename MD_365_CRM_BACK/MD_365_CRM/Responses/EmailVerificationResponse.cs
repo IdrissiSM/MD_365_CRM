@@ -4,6 +4,8 @@
     {
         public string Message { get; set; }
 
+        public bool HasAccount { get; set; }
+
         public bool IsEligible { get; set; }
     }
 }

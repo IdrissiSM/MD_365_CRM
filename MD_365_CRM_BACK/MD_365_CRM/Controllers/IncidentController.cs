@@ -1,6 +1,7 @@
 ﻿using MD_365_CRM.Models;
 using MD_365_CRM.Responses;
 using MD_365_CRM.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -39,6 +40,18 @@ namespace MD_365_CRM.Controllers
             _response.Result = incidents;
             return Ok(_response);
         }
+
+        [HttpGet("GetGroupedByContactIncidents")]
+        public async Task<ActionResult<APIResponse>> GetGroupedByContactIncidents()
+        {
+            IEnumerable<Requests.GroupedIncidentsDTO> groupedIncidents = await _incidentService.GetGroupedByContactIncidentsAsync();
+
+            _response.httpStatusCode = HttpStatusCode.OK;
+            _response.Result = groupedIncidents;
+
+            return Ok(_response);
+        }
+
 
         [HttpGet("GetIncidentById/{incidentId:Guid}")]
         public async Task<ActionResult<APIResponse>> GetIncidentById(Guid incidentId)

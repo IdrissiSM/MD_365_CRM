@@ -1,23 +1,50 @@
 <div class="layout-topbar">
-    <a class="layout-topbar-logo" routerLink="" >
-        <img src="assets/images/dynamics-365-logo-trans.png" alt="logo">
+    <a class="layout-topbar-logo" routerLink="">
+        <img src="assets/images/dynamics-365-logo-trans.png" alt="logo" />
         <span>MD-365 Sales</span>
     </a>
 
-    <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
+    <button
+        #menubutton
+        class="p-link layout-menu-button layout-topbar-button"
+        (click)="layoutService.onMenuToggle()"
+    >
         <i class="pi pi-bars"></i>
     </button>
 
-    <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button" (click)="layoutService.showProfileSidebar()">
+    <button
+        #topbarmenubutton
+        class="p-link layout-topbar-menu-button layout-topbar-button"
+        (click)="layoutService.showProfileSidebar()"
+    >
         <i class="pi pi-ellipsis-v"></i>
     </button>
 
-    <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
+    <div
+        #topbarmenu
+        class="layout-topbar-menu"
+        [ngClass]="{
+            'layout-topbar-menu-mobile-active':
+                layoutService.state.profileSidebarVisible
+        }"
+    >
+        <button
+            *ngIf="displayInstall"
+            class="p-link layout-topbar-button add-to-btn"
+            (click)="installApp()"
+        >
+            <i class="pi pi-download"></i>
+            <span>Install App</span>
+        </button>
         <button class="p-link layout-topbar-button">
             <i class="pi pi-user"></i>
             <span>Profile</span>
         </button>
-        <button class="p-link layout-topbar-button" (click)="signOut()" [routerLink]="">
+        <button
+            class="p-link layout-topbar-button"
+            (click)="signOut()"
+            [routerLink]=""
+        >
             <i class="pi pi-sign-out"></i>
             <span>Sign out</span>
         </button>

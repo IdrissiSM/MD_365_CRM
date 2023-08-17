@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import {
     CommonModule,
     HashLocationStrategy,
@@ -49,6 +49,7 @@ import {BubbleComponent} from "./components/dashboards/admin-dashboard/charts/bu
 import {AdminDashboardComponent} from "./components/dashboards/admin-dashboard/admin-dashboard.component";
 import {BasicComponent2} from "./components/dashboards/admin-dashboard/charts/basic2/basic.component";
 import {NgChartsModule} from "ng2-charts";
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 
 @NgModule({
@@ -86,7 +87,13 @@ import {NgChartsModule} from "ng2-charts";
         FormsModule,
         ReactiveFormsModule,
         CommonModule,
-        NgChartsModule
+        NgChartsModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {
+          enabled: !isDevMode(),
+          // Register the ServiceWorker as soon as the application is stable
+          // or after 30 seconds (whichever comes first).
+          registrationStrategy: 'registerWhenStable:30000'
+        })
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },

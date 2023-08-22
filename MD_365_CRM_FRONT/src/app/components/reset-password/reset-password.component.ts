@@ -36,12 +36,37 @@ export class ResetPasswordComponent implements OnInit {
     return null;
   };
 
+  IdentityPasswordValidator: ValidatorFn = (control: AbstractControl) => {
+
+    const password: string = control.get('password')?.value;
+
+    if(password == null)
+      return {identityPassword: ''};
+
+    if (password.length < 8)
+      return { identityPassword: 'Password must be at least 8 characters long.' };
+
+    if (!/[a-z]/.test(password))
+      return { identityPassword: 'Password must contain at least one lowercase letter.' };
+
+    if (!/[A-Z]/.test(password))
+      return { identityPassword: 'Password must contain at least one uppercase letter.' };
+
+    if (!/[0-9]/.test(password))
+      return { identityPassword: 'Password must contain at least one digit.' };
+
+      if (!/[^a-zA-Z0-9]/.test(password))
+        return { identityPassword: 'Password must contain at least one non-alphanumeric character.' };
+
+    return null;
+  };
+
   constructor(private auth: AuthenticationService, private router: Router, private appState: AppStateService) {
 
     this.loginForm = new FormGroup({
       password: new FormControl('', Validators.required),
       confirmPassword: new FormControl('', [Validators.required]),
-    }, { validators: this.passwordMatch });
+    }, { validators: [this.passwordMatch, this.IdentityPasswordValidator ]});
   }
 
   ngOnInit() {

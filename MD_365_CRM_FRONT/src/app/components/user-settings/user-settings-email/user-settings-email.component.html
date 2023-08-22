@@ -1,0 +1,13 @@
+<form [formGroup]="emailModificationForm" (ngSubmit)="submit()" class="w-full mt-5">
+  <label for="email" class="block text-900 text-xl font-medium mb-2">New Email</label>
+  <div class="flex flex-column gap-3 sm:gap-0 sm:flex-row justify-content-between">
+    <div class="flex align-items-center justify-content-center">
+      <input id="email" formControlName="email" type="text" placeholder="Email address" pInputText
+        class="w-full md:w-30rem" style="padding:1rem">
+      <small id="email-help" class="text-red-600 block mb-5">{{verificationFailedMessage}}</small>
+    </div>
+    <button pButton pRipple label="Send" [loading]="loading" type="submit"
+      [disabled]="!emailModificationForm.valid || loading"
+      class="w-full md:w-15rem {{!emailModificationForm.valid ? 'cursor-invalid' : ''}}"></button>
+  </div>
+</form>

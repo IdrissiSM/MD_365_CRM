@@ -11,6 +11,7 @@ import { ConfirmEmail } from '../Models/EmailConfirmationRequest';
 import { Contact } from '../Models/Contact';
 import { ResetPassword } from '../Models/ResetPasswordRequest';
 import { EmailVerificationResponse } from '../Models/EmailVerificationResponse';
+import { UpdateProfileRequest } from '../Models/UpdateProfileRequest';
 
 @Injectable({
   providedIn: 'root',
@@ -38,5 +39,9 @@ export class AuthenticationService {
 
   resetPassword(resetPasswordRequest: ResetPassword): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/Auth/reset_password`, resetPasswordRequest);
+  }
+
+  updateProfile(updateProfileRequest: UpdateProfileRequest): Observable<Contact | null> {
+    return this.http.post<Contact | null>(`${this.apiUrl}/Auth/update_user_profile`, updateProfileRequest);
   }
 }

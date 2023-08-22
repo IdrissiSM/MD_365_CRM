@@ -26,6 +26,11 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MenuModule } from 'primeng/menu';
 import { TimelineModule } from 'primeng/timeline';
 import { CardModule } from 'primeng/card';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { ImageModule } from 'primeng/image';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+
 
 @NgModule({
     exports: [
@@ -59,6 +64,10 @@ import { CardModule } from 'primeng/card';
         MenuModule,
         TimelineModule,
         CardModule,
+        TabMenuModule,
+        ImageModule,
+        AvatarGroupModule,
+        AvatarModule,
     ],
     imports: [
         ButtonModule,
@@ -92,6 +101,10 @@ import { CardModule } from 'primeng/card';
         MenuModule,
         TimelineModule,
         CardModule,
+        TabMenuModule,
+        ImageModule,
+        AvatarGroupModule,
+        AvatarModule,
     ],
 })
 export class PrimeNGModule {}

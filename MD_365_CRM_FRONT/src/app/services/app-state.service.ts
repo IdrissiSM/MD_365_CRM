@@ -6,15 +6,22 @@ import { Contact } from '../Models/Contact';
   providedIn: 'root',
 })
 export class AppStateService {
-  constructor() {
-    this.getAuthState();
-    this.handleInstallApp();
-  }
 
   authState!: any;
   registrationStep: number = -1;
   resetPasswordStep: number = -1;
   contact!: Contact;
+  displayInstall: boolean = false;
+  deferredPrompt: any;
+
+  constructor() {
+    this.getAuthState();
+    this.checkInsalled();
+    this.handleInstallApp();
+    // this.displayInstall = !window.matchMedia('(display-mode: standalone)').matches;
+    // console.log('standalone? '+this.displayInstall);
+  }
+
 
   getAuthState() {
     const authStateString = localStorage.getItem('authState') ?? sessionStorage.getItem('authState');
@@ -67,14 +74,23 @@ export class AppStateService {
     else sessionStorage.removeItem('authState');
   }
 
-  displayInstall: boolean = false;
-  deferredPrompt: any;
+  
   handleInstallApp() {
       this.displayInstall = false;
       window.addEventListener('beforeinstallprompt', (e: Event) => {
           e.preventDefault();
           this.deferredPrompt = e;
-          this.displayInstall = true;
+          this.displayInstall = !window.matchMedia('(display-mode: standalone)').matches;
+          localStorage.setItem('displayInstall', JSON.stringify(this.displayInstall))
+          localStorage.setItem('deferredPrompt', JSON.stringify(e))
       });
+  }
+
+  checkInsalled() {
+    this.displayInstall = localStorage.getItem('displayInstall') == 'true';
+    const deferredPrompt = localStorage.getItem('deferredPrompt');
+    if(deferredPrompt) this.deferredPrompt = JSON.parse(deferredPrompt)
+    console.log(localStorage.getItem('displayInstall'))
+    console.log(localStorage.getItem('deferredPrompt'))
   }
 }

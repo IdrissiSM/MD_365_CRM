@@ -50,6 +50,10 @@ import {AdminDashboardComponent} from "./components/dashboards/admin-dashboard/a
 import {BasicComponent2} from "./components/dashboards/admin-dashboard/charts/basic2/basic.component";
 import {NgChartsModule} from "ng2-charts";
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { UserSettingsComponent } from './components/user-settings/user-settings.component';
+import { UserSettingsDataComponent } from './components/user-settings/user-settings-data/user-settings-data.component';
+import { UserSettingsEmailComponent } from './components/user-settings/user-settings-email/user-settings-email.component';
+import { UserSettingsPasswordComponent } from './components/user-settings/user-settings-password/user-settings-password.component';
 
 
 @NgModule({
@@ -75,7 +79,15 @@ import { ServiceWorkerModule } from '@angular/service-worker';
         AdminDashboardComponent,
         BasicComponent2,
         VerticalBarComponent,
-        BubbleComponent
+        BubbleComponent,
+        UserSettingsComponent,
+        UserSettingsDataComponent,
+        UserSettingsEmailComponent,
+        UserSettingsPasswordComponent,
+        UserSettingsComponent,
+        UserSettingsDataComponent,
+        UserSettingsEmailComponent,
+        UserSettingsPasswordComponent,
     ],
     imports: [
         AppRoutingModule,

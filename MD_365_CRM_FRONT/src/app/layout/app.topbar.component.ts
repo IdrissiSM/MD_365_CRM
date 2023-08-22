@@ -3,6 +3,7 @@ import { MenuItem } from 'primeng/api';
 import { LayoutService } from './service/app.layout.service';
 import { AppStateService } from '../services/app-state.service';
 import { Router } from '@angular/router';
+import { DataSyncService } from '../services/data-sync.service';
 
 @Component({
     selector: 'app-topbar',
@@ -23,8 +24,10 @@ export class AppTopBarComponent {
       public layoutService: LayoutService,
       private appState: AppStateService,
       private appStateService: AppStateService,
+      private dataSync: DataSyncService
       ) {
-      this.displayInstall = this.appStateService.displayInstall
+      this.displayInstall = this.appStateService.displayInstall,
+      this.dataSync.dataHolder = 'new value'
     }
 
     signOut() {

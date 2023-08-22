@@ -340,5 +340,47 @@ namespace MD_365_CRM.Services
 
         public bool IsUserBlackListed(string email)
             => context.BlacklistedUsers.Any(user => user.Email == email);
+
+        public async Task<Contact> UpdateProfile(UpdateProfileRequest updateProfile)
+        {
+            Contact? contact = await GetContactByEmail(updateProfile.Email);
+
+            User? user = await _userManager.FindByEmailAsync(updateProfile.Email);
+
+            if (contact is null || user == null)
+                return null;
+
+            if(!updateProfile.Firstname.IsNullOrEmpty())
+                user.Firstname = updateProfile.Firstname;
+
+            if(!updateProfile.Lastname.IsNullOrEmpty())
+                user.Lastname = updateProfile.Lastname;
+
+            if(!updateProfile.Username.IsNullOrEmpty())
+                user.UserName = updateProfile.Username;
+
+            if(!updateProfile.JobTitle.IsNullOrEmpty())
+                user.Jobtitle = updateProfile.JobTitle;
+
+            user.Gendercode = updateProfile.GenderCode;
+
+            var updateResult = await _userManager.UpdateAsync(user);
+
+            if (!updateResult.Succeeded)
+                return null;
+
+            return new Contact()
+            {
+                firstname = user.Firstname,
+                lastname = user.Lastname,
+                fullname = user.UserName,
+                emailaddress1 = user.Email,
+                jobtitle = user.Jobtitle,
+                gendercode = user.Gendercode,
+                statuscode = user.Statecode,
+                contactId = user.ContactId,
+                secret = string.Empty,
+            };
+        }
     }
 }

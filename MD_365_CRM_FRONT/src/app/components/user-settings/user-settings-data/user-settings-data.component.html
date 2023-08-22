@@ -1,0 +1,66 @@
+<div class="flex flex-column w-full">
+  <div class="flex flex-column justify-content-center sm:justify-content-start sm:flex-row gap-3 sm:gap-5 align-content-center">
+    <p-image src="../../../../assets/images/avatar.jpg" imageClass="border-circle" class="flex flex-wrap justify-content-center align-content-center" height="150"
+      width="150"></p-image>
+    <p-button class="flex flex-wrap justify-content-center align-content-center" label="Upload new"></p-button>
+    <p-button class="flex flex-wrap justify-content-center align-content-center" label="Delete Avatar"></p-button>
+  </div>
+  <form [formGroup]="userInfoForm" (ngSubmit)="submit()" class="w-full mt-5">
+    <div class="flex flex-column w-full">
+      <div class="ui-fluid formgrid grid w-full">
+        <div class="field col w-full">
+          <label for="firstname" class="block text-900 text-lg sm:text-xl font-medium mb-2">First name</label>
+          <input id="firstname" formControlName="firstName" type="text" placeholder="First name" pInputText
+            class="w-full " style="padding:1rem">
+          <small id="firstname-help" class="text-red-600 block">
+            {{userInfoForm.get('firstName')!.hasError('required') ? 'Firstname is required' :
+            userInfoForm.get('firstName')!.hasError('minlength') ? 'The minimum length is two' : ''}}
+          </small>
+        </div>
+        <div class="field col w-full">
+          <label for="lastname" class="block text-900 text-lg sm:text-xl font-medium mb-2">Last name</label>
+          <input id="lastname" formControlName="lastName" type="text" placeholder="Last name" pInputText
+            class="w-full " style="padding:1rem">
+          <small id="lastname-help" class="text-red-600 block">
+            {{userInfoForm.get('lastName')!.hasError('required') ? 'Lastname is required' :
+            userInfoForm.get('lastName')!.hasError('minlength') ? 'The minimum length is two' : ''}}
+          </small>
+        </div>
+      </div>
+      <div class="ui-fluid formgrid grid w-full">
+        <div class="field col w-full">
+          <label for="username" class="block text-900 text-lg sm:text-xl font-medium mb-2">Username</label>
+          <input id="username" formControlName="username" type="text" placeholder="Username" pInputText
+            class="w-full" style="padding:1rem">
+          <small id="username-help" class="text-red-600 block">
+            {{userInfoForm.get('username')!.hasError('required') ? 'Username is required' :
+            userInfoForm.get('username')!.hasError('minlength') ? 'The minimum length is six' : ''}}
+          </small>
+        </div>
+        <div class="field col w-full">
+          <label for="jobTitle" class="block text-900 text-lg sm:text-xl font-medium mb-2">Job Title</label>
+          <input id="jobTitle" formControlName="jobTitle" type="text" placeholder="Job Title" pInputText
+            class="w-full mb-1" style="padding:1rem">
+          <small id="jobTitle-help" class="text-red-600 block">
+            {{userInfoForm.get('jobTitle')!.hasError('required') ? 'Job title is required' :
+            userInfoForm.get('jobTitle')!.hasError('minlength') ? 'The minimum length is three' : ''}}
+          </small>
+        </div>
+      </div>
+      <label for="gender" class="block text-900 text-lg sm:text-xl font-medium mb-2">Gender</label>
+      <p-dropdown id="gender" [options]="genderOptions" formControlName="gender" optionLabel="label"
+        styleClass="w-auto sm:w-full md:w-15rem"></p-dropdown>
+      <small id="gender-help" class="text-red-600 block mb-3">
+        {{userInfoForm.get('gender')!.hasError('required') ? 'Precise your gender please' : ''}}
+      </small>
+
+      <div class="flex w-full justify-content-end">
+        <button pButton pRipple label="Update info" [loading]="loading" type="submit"
+        [disabled]="!userInfoForm.valid || loading"
+        class="w-full md:w-15rem mt-3 p-3 text-lg sm:text-xl {{!userInfoForm.valid ? 'cursor-invalid' : ''}}"></button>
+      </div>
+      
+    </div>
+  </form>
+
+</div>

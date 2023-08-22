@@ -299,5 +299,23 @@ namespace MD_365_CRM.Controllers
             });
 
         }
+
+        [HttpPost("update_user_profile")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(304)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(500)]
+        public async Task<ActionResult<Contact>> UpdateProfile([FromBody] UpdateProfileRequest updateProfile)
+        {
+            Contact? contact = await _authService.UpdateProfile(updateProfile);
+
+            if (contact is null)
+                return StatusCode(500, "Uh Oh! Something went really wrong while updating your profile");
+
+            return Ok(contact);
+        }
     }
 }

@@ -33,7 +33,6 @@ export class RegisterComponent implements OnInit {
   genderOptions = [
     { value: 'Male', label: 'Male' },
     { value: 'Female', label: 'Female' },
-    // Add more options as needed
   ];
 
   registrationForm!: FormGroup;

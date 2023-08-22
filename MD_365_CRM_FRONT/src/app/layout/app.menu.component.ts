@@ -6,6 +6,7 @@ import jwt_decode from 'jwt-decode';
 import { Contact } from '../Models/Contact';
 
 
+
 @Component({
     selector: 'app-menu',
     templateUrl: './app.menu.component.html',

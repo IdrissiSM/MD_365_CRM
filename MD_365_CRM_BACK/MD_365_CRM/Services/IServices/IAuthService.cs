@@ -20,5 +20,7 @@ namespace MD_365_CRM.Services.IServices
         Task<AuthResponse> ResetPassword(ResetPasswordRequest request);
         bool IsSecretValid(string email, string secret);
         bool IsUserBlackListed(string email);
+
+        Task<Contact> UpdateProfile(UpdateProfileRequest updateProfile);
     }
 }

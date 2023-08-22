@@ -19,6 +19,10 @@ import { AdminGuard } from './guards/admin.guard';
 import { UserDashboardComponent } from './components/dashboards/user-dashboard/user-dashboard.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import {AdminDashboardComponent} from "./components/dashboards/admin-dashboard/admin-dashboard.component";
+import { UserSettingsComponent } from './components/user-settings/user-settings.component';
+import { UserSettingsDataComponent } from './components/user-settings/user-settings-data/user-settings-data.component';
+import { UserSettingsPasswordComponent } from './components/user-settings/user-settings-password/user-settings-password.component';
+import { UserSettingsEmailComponent } from './components/user-settings/user-settings-email/user-settings-email.component';
 
 
 const routes: Routes = [
@@ -35,7 +39,18 @@ const routes: Routes = [
             { path: 'incidents/detail/:id', component: DetailComponent },
             { path: 'users',component: UsersComponent,canActivate: [AdminGuard] },
             { path: 'dashboard', component: UserDashboardComponent },
-            {path: 'admin-dashboard' ,component: AdminDashboardComponent, canActivate: [AdminGuard]}
+            {path: 'admin-dashboard' ,component: AdminDashboardComponent, canActivate: [AdminGuard]},
+            {
+                path:'user-settings',
+                component: UserSettingsComponent,
+                canActivate: [AuthGuard],
+                children: [
+                    {path: '', redirectTo: 'user-settings-info', pathMatch: 'full'},
+                    {path: 'user-settings-info', component: UserSettingsDataComponent},
+                    {path: 'user-settings-password', component: UserSettingsPasswordComponent},
+                    {path: 'user-settings-email', component: UserSettingsEmailComponent}
+                ]
+            },
         ],
     },
     {

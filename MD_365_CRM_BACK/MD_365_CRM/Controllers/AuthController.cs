@@ -317,5 +317,21 @@ namespace MD_365_CRM.Controllers
 
             return Ok(contact);
         }
+
+        [HttpPost("change_password")]
+        [ProducesResponseType(204, Type = typeof(APIResponse))]
+        [ProducesResponseType(400, Type = typeof(APIResponse))]
+        [ProducesResponseType(404, Type = typeof(APIResponse))]
+        [ProducesResponseType(500, Type = typeof(APIResponse))]
+        public async Task<ActionResult<APIResponse>> ChangePassword([FromBody] ChangePasswordRequest changePassword)
+        {
+            var response = await _authService.ChangePassword(changePassword);
+
+            return new ObjectResult(response)
+            {
+                StatusCode = (int)response.httpStatusCode
+            };
+        }
     }
+
 }

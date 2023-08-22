@@ -19,6 +19,8 @@ using MailKit.Security;
 using MD_365_CRM.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
+using System.Net.Mail;
+using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace MD_365_CRM.Services
 {
@@ -381,6 +383,60 @@ namespace MD_365_CRM.Services
                 contactId = user.ContactId,
                 secret = string.Empty,
             };
+        }
+
+        public async Task<APIResponse> ChangePassword(ChangePasswordRequest changePassword)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(changePassword.Email);
+
+                if (user is null)
+                {
+                    return new APIResponse()
+                    {
+                        httpStatusCode = System.Net.HttpStatusCode.NotFound,
+                        ErrorMessages = new List<string>() { "The user was not found" },
+                        Success = false,
+                    };
+                }
+
+                var isPasswordCorrect = await _userManager.CheckPasswordAsync(user, changePassword.OldPassword);
+
+                if (!isPasswordCorrect) return new APIResponse()
+                {
+                    httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+                    ErrorMessages = new List<string>() { "The given password is incorrect" },
+                    Success = false,
+                };
+
+                var result = await _userManager.ChangePasswordAsync(user, changePassword.OldPassword, changePassword.NewPassword);
+
+                if (!result.Succeeded) return new APIResponse()
+                {
+                    httpStatusCode = System.Net.HttpStatusCode.BadRequest,
+                    ErrorMessages = result.Errors.Select(error => error.Description).ToList(),
+                    Success = false,
+                };
+
+                return new APIResponse()
+                {
+                    httpStatusCode = System.Net.HttpStatusCode.OK,
+                    Success = true,
+                }; ;
+            }
+            catch (Exception e)
+            {
+                // Log the exception for investigation
+                Console.WriteLine($"Error during FindByEmailAsync: {e.Message}");
+
+                return new APIResponse()
+                {
+                    httpStatusCode = System.Net.HttpStatusCode.InternalServerError,
+                    ErrorMessages = new List<string>() { "An error occurred while processing your request" },
+                    Success = false,
+                };
+            }
         }
     }
 }

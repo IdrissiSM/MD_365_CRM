@@ -22,5 +22,7 @@ namespace MD_365_CRM.Services.IServices
         bool IsUserBlackListed(string email);
 
         Task<Contact> UpdateProfile(UpdateProfileRequest updateProfile);
+
+        Task<APIResponse> ChangePassword(ChangePasswordRequest changePassword);
     }
 }

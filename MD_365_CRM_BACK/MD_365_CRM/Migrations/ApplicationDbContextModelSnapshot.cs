@@ -66,6 +66,24 @@ namespace MD_365_CRM.Migrations
                     b.ToTable("Otps");
                 });
 
+            modelBuilder.Entity("MD_365_CRM.Models.ProfileImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("ImageData")
+                        .IsRequired()
+                        .HasMaxLength(4194304)
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProfileImage");
+                });
+
             modelBuilder.Entity("MD_365_CRM.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -93,6 +111,9 @@ namespace MD_365_CRM.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Gendercode")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ImageId")
                         .HasColumnType("int");
 
                     b.Property<string>("Jobtitle")
@@ -139,6 +160,8 @@ namespace MD_365_CRM.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -282,6 +305,15 @@ namespace MD_365_CRM.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("MD_365_CRM.Models.User", b =>
+                {
+                    b.HasOne("MD_365_CRM.Models.ProfileImage", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId");
+
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

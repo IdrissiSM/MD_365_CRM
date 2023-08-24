@@ -19,7 +19,7 @@ export class RegisterComponent implements OnInit {
   contact: Contact = {
     firstname: "Dan",
     lastname: "Bravo",
-    username: "danbravo",
+    fullname: "danbravo",
     emailaddress1: "danbravo.business@loftx.net",
     contactid: "325e156236",
     statuscode: 1,
@@ -98,7 +98,7 @@ export class RegisterComponent implements OnInit {
     this.contact = this.appState.contact;
     this.registrationForm.get('firstName')?.setValue(this.contact.firstname);
     this.registrationForm.get('lastName')?.setValue(this.contact.lastname);
-    this.registrationForm.get('username')?.setValue(this.contact.username ?? '');
+    this.registrationForm.get('username')?.setValue(this.contact.fullname ?? '');
     this.registrationForm.get('email')?.setValue(this.contact.emailaddress1);
     this.registrationForm.get('jobTitle')?.setValue(this.contact.jobtitle ?? '');
     this.registrationForm.get('gender')?.setValue(this.contact.gendercode === 1 ? 'Male' : 'Female');

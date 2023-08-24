@@ -14,6 +14,8 @@ import { EmailVerificationResponse } from '../Models/EmailVerificationResponse';
 import { UpdateProfileRequest } from '../Models/UpdateProfileRequest';
 import { ChangePasswordRequest } from '../Models/ChangePasswordRequest';
 import { APIResponse } from '../Models/APIResponse';
+import { AddProfileImageRequest } from '../Models/AddProfileImageRequest';
+import { RetrieveProfileDataRequest } from '../Models/RetrieveProfileDataRequest';
 
 @Injectable({
   providedIn: 'root',
@@ -49,5 +51,13 @@ export class AuthenticationService {
 
   changePassword(changePasswordRequest: ChangePasswordRequest): Observable<APIResponse> {
     return this.http.post<APIResponse>(`${this.apiUrl}/Auth/change_password`, changePasswordRequest);
+  }
+
+  addProfileImage(addProfileImageRequest: AddProfileImageRequest): Observable<APIResponse> {
+    return this.http.post<APIResponse>(`${this.apiUrl}/Auth/user/image`, addProfileImageRequest);
+  }
+
+  retrieveUserData(retrieveProfileDataRequest: RetrieveProfileDataRequest): Observable<Contact> {
+    return this.http.post<Contact>(`${this.apiUrl}/Auth/user/data`, retrieveProfileDataRequest);
   }
 }

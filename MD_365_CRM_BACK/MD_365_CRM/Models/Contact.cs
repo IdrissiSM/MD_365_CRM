@@ -11,5 +11,6 @@
         public Int32? gendercode { get; set; } = Int32.MinValue;
         public int? statuscode { get; set; } = 0;
         public string secret { get; set;} = String.Empty;
+        public int[]? Image { get; set; } = null;
     }
 }

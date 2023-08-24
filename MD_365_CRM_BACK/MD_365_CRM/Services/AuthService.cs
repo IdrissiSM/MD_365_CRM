@@ -21,6 +21,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
 using System.Net.Mail;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
+using System.Collections;
 
 namespace MD_365_CRM.Services
 {
@@ -437,6 +438,58 @@ namespace MD_365_CRM.Services
                     Success = false,
                 };
             }
+        }
+
+        public async Task<APIResponse> AddProfileImage(AddProfileImageRequest addProfileImage)
+        {
+            var user = await context.Users.SingleOrDefaultAsync(user => user.Email == addProfileImage.Email);
+
+            if (user is null) return new APIResponse()
+            {
+                Success = false,
+                httpStatusCode = System.Net.HttpStatusCode.NotFound,
+            };
+
+
+            if (user.Image is null)
+                user.Image = new ProfileImage()
+                {
+                    ImageData = addProfileImage.ImageData.Select(i => (byte)i).ToArray(),
+                };
+            else user.Image.ImageData = addProfileImage.ImageData.Select(i => (byte)i).ToArray();
+
+            var updateResult = await _userManager.UpdateAsync(user);
+
+            if (!updateResult.Succeeded) return new APIResponse()
+            {
+                Success = false,
+                httpStatusCode = System.Net.HttpStatusCode.InternalServerError,
+            };
+
+            return new APIResponse()
+            {
+                Success = true,
+                httpStatusCode = System.Net.HttpStatusCode.OK
+            };
+        }
+
+        public async Task<Contact> RetrieveUserData(RetrieveProfileDataRequest retriveProfileData)
+        {
+            var user = await context.Users.Include(u => u.Image).SingleOrDefaultAsync(user => user.Email == retriveProfileData.Email);
+
+            if (user is null) return null;
+
+            return new Contact()
+            {
+                contactId = user.ContactId,
+                emailaddress1 = user.Email,
+                firstname = user.Firstname,
+                lastname = user.Lastname,
+                fullname = user.UserName,
+                gendercode = user.Gendercode,
+                Image = user.Image?.ImageData.Select(i => (int)i).ToArray(),
+                jobtitle = user.Jobtitle
+            };
         }
     }
 }

@@ -1,7 +1,9 @@
-﻿using MD_365_CRM.CRM;
+﻿using MD_365_CRM.Context;
+using MD_365_CRM.CRM;
 using MD_365_CRM.Models;
 using MD_365_CRM.Requests;
 using MD_365_CRM.Services.IServices;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
@@ -11,15 +13,24 @@ namespace MD_365_CRM.Services
     {
         private readonly DynamicsCRM _dynamicsCRM;
         private readonly string _baseUrl;
+        private readonly ApplicationDbContext _dbContext;
 
-        public IncidentService(DynamicsCRM dynamicsCRM,IConfiguration configuration)
+        public IncidentService(DynamicsCRM dynamicsCRM,IConfiguration configuration, ApplicationDbContext DbContext)
         {
+            _dbContext = DbContext;
             _dynamicsCRM = dynamicsCRM;
             _baseUrl = $"{configuration.GetValue<string>("DynamicsCrmSettings:Scope")}/api/data/v9.2";
         }
 
         public async Task<List<Incident>> GetAllIncidentsAsync()
         {
+
+            var AllRecords = _dbContext.Incidents.ToList();
+            if (AllRecords.Count() > 0)
+            {
+                return AllRecords;
+            }
+
             // get access token
             string accessToken = await _dynamicsCRM.GetAccessTokenAsync();
             // Set xrm request params
@@ -32,22 +43,21 @@ namespace MD_365_CRM.Services
             var result = JsonConvert.DeserializeObject<dynamic>(json);
             var incidents = result!.value.ToObject<List<Incident>>();
 
+            if (incidents is not null)
+            {
+                foreach (Incident incident in incidents)
+                {
+                    _dbContext.Incidents.AddAsync(incident);
+                }
+                _dbContext.SaveChangesAsync();
+            }
+
             return incidents;
         }
 
         public async Task<Incident> GetIncidentByIdAsync(Guid incidentId)
         {
-            // get access token
-            string accessToken = await _dynamicsCRM.GetAccessTokenAsync();
-            // Set xrm request params
-            var response = await _dynamicsCRM.CrmRequest(
-                HttpMethod.Get,
-                accessToken,
-            $"{_baseUrl}/incidents({incidentId})");
-
-            var json = await response.Content.ReadAsStringAsync();
-            var incident = JsonConvert.DeserializeObject<Incident>(json);
-
+            Incident incident = await _dbContext.Incidents.FindAsync(incidentId);
             return incident!;
         }
 
@@ -105,6 +115,21 @@ namespace MD_365_CRM.Services
                 });
 
             return groupedIncident.Take(4);
+        }
+
+        public async Task<bool> UpdateIncident(Guid IncidentId, IncidentRequest incident)
+        {
+            // get access token
+            string accessToken = await _dynamicsCRM.GetAccessTokenAsync();
+            // Set xrm request params
+            var jsonIncident = JsonConvert.SerializeObject(incident);
+            var response = await _dynamicsCRM.CrmRequest(
+                HttpMethod.Patch,
+                accessToken,
+                $"{_baseUrl}/incidents({IncidentId})",
+                jsonIncident);
+
+            return response.IsSuccessStatusCode;
         }
     }
 }

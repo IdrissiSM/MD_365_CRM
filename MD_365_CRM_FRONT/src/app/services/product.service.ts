@@ -9,10 +9,13 @@ import { AppStateService } from './app-state.service';
 })
 export class ProductService {
     apiUrl = environment.apiBaseUrl;
-    contactId: string
+    contactId: string;
 
-    constructor(private http: HttpClient, private appStateService: AppStateService) {
-        this.contactId = this.appStateService.authState.contactid
+    constructor(
+        private http: HttpClient,
+        private appStateService: AppStateService
+    ) {
+        this.contactId = this.appStateService.authState.contactid;
     }
 
     getAllProducts() {
@@ -25,7 +28,9 @@ export class ProductService {
             `${this.apiUrl}/Product/GetProductById/${id}`
         );
     }
-    getBestSellingProducts(){
-        return this.http.get<APIResponse>(`${this.apiUrl}/Product/GetBestSellingProducts`);
+    getBestSellingProducts() {
+        return this.http.get<APIResponse>(
+            `${this.apiUrl}/Product/GetBestSellingProducts`
+        );
     }
 }

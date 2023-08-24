@@ -76,6 +76,7 @@ namespace MD_365_CRM.Models
         /// </summary>
         public Int32? prioritycode { get; set; }
         public ContactDTO? customerid_contact { get; set; }
+        public bool IsSynchronized { get; set; } = true;
 
         public static string Properties()
         {

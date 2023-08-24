@@ -26,6 +26,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MenuModule } from 'primeng/menu';
 import { TimelineModule } from 'primeng/timeline';
 import { CardModule } from 'primeng/card';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
     exports: [
@@ -45,8 +46,6 @@ import { CardModule } from 'primeng/card';
         NgClass,
         DropdownModule,
         SplitButtonModule,
-        DynamicDialogModule,
-        ConfirmDialogModule,
         ToastModule,
         RatingModule,
         RippleModule,
@@ -59,6 +58,9 @@ import { CardModule } from 'primeng/card';
         MenuModule,
         TimelineModule,
         CardModule,
+        DialogModule,
+        DynamicDialogModule,
+        ConfirmDialogModule,
     ],
     imports: [
         ButtonModule,
@@ -77,8 +79,6 @@ import { CardModule } from 'primeng/card';
         NgClass,
         DropdownModule,
         SplitButtonModule,
-        DynamicDialogModule,
-        ConfirmDialogModule,
         ToastModule,
         RatingModule,
         RippleModule,
@@ -92,6 +92,9 @@ import { CardModule } from 'primeng/card';
         MenuModule,
         TimelineModule,
         CardModule,
+        DialogModule,
+        DynamicDialogModule,
+        ConfirmDialogModule,
     ],
 })
 export class PrimeNGModule {}

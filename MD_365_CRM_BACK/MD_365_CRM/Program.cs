@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
 using MD_365_CRM.Services.IServices;
+using MD_365_CRM.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,7 +84,9 @@ builder.Services.AddScoped<IBlacklistedUserService, BlacklistedUserService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IStatsService, StatsService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ISynchronizeService, SynchronizeService>();
 builder.Services.AddScoped<DynamicsCRM>();
+builder.Services.AddAutoMapper(typeof(MappingConfig));
 
 builder.Services.AddAuthentication(options =>
 {

@@ -5,6 +5,8 @@ using MD_365_CRM.Requests;
 using Microsoft.Identity.Client;
 using System.Security.Principal;
 using MD_365_CRM.Services.IServices;
+using MD_365_CRM.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace MD_365_CRM.Services
 {
@@ -13,9 +15,11 @@ namespace MD_365_CRM.Services
         private readonly DynamicsCRM dynamicsCRM;
         private readonly IConfiguration _configuration;
         private readonly string baseUrl;
+        private readonly ApplicationDbContext _dbContext;
 
-        public OpportunityService(DynamicsCRM crmConfig, IConfiguration configuration)
+        public OpportunityService(DynamicsCRM crmConfig, IConfiguration configuration, ApplicationDbContext DbContext)
         {
+            _dbContext = DbContext;
             _configuration = configuration;
             dynamicsCRM = crmConfig;
             baseUrl = $"{_configuration.GetValue<string>("DynamicsCrmSettings:Scope")}/api/data/v9.2";
@@ -23,6 +27,14 @@ namespace MD_365_CRM.Services
 
         public async Task<List<Opportunity>> GetOpportunities()
         {
+            var AllRecords = _dbContext.Opportunities
+                .Include(op => op.Product_opportunities)
+                .ToList();
+            if (AllRecords.Count() > 0)
+            {
+                return AllRecords;
+            }
+
             // get access token
             string accessToken = await dynamicsCRM.GetAccessTokenAsync();
             // Set xrm request params
@@ -34,28 +46,39 @@ namespace MD_365_CRM.Services
                 $"$expand=product_opportunities" +
                 $"($select={ProductOpportunity.Properties})");
 
-
             var json = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<dynamic>(json);
             var Opportunities = result!.value.ToObject<List<Opportunity>>();
 
+            if(Opportunities is not null)
+            {
+                foreach (Opportunity opp in Opportunities)
+                {
+                    _dbContext.Opportunities.AddAsync(opp);
+                }
+                _dbContext.SaveChangesAsync();
+            }
             return Opportunities;
         }
 
-        public async Task<Opportunity> GetOpportunityById(Guid opportunityId)
+        public async Task<bool> UpdateOpportunity(Guid opportunityId, OpportunityRequest opportunity)
         {
             // get access token
             string accessToken = await dynamicsCRM.GetAccessTokenAsync();
             // Set xrm request params
+            var jsonOpportunity = JsonConvert.SerializeObject(opportunity);
             var response = await dynamicsCRM.CrmRequest(
-                HttpMethod.Get,
+                HttpMethod.Patch,
                 accessToken,
-                $"{baseUrl}/opportunities({opportunityId})?" +
-                $"$select={Opportunity.Properties}");
+                $"{baseUrl}/opportunities({opportunityId})",
+                jsonOpportunity);
 
-            var json = await response.Content.ReadAsStringAsync();
-            var opportunity = JsonConvert.DeserializeObject<Opportunity>(json);
+            return response.IsSuccessStatusCode;
+        }
 
+        public async Task<Opportunity> GetOpportunityById(Guid opportunityId)
+        {
+            Opportunity opportunity = await _dbContext.Opportunities.FindAsync(opportunityId);
             return opportunity!;
         }
     }

@@ -9,5 +9,6 @@ namespace MD_365_CRM.Services.IServices
         Task<List<Incident>> GetIncidentsAsync(Guid contactId);
         Task<Incident> GetIncidentByIdAsync(Guid incidentId);
         Task<IEnumerable<GroupedIncidentsDTO>> GetGroupedByContactIncidentsAsync();
+        public Task<bool> UpdateIncident(Guid IncidentId, IncidentRequest incident);
     }
 }

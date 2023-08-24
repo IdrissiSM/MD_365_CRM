@@ -30,7 +30,7 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { ImageModule } from 'primeng/image';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
-
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
     exports: [
@@ -50,8 +50,6 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
         NgClass,
         DropdownModule,
         SplitButtonModule,
-        DynamicDialogModule,
-        ConfirmDialogModule,
         ToastModule,
         RatingModule,
         RippleModule,
@@ -68,6 +66,9 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
         ImageModule,
         AvatarGroupModule,
         AvatarModule,
+        DialogModule,
+        DynamicDialogModule,
+        ConfirmDialogModule,
     ],
     imports: [
         ButtonModule,
@@ -86,8 +87,6 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
         NgClass,
         DropdownModule,
         SplitButtonModule,
-        DynamicDialogModule,
-        ConfirmDialogModule,
         ToastModule,
         RatingModule,
         RippleModule,
@@ -105,6 +104,9 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
         ImageModule,
         AvatarGroupModule,
         AvatarModule,
+        DialogModule,
+        DynamicDialogModule,
+        ConfirmDialogModule,
     ],
 })
 export class PrimeNGModule {}

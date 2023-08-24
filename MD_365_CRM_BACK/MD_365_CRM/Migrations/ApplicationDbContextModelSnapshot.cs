@@ -22,6 +22,38 @@ namespace MD_365_CRM.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("MD_365_CRM.Models.Account", b =>
+                {
+                    b.Property<Guid>("accountid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsSynchronized")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("emailaddress1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("entityimage_url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("revenue")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("statecode")
+                        .HasColumnType("int");
+
+                    b.HasKey("accountid");
+
+                    b.ToTable("Accounts");
+                });
+
             modelBuilder.Entity("MD_365_CRM.Models.BlacklistedUser", b =>
                 {
                     b.Property<int>("Id")
@@ -37,6 +69,150 @@ namespace MD_365_CRM.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BlacklistedUsers");
+                });
+
+            modelBuilder.Entity("MD_365_CRM.Models.Incident", b =>
+                {
+                    b.Property<Guid>("incidentid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsSynchronized")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("_contactid_value")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("_customerid_value")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("_productid_value")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("caseorigincode")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("casetypecode")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset?>("createdon")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool?>("customercontacted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("customerid_contactemailaddress1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset?>("deactivatedon")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("prioritycode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("productserialnumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("resolveby")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool?>("routecase")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("servicestage")
+                        .HasColumnType("int");
+
+                    b.Property<int>("statecode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ticketnumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("incidentid");
+
+                    b.HasIndex("customerid_contactemailaddress1");
+
+                    b.ToTable("Incidents");
+                });
+
+            modelBuilder.Entity("MD_365_CRM.Models.Opportunity", b =>
+                {
+                    b.Property<Guid?>("OpportunityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ActualCloseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double?>("ActualValue")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("CloseProbability")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("CompleteInternalReview")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CurrentSituation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerNeed")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmailAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EstimatedCloseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double?>("EstimatedValue")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("IsSynchronized")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OpportunityRatingCode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProposedSolution")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("StateCode")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StatusCode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StepName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("_parentAccountId_value")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("_parentContactId_value")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("OpportunityId");
+
+                    b.ToTable("Opportunities");
                 });
 
             modelBuilder.Entity("MD_365_CRM.Models.Otp", b =>
@@ -64,6 +240,117 @@ namespace MD_365_CRM.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Otps");
+                });
+
+            modelBuilder.Entity("MD_365_CRM.Models.Product", b =>
+                {
+                    b.Property<Guid>("ProductId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CurrentCost")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CurrentCost_Base")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExchangeRate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsSynchronized")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Price")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Price_Base")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductStructure")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductTypeCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("QuantityOnHand")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StandardCost")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StandardCost_Base")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("StateCode")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StatusCode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StockVolume")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ValidFromDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ValidToDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("VersionNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProductId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("MD_365_CRM.Models.ProductOpportunity", b =>
+                {
+                    b.Property<Guid>("OpportunityProductId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsSynchronized")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("OpportunityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double?>("PricePerUnit")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("_opportunityId_value")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("_productId_value")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("OpportunityProductId");
+
+                    b.HasIndex("OpportunityId");
+
+                    b.ToTable("ProductOpportunities");
                 });
 
             modelBuilder.Entity("MD_365_CRM.Models.User", b =>
@@ -94,6 +381,9 @@ namespace MD_365_CRM.Migrations
 
                     b.Property<int>("Gendercode")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsSynchronized")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Jobtitle")
                         .HasColumnType("nvarchar(max)");
@@ -149,6 +439,19 @@ namespace MD_365_CRM.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("MD_365_CRM.Requests.ContactDTO", b =>
+                {
+                    b.Property<string>("emailaddress1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("firstname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("emailaddress1");
+
+                    b.ToTable("ContactDTO");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -284,6 +587,22 @@ namespace MD_365_CRM.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("MD_365_CRM.Models.Incident", b =>
+                {
+                    b.HasOne("MD_365_CRM.Requests.ContactDTO", "customerid_contact")
+                        .WithMany()
+                        .HasForeignKey("customerid_contactemailaddress1");
+
+                    b.Navigation("customerid_contact");
+                });
+
+            modelBuilder.Entity("MD_365_CRM.Models.ProductOpportunity", b =>
+                {
+                    b.HasOne("MD_365_CRM.Models.Opportunity", null)
+                        .WithMany("Product_opportunities")
+                        .HasForeignKey("OpportunityId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -333,6 +652,11 @@ namespace MD_365_CRM.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MD_365_CRM.Models.Opportunity", b =>
+                {
+                    b.Navigation("Product_opportunities");
                 });
 #pragma warning restore 612, 618
         }

@@ -36,6 +36,13 @@
             <i class="pi pi-download"></i>
             <span>Install App</span>
         </button>
+        <button
+            class="p-link layout-topbar-button add-to-btn"
+            (click)="confirmSynchronization()"
+        >
+            <i class="pi pi-sync"></i>
+            <span>Synchronize</span>
+        </button>
         <button class="p-link layout-topbar-button">
             <i class="pi pi-user"></i>
             <span>Profile</span>
@@ -50,3 +57,13 @@
         </button>
     </div>
 </div>
+
+<p-toast></p-toast>
+<p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>
+<p-blockUI [blocked]="isSynchronizing">
+    <p-progressSpinner
+        styleClass="w-4rem h-4rem"
+        strokeWidth="8"
+        animationDuration=".5s"
+    ></p-progressSpinner>
+</p-blockUI>

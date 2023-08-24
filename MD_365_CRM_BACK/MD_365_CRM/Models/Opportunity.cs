@@ -5,7 +5,7 @@
         /// <summary>
         /// Unique identifier of the opportunity.
         /// </summary>
-        public Guid? OpportunityId { get; set; }
+        public Guid OpportunityId { get; set; }
         /// <summary>
         /// Type a subject or descriptive name, such as the expected order or company name, for the opportunity.
         /// </summary>
@@ -110,6 +110,8 @@
         /// <summary>
         /// Prperties to use in GET request to Microsoft Dynamics CRM
         /// </summary>
+        public bool IsSynchronized { get; set; } = true;
+
         public static string  Properties = "name,emailaddress,estimatedclosedate,actualclosedate," +
             " estimatedvalue,actualvalue,totaltax,closeprobability,statecode,statuscode,opportunityratingcode," +
             "completeinternalreview,stepname,filedebrief,proposedsolution,customerneed," +

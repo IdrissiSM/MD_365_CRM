@@ -44,17 +44,16 @@ import { AppStateService } from './services/app-state.service';
 import { UsersComponent } from './components/users/users.component';
 import { UserDashboardComponent } from './components/dashboards/user-dashboard/user-dashboard.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
-import {VerticalBarComponent} from "./components/dashboards/admin-dashboard/charts/vertical-bar/vertical-bar.component";
-import {BubbleComponent} from "./components/dashboards/admin-dashboard/charts/bubble/bubble.component";
-import {AdminDashboardComponent} from "./components/dashboards/admin-dashboard/admin-dashboard.component";
-import {BasicComponent2} from "./components/dashboards/admin-dashboard/charts/basic2/basic.component";
-import {NgChartsModule} from "ng2-charts";
+import { VerticalBarComponent } from './components/dashboards/admin-dashboard/charts/vertical-bar/vertical-bar.component';
+import { BubbleComponent } from './components/dashboards/admin-dashboard/charts/bubble/bubble.component';
+import { AdminDashboardComponent } from './components/dashboards/admin-dashboard/admin-dashboard.component';
+import { BasicComponent2 } from './components/dashboards/admin-dashboard/charts/basic2/basic.component';
+import { NgChartsModule } from 'ng2-charts';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { UserSettingsComponent } from './components/user-settings/user-settings.component';
 import { UserSettingsDataComponent } from './components/user-settings/user-settings-data/user-settings-data.component';
 import { UserSettingsEmailComponent } from './components/user-settings/user-settings-email/user-settings-email.component';
 import { UserSettingsPasswordComponent } from './components/user-settings/user-settings-password/user-settings-password.component';
-
 
 @NgModule({
     declarations: [
@@ -88,6 +87,7 @@ import { UserSettingsPasswordComponent } from './components/user-settings/user-s
         UserSettingsDataComponent,
         UserSettingsEmailComponent,
         UserSettingsPasswordComponent,
+
     ],
     imports: [
         AppRoutingModule,
@@ -101,11 +101,11 @@ import { UserSettingsPasswordComponent } from './components/user-settings/user-s
         CommonModule,
         NgChartsModule,
         ServiceWorkerModule.register('ngsw-worker.js', {
-          enabled: !isDevMode(),
-          // Register the ServiceWorker as soon as the application is stable
-          // or after 30 seconds (whichever comes first).
-          registrationStrategy: 'registerWhenStable:30000'
-        })
+            enabled: !isDevMode(),
+            // Register the ServiceWorker as soon as the application is stable
+            // or after 30 seconds (whichever comes first).
+            registrationStrategy: 'registerWhenStable:30000',
+        }),
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
@@ -123,7 +123,11 @@ import { UserSettingsPasswordComponent } from './components/user-settings/user-s
         AppStateService,
         LoggedInGuard,
         AuthGuard,
-        { provide: HTTP_INTERCEPTORS, useClass: JWtAuthInterceptor, multi: true}
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: JWtAuthInterceptor,
+            multi: true,
+        },
     ],
     bootstrap: [AppComponent],
 })

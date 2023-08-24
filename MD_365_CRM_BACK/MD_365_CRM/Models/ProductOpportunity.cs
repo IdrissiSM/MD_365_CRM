@@ -1,10 +1,13 @@
-﻿namespace MD_365_CRM.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MD_365_CRM.Models
 {
     public class ProductOpportunity
     {
         /// <summary>
         /// Unique identifier of the ProductOpportunity.
         /// </summary>
+        [Key]
         public Guid OpportunityProductId { get; set; }
         /// <summary>
         /// Opportunity Product Name.
@@ -30,6 +33,7 @@
         /// <summary>
         /// Choose the product to include on the opportunity to link the product's pricing and other information to the opportunity.
         /// </summary>
+        public bool IsSynchronized { get; set; } = true;
         public Guid _productId_value { get; set; }
         public static string Properties = "productid,productname,priceperunit,quantity,createdon,_productid_value,_opportunityid_value";
     }

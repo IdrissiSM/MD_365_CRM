@@ -1,4 +1,6 @@
-﻿namespace MD_365_CRM.Models
+﻿using System.Numerics;
+
+namespace MD_365_CRM.Models
 {
     public class Product
     {

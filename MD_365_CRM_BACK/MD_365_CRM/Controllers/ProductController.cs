@@ -1,5 +1,6 @@
 ﻿using Azure;
 using MD_365_CRM.Models;
+using MD_365_CRM.Requests;
 using MD_365_CRM.Responses;
 using MD_365_CRM.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
@@ -62,6 +63,7 @@ namespace MD_365_CRM.Controllers
             response.Result = product;
             return Ok(response);
         }
+    
 
         [HttpGet("GetBestSellingProducts")]
         public async Task<ActionResult> GetBestSellingProducts()

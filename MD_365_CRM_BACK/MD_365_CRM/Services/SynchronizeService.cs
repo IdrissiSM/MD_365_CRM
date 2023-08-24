@@ -54,13 +54,13 @@ namespace MD_365_CRM.Services
             }
 
             // Product
-            //var UnsynchronizedProducts = _dbContext.Products.Where(p => !p.IsSynchronized).ToList();
-            //foreach (Product product in UnsynchronizedProducts)
-            //{
-            //    ProductRequest productRequest = _mapper.Map<ProductRequest>(product);
-            //    isSuccess = await _productService.UpdateProduct(product.ProductId, productRequest);
-            //    if (!isSuccess) return isSuccess;
-            //}
+            var UnsynchronizedProducts = _dbContext.Products.Where(p => !p.IsSynchronized).ToList();
+            foreach (Product product in UnsynchronizedProducts)
+            {
+                ProductRequest productRequest = _mapper.Map<ProductRequest>(product);
+                isSuccess = await _productService.UpdateProduct(product.ProductId, productRequest);
+                if (!isSuccess) return isSuccess;
+            }
             _dbContext.SaveChangesAsync();
             return isSuccess;
         }

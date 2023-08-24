@@ -10,8 +10,8 @@
         public string jobtitle { get; set; } = String.Empty;
         public Int32? gendercode { get; set; } = Int32.MinValue;
         public int? statuscode { get; set; } = 0;
-        public string secret { get; set;} = String.Empty;
+        public string secret { get; set; } = String.Empty;
         public bool IsSynchronized { get; set; } = true;
         public int[]? Image { get; set; } = null;
-
+    }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MD_365_CRM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230822134424_synchronization")]
-    partial class synchronization
+    [Migration("20230824132122_SeedRoles")]
+    partial class SeedRoles
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,53 +74,79 @@ namespace MD_365_CRM.Migrations
                     b.ToTable("BlacklistedUsers");
                 });
 
-            modelBuilder.Entity("MD_365_CRM.Models.Contact", b =>
+            modelBuilder.Entity("MD_365_CRM.Models.Incident", b =>
                 {
-                    b.Property<Guid>("contactId")
+                    b.Property<Guid>("incidentid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsSynchronized")
                         .HasColumnType("bit");
 
-                    b.Property<string>("emailaddress1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("_contactid_value")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("firstname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("_customerid_value")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("fullname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("_productid_value")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("gendercode")
+                    b.Property<int?>("caseorigincode")
                         .HasColumnType("int");
 
-                    b.Property<string>("jobtitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("lastname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("secret")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("statuscode")
+                    b.Property<int?>("casetypecode")
                         .HasColumnType("int");
 
-                    b.HasKey("contactId");
+                    b.Property<DateTimeOffset?>("createdon")
+                        .HasColumnType("datetimeoffset");
 
-                    b.ToTable("Contacts");
+                    b.Property<bool?>("customercontacted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("customerid_contactemailaddress1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset?>("deactivatedon")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("prioritycode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("productserialnumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("resolveby")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool?>("routecase")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("servicestage")
+                        .HasColumnType("int");
+
+                    b.Property<int>("statecode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ticketnumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("incidentid");
+
+                    b.HasIndex("customerid_contactemailaddress1");
+
+                    b.ToTable("Incidents");
                 });
 
             modelBuilder.Entity("MD_365_CRM.Models.Opportunity", b =>
                 {
-                    b.Property<Guid?>("OpportunityId")
+                    b.Property<Guid>("OpportunityId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -225,87 +251,72 @@ namespace MD_365_CRM.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedOn")
+                    b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CurrentCost")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CurrentCost_Base")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ExchangeRate")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsSynchronized")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Price")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Price_Base")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductStructure")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductTypeCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("QuantityOnHand")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StandardCost")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StandardCost_Base")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StateCode")
+                    b.Property<int?>("StateCode")
                         .HasColumnType("int");
 
-                    b.Property<int>("StatusCode")
+                    b.Property<int?>("StatusCode")
                         .HasColumnType("int");
 
                     b.Property<string>("StockVolume")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ValidFromDate")
+                    b.Property<DateTime?>("ValidFromDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ValidToDate")
+                    b.Property<DateTime?>("ValidToDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("VersionNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ProductId");
 
-                    b.ToTable("Product");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("MD_365_CRM.Models.ProductOpportunity", b =>
@@ -345,6 +356,24 @@ namespace MD_365_CRM.Migrations
                     b.ToTable("ProductOpportunities");
                 });
 
+            modelBuilder.Entity("MD_365_CRM.Models.ProfileImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("ImageData")
+                        .IsRequired()
+                        .HasMaxLength(4194304)
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProfileImage");
+                });
+
             modelBuilder.Entity("MD_365_CRM.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -373,6 +402,12 @@ namespace MD_365_CRM.Migrations
 
                     b.Property<int>("Gendercode")
                         .HasColumnType("int");
+
+                    b.Property<int?>("ImageId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsSynchronized")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Jobtitle")
                         .HasColumnType("nvarchar(max)");
@@ -419,6 +454,8 @@ namespace MD_365_CRM.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ImageId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -428,6 +465,19 @@ namespace MD_365_CRM.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("MD_365_CRM.Requests.ContactDTO", b =>
+                {
+                    b.Property<string>("emailaddress1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("firstname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("emailaddress1");
+
+                    b.ToTable("ContactDTO");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -563,11 +613,29 @@ namespace MD_365_CRM.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("MD_365_CRM.Models.Incident", b =>
+                {
+                    b.HasOne("MD_365_CRM.Requests.ContactDTO", "customerid_contact")
+                        .WithMany()
+                        .HasForeignKey("customerid_contactemailaddress1");
+
+                    b.Navigation("customerid_contact");
+                });
+
             modelBuilder.Entity("MD_365_CRM.Models.ProductOpportunity", b =>
                 {
                     b.HasOne("MD_365_CRM.Models.Opportunity", null)
                         .WithMany("Product_opportunities")
                         .HasForeignKey("OpportunityId");
+                });
+
+            modelBuilder.Entity("MD_365_CRM.Models.User", b =>
+                {
+                    b.HasOne("MD_365_CRM.Models.ProfileImage", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId");
+
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

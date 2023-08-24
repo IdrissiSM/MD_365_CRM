@@ -12,6 +12,24 @@ namespace MD_365_CRM.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Accounts",
+                columns: table => new
+                {
+                    accountid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    emailaddress1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    entityimage_url = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    revenue = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    statecode = table.Column<int>(type: "int", nullable: true),
+                    IsSynchronized = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Accounts", x => x.accountid);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -39,6 +57,50 @@ namespace MD_365_CRM.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ContactDTO",
+                columns: table => new
+                {
+                    emailaddress1 = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    firstname = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContactDTO", x => x.emailaddress1);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Opportunities",
+                columns: table => new
+                {
+                    OpportunityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EstimatedValue = table.Column<double>(type: "float", nullable: true),
+                    ActualValue = table.Column<double>(type: "float", nullable: true),
+                    EstimatedCloseDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ActualCloseDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CloseProbability = table.Column<int>(type: "int", nullable: true),
+                    StatusCode = table.Column<int>(type: "int", nullable: true),
+                    StateCode = table.Column<int>(type: "int", nullable: true),
+                    OpportunityRatingCode = table.Column<int>(type: "int", nullable: true),
+                    CompleteInternalReview = table.Column<bool>(type: "bit", nullable: true),
+                    StepName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProposedSolution = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CustomerNeed = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CurrentSituation = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    _parentAccountId_value = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    _parentContactId_value = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsSynchronized = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Opportunities", x => x.OpportunityId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Otps",
                 columns: table => new
                 {
@@ -52,6 +114,38 @@ namespace MD_365_CRM.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Otps", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductStructure = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price_Base = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductTypeCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    QuantityOnHand = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StandardCost = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CurrentCost = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CurrentCost_Base = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StandardCost_Base = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StateCode = table.Column<int>(type: "int", nullable: true),
+                    StatusCode = table.Column<int>(type: "int", nullable: true),
+                    StockVolume = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ExchangeRate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VersionNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ValidFromDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsSynchronized = table.Column<bool>(type: "bit", nullable: false),
+                    ValidToDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.ProductId);
                 });
 
             migrationBuilder.CreateTable(
@@ -89,6 +183,65 @@ namespace MD_365_CRM.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Incidents",
+                columns: table => new
+                {
+                    incidentid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    servicestage = table.Column<int>(type: "int", nullable: true),
+                    resolveby = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    statecode = table.Column<int>(type: "int", nullable: false),
+                    caseorigincode = table.Column<int>(type: "int", nullable: true),
+                    casetypecode = table.Column<int>(type: "int", nullable: true),
+                    productserialnumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    createdon = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    customercontacted = table.Column<bool>(type: "bit", nullable: true),
+                    _contactid_value = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    _productid_value = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    _customerid_value = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ticketnumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    deactivatedon = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    routecase = table.Column<bool>(type: "bit", nullable: true),
+                    prioritycode = table.Column<int>(type: "int", nullable: true),
+                    customerid_contactemailaddress1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    IsSynchronized = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Incidents", x => x.incidentid);
+                    table.ForeignKey(
+                        name: "FK_Incidents_ContactDTO_customerid_contactemailaddress1",
+                        column: x => x.customerid_contactemailaddress1,
+                        principalTable: "ContactDTO",
+                        principalColumn: "emailaddress1");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductOpportunities",
+                columns: table => new
+                {
+                    OpportunityProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PricePerUnit = table.Column<double>(type: "float", nullable: true),
+                    Quantity = table.Column<double>(type: "float", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    _opportunityId_value = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsSynchronized = table.Column<bool>(type: "bit", nullable: false),
+                    _productId_value = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OpportunityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductOpportunities", x => x.OpportunityProductId);
+                    table.ForeignKey(
+                        name: "FK_ProductOpportunities_Opportunities_OpportunityId",
+                        column: x => x.OpportunityId,
+                        principalTable: "Opportunities",
+                        principalColumn: "OpportunityId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
@@ -99,6 +252,7 @@ namespace MD_365_CRM.Migrations
                     Jobtitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gendercode = table.Column<int>(type: "int", nullable: false),
                     Statecode = table.Column<int>(type: "int", nullable: false),
+                    IsSynchronized = table.Column<bool>(type: "bit", nullable: false),
                     ImageId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -253,11 +407,24 @@ namespace MD_365_CRM.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Incidents_customerid_contactemailaddress1",
+                table: "Incidents",
+                column: "customerid_contactemailaddress1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductOpportunities_OpportunityId",
+                table: "ProductOpportunities",
+                column: "OpportunityId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Accounts");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -277,13 +444,28 @@ namespace MD_365_CRM.Migrations
                 name: "BlacklistedUsers");
 
             migrationBuilder.DropTable(
+                name: "Incidents");
+
+            migrationBuilder.DropTable(
                 name: "Otps");
+
+            migrationBuilder.DropTable(
+                name: "ProductOpportunities");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "ContactDTO");
+
+            migrationBuilder.DropTable(
+                name: "Opportunities");
 
             migrationBuilder.DropTable(
                 name: "ProfileImage");

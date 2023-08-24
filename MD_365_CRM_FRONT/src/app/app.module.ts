@@ -54,6 +54,7 @@ import { UserSettingsComponent } from './components/user-settings/user-settings.
 import { UserSettingsDataComponent } from './components/user-settings/user-settings-data/user-settings-data.component';
 import { UserSettingsEmailComponent } from './components/user-settings/user-settings-email/user-settings-email.component';
 import { UserSettingsPasswordComponent } from './components/user-settings/user-settings-password/user-settings-password.component';
+import { SynchronizeService } from './services/synchronize.service';
 
 @NgModule({
     declarations: [
@@ -120,6 +121,7 @@ import { UserSettingsPasswordComponent } from './components/user-settings/user-s
         MessageService,
         DialogService,
         AuthenticationService,
+        SynchronizeService,
         AppStateService,
         LoggedInGuard,
         AuthGuard,

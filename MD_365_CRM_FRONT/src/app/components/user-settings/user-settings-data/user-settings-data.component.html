@@ -4,7 +4,7 @@
       width="150"></p-image>
     <p-toast></p-toast>
     <p-fileUpload #fileUpload class="flex flex-wrap justify-content-center align-content-center" name="myfile[]" mode="basic" chooseLabel="Upload new" [customUpload]="true" (uploadHandler)="uploadImage($event)" accept="image/*" [maxFileSize]="1000000"></p-fileUpload>
-    <p-button class="flex flex-wrap justify-content-center align-content-center" label="Delete Avatar"></p-button>
+    <p-button styleClass="p-button-outlined" class="flex flex-wrap justify-content-center align-content-center" label="Delete Avatar"></p-button>
   </div>
   <form [formGroup]="userInfoForm" (ngSubmit)="submit()" class="w-full mt-5">
     <div class="flex flex-column w-full">

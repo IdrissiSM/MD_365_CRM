@@ -4,6 +4,7 @@ import { LayoutService } from './service/app.layout.service';
 import { AppStateService } from '../services/app-state.service';
 import jwt_decode from 'jwt-decode';
 import { Contact } from '../Models/Contact';
+import { AuthenticationService } from '../services/Authentication.service';
 
 
 
@@ -16,16 +17,19 @@ export class AppMenuComponent implements OnInit {
     role = '';
     decodedJWT: any;
     authState!: any;
+    profileImage: string | null = null;
 
     constructor(
         public layoutService: LayoutService,
-        private appStateService: AppStateService
+        private appStateService: AppStateService,
+        private authService: AuthenticationService,
+        private appState: AppStateService
     ) {
         // this.role = this.appStateService.authState.roles;
         // console.log(this.role === 'Admin');
-        this.decodedJWT= jwt_decode(this.appStateService.authState.token);
+        this.decodedJWT = jwt_decode(this.appStateService.authState.token);
         this.role = this.decodedJWT.roles;
-        
+
     }
 
     ngOnInit() {
@@ -35,15 +39,15 @@ export class AppMenuComponent implements OnInit {
         this.model = [
             this.role === 'Admin'
                 ? {
-                      label: 'Dashboard',
-                      items: [
-                          {
-                              label: 'Dashboard',
-                              icon: 'pi pi-fw pi-home',
-                              routerLink: ['/admin-dashboard'],
-                          },
-                      ],
-                  }
+                    label: 'Dashboard',
+                    items: [
+                        {
+                            label: 'Dashboard',
+                            icon: 'pi pi-fw pi-home',
+                            routerLink: ['/admin-dashboard'],
+                        },
+                    ],
+                }
                 : {
                     label: 'Dashboard',
                     items: [
@@ -86,18 +90,40 @@ export class AppMenuComponent implements OnInit {
             },
             this.role === 'Admin'
                 ? {
-                      label: 'Users',
-                      items: [
-                          {
-                              label: 'Users',
-                              icon: 'pi pi-fw pi-users',
-                              routerLink: ['/users'],
-                          },
-                      ],
-                  }
+                    label: 'Users',
+                    items: [
+                        {
+                            label: 'Users',
+                            icon: 'pi pi-fw pi-users',
+                            routerLink: ['/users'],
+                        },
+                    ],
+                }
                 : null,
-            
-            
+
+
         ];
+
+        this.authService.retrieveUserData(
+            {
+                email: this.appState.authState.email,
+            }
+        ).subscribe((contact: Contact) => {
+
+
+            this.appState.contact = contact;
+
+            this.profileImage = contact.image ? URL.createObjectURL(new Blob([new Uint8Array(contact.image)], { type: 'image/png' })) : null;
+
+            console.log(`image: ${this.profileImage}`)
+
+
+        }, (error) => {
+
+            console.log(`failed to retrieve data`);
+            console.log(error);
+
+        })
     }
 }
+

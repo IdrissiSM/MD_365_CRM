@@ -143,7 +143,7 @@ namespace MD_365_CRM.Migrations
 
             modelBuilder.Entity("MD_365_CRM.Models.Opportunity", b =>
                 {
-                    b.Property<Guid?>("OpportunityId")
+                    b.Property<Guid>("OpportunityId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -263,7 +263,7 @@ namespace MD_365_CRM.Migrations
                     b.Property<string>("ExchangeRate")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("IsSynchronized")
+                    b.Property<bool>("IsSynchronized")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -353,6 +353,24 @@ namespace MD_365_CRM.Migrations
                     b.ToTable("ProductOpportunities");
                 });
 
+            modelBuilder.Entity("MD_365_CRM.Models.ProfileImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("ImageData")
+                        .IsRequired()
+                        .HasMaxLength(4194304)
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProfileImage");
+                });
+
             modelBuilder.Entity("MD_365_CRM.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -380,6 +398,9 @@ namespace MD_365_CRM.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Gendercode")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ImageId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsSynchronized")
@@ -429,6 +450,8 @@ namespace MD_365_CRM.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -601,6 +624,15 @@ namespace MD_365_CRM.Migrations
                     b.HasOne("MD_365_CRM.Models.Opportunity", null)
                         .WithMany("Product_opportunities")
                         .HasForeignKey("OpportunityId");
+                });
+
+            modelBuilder.Entity("MD_365_CRM.Models.User", b =>
+                {
+                    b.HasOne("MD_365_CRM.Models.ProfileImage", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId");
+
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

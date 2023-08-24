@@ -24,5 +24,9 @@ namespace MD_365_CRM.Services.IServices
         Task<Contact> UpdateProfile(UpdateProfileRequest updateProfile);
 
         Task<APIResponse> ChangePassword(ChangePasswordRequest changePassword);
+
+        Task<APIResponse> AddProfileImage(AddProfileImageRequest addProfileImage);
+
+        Task<Contact> RetrieveUserData(RetrieveProfileDataRequest retriveProfileData);
     }
 }

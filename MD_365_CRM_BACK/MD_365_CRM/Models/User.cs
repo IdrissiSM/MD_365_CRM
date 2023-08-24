@@ -15,5 +15,7 @@ namespace MD_365_CRM.Models
         public int Gendercode { get; set; }
         public int Statecode { get; set; }
         public bool IsSynchronized { get; set; } = true;
+        public ProfileImage? Image { get; set; } = null;
+
     }
 }

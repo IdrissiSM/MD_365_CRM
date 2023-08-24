@@ -6,6 +6,7 @@ using MD_365_CRM.Responses;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Win32;
+using Microsoft.AspNetCore.Authorization;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -300,6 +301,7 @@ namespace MD_365_CRM.Controllers
 
         }
 
+        [Authorize(Roles = "Admin,Userk")]
         [HttpPost("update_user_profile")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
@@ -318,7 +320,9 @@ namespace MD_365_CRM.Controllers
             return Ok(contact);
         }
 
+        [Authorize(Roles = "Admin,User")]
         [HttpPost("change_password")]
+        [ProducesResponseType(200, Type = typeof(APIResponse))]
         [ProducesResponseType(204, Type = typeof(APIResponse))]
         [ProducesResponseType(400, Type = typeof(APIResponse))]
         [ProducesResponseType(404, Type = typeof(APIResponse))]
@@ -331,6 +335,37 @@ namespace MD_365_CRM.Controllers
             {
                 StatusCode = (int)response.httpStatusCode
             };
+        }
+
+        [Authorize(Roles = "Admin,User")]
+        [HttpPost("user/image")]
+        [ProducesResponseType(200, Type = typeof(APIResponse))]
+        [ProducesResponseType(204, Type = typeof(APIResponse))]
+        [ProducesResponseType(400, Type = typeof(APIResponse))]
+        [ProducesResponseType(404, Type = typeof(APIResponse))]
+        [ProducesResponseType(500, Type = typeof(APIResponse))]
+        public async Task<ActionResult<APIResponse>> AddProfileImage([FromBody] AddProfileImageRequest addProfileImage)
+        {
+
+            Console.WriteLine($"email: {addProfileImage.Email} ImageData: {addProfileImage.ImageData}");
+            var response = await _authService.AddProfileImage(addProfileImage);
+
+            return new ObjectResult(response);
+        }
+
+        [Authorize(Roles = "Admin,User")]
+        [HttpPost("user/data")]
+        [ProducesResponseType(200, Type = typeof(Contact))]
+        [ProducesResponseType(400, Type = typeof(Contact))]
+        [ProducesResponseType(404, Type = typeof(Contact))]
+        [ProducesResponseType(500, Type = typeof(Contact))]
+        public async Task<ActionResult<Contact>> RetrieveUserData([FromBody] RetrieveProfileDataRequest retriveProfileData)
+        {
+            var contact = await _authService.RetrieveUserData(retriveProfileData);
+
+            if (contact is null) return StatusCode(500, "Try later.");
+
+            return contact;
         }
     }
 

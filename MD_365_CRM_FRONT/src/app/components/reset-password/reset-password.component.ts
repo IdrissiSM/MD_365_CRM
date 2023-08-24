@@ -18,7 +18,7 @@ export class ResetPasswordComponent implements OnInit {
   contact: Contact = {
     firstname: "Dan",
     lastname: "Bravo",
-    username: "danbravo",
+    fullname: "danbravo",
     emailaddress1: "danbravo.business@loftx.net",
     contactid: "325e156236",
     statuscode: 1,

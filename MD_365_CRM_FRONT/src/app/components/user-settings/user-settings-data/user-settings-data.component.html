@@ -1,8 +1,9 @@
 <div class="flex flex-column w-full">
   <div class="flex flex-column justify-content-center sm:justify-content-start sm:flex-row gap-3 sm:gap-5 align-content-center">
-    <p-image src="../../../../assets/images/avatar.jpg" imageClass="border-circle" class="flex flex-wrap justify-content-center align-content-center" height="150"
+    <p-image src="{{profileImage ?? '../../../../assets/images/avatar.jpg'}}" imageClass="border-circle" class="flex flex-wrap justify-content-center align-content-center" height="150"
       width="150"></p-image>
-    <p-button class="flex flex-wrap justify-content-center align-content-center" label="Upload new"></p-button>
+    <p-toast></p-toast>
+    <p-fileUpload #fileUpload class="flex flex-wrap justify-content-center align-content-center" name="myfile[]" mode="basic" chooseLabel="Upload new" [customUpload]="true" (uploadHandler)="uploadImage($event)" accept="image/*" [maxFileSize]="1000000"></p-fileUpload>
     <p-button class="flex flex-wrap justify-content-center align-content-center" label="Delete Avatar"></p-button>
   </div>
   <form [formGroup]="userInfoForm" (ngSubmit)="submit()" class="w-full mt-5">

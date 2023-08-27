@@ -19,11 +19,11 @@ namespace MD_365_CRM.Controllers
             _synchronizeService = synchronizeService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<APIResponse>> SynchronizeAsync()
+        [HttpGet("{contactId}")]
+        public async Task<ActionResult<APIResponse>> SynchronizeAsync(Guid contactId)
         {
             APIResponse response = new();
-            var isSuccess = await _synchronizeService.SynchronizeAsync();
+            var isSuccess = await _synchronizeService.SynchronizeAsync(contactId);
             if (!isSuccess)
             {
                 response.httpStatusCode = HttpStatusCode.BadRequest;

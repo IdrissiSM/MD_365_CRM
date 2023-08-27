@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Win32;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -312,6 +313,12 @@ namespace MD_365_CRM.Controllers
         [ProducesResponseType(500)]
         public async Task<ActionResult<Contact>> UpdateProfile([FromBody] UpdateProfileRequest updateProfile)
         {
+            if (!ModelState.IsValid) return BadRequest(new APIResponse
+            {
+                Success = false,
+                ErrorMessages = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage)).ToList()
+            });
+
             Contact? contact = await _authService.UpdateProfile(updateProfile);
 
             if (contact is null)
@@ -329,6 +336,12 @@ namespace MD_365_CRM.Controllers
         [ProducesResponseType(500, Type = typeof(APIResponse))]
         public async Task<ActionResult<APIResponse>> ChangePassword([FromBody] ChangePasswordRequest changePassword)
         {
+            if (!ModelState.IsValid) return BadRequest(new APIResponse
+            {
+                Success = false,
+                ErrorMessages = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage)).ToList()
+            });
+
             var response = await _authService.ChangePassword(changePassword);
 
             return new ObjectResult(response)
@@ -346,6 +359,11 @@ namespace MD_365_CRM.Controllers
         [ProducesResponseType(500, Type = typeof(APIResponse))]
         public async Task<ActionResult<APIResponse>> AddProfileImage([FromBody] AddProfileImageRequest addProfileImage)
         {
+            if (!ModelState.IsValid) return BadRequest(new APIResponse
+            {
+                Success = false,
+                ErrorMessages = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage)).ToList()
+            });
 
             Console.WriteLine($"email: {addProfileImage.Email} ImageData: {addProfileImage.ImageData}");
             var response = await _authService.AddProfileImage(addProfileImage);
@@ -361,12 +379,39 @@ namespace MD_365_CRM.Controllers
         [ProducesResponseType(500, Type = typeof(Contact))]
         public async Task<ActionResult<Contact>> RetrieveUserData([FromBody] RetrieveProfileDataRequest retriveProfileData)
         {
+            if (!ModelState.IsValid) return BadRequest(new APIResponse
+            {
+                Success = false,
+                ErrorMessages = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage)).ToList()
+            });
+
             var contact = await _authService.RetrieveUserData(retriveProfileData);
 
             if (contact is null) return StatusCode(500, "Try later.");
 
             return contact;
         }
+
+        [Authorize(Roles = "Admin,User")]
+        [HttpDelete("user/image")]
+        [ProducesResponseType(200, Type=typeof(APIResponse))]
+        [ProducesResponseType(404, Type = typeof(APIResponse))]
+        [ProducesResponseType(400, Type = typeof(APIResponse))]
+        [ProducesResponseType(500, Type = typeof(APIResponse))]
+        public async Task<ActionResult<APIResponse>> DeleteProfileImage([FromBody] RetrieveProfileDataRequest emailHolder)
+        {
+
+            if (!ModelState.IsValid) return BadRequest(new APIResponse
+            {
+                Success = false,
+                ErrorMessages = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage)).ToList()
+            });
+
+            var response = await _authService.DeleteProfileImage(emailHolder);
+            
+            return new ObjectResult(response);
+        }
+
     }
 
 }

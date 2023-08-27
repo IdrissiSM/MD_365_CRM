@@ -28,5 +28,7 @@ namespace MD_365_CRM.Services.IServices
         Task<APIResponse> AddProfileImage(AddProfileImageRequest addProfileImage);
 
         Task<Contact> RetrieveUserData(RetrieveProfileDataRequest retriveProfileData);
+
+        Task<APIResponse> DeleteProfileImage(RetrieveProfileDataRequest emailHolder);
     }
 }

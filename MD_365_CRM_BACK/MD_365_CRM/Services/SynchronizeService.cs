@@ -4,7 +4,9 @@ using MD_365_CRM.CRM;
 using MD_365_CRM.Models;
 using MD_365_CRM.Requests;
 using MD_365_CRM.Services.IServices;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace MD_365_CRM.Services
 {
@@ -31,7 +33,7 @@ namespace MD_365_CRM.Services
             baseUrl = $"{_configuration.GetValue<string>("DynamicsCrmSettings:Scope")}/api/data/v9.2";
         }
 
-        async public Task<bool> SynchronizeAsync()
+        async public Task<bool> SynchronizeAsync(Guid contactId)
         {
             // Opportunity
             var UnsynchronizedOpportunities = _dbContext.Opportunities.Where(opportunity => !opportunity.IsSynchronized).ToList();
@@ -61,8 +63,44 @@ namespace MD_365_CRM.Services
             //    isSuccess = await _productService.UpdateProduct(product.ProductId, productRequest);
             //    if (!isSuccess) return isSuccess;
             //}
-            _dbContext.SaveChangesAsync();
-            return isSuccess;
+
+            User user = _dbContext.Users.SingleOrDefault(user => user.ContactId == contactId);
+
+            HttpResponseMessage response = null;
+
+            if (user is not null && !user.IsSynchronized)
+            {
+
+                var body = new
+                {
+                    statuscode = user.Statecode,
+                    gendercode = user.Gendercode,
+                    jobtitle = user.Jobtitle,
+                    emailaddress1 = user.Email,
+                    lastname = user.Lastname,
+                    firstname = user.Firstname,
+                    fullname = user.UserName,
+                    contactid = user.ContactId,
+                };
+
+                string accessToken = await dynamicsCRM.GetAccessTokenAsync();
+
+                response = await dynamicsCRM.CrmRequest(
+                    httpMethod: HttpMethod.Patch,
+                    accessToken: accessToken,
+                    requestUri: $"{_configuration.GetValue<string>("DynamicsCrmSettings:Scope")}/api/data/v9.2/contacts({contactId})",
+                    body: JsonConvert.SerializeObject(body));
+
+                Console.WriteLine("response: "+ accessToken);
+            }
+
+            if (response != null && response.IsSuccessStatusCode) user!.IsSynchronized = true;
+
+            user.IsSynchronized = true;
+
+            _dbContext.SaveChanges();
+
+            return isSuccess && user.IsSynchronized || (response != null && response.IsSuccessStatusCode);
         }
     }
 }

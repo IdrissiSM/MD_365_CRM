@@ -83,7 +83,8 @@ namespace MD_365_CRM.Services
                 Gendercode = request.Gendercode,
                 Statecode = request.Statecode,
                 ContactId = contact.contactId,
-                UserName = request.Username
+                UserName = request.Username,
+                IsSynchronized = false
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
@@ -367,6 +368,8 @@ namespace MD_365_CRM.Services
 
             user.Gendercode = updateProfile.GenderCode;
 
+            user.IsSynchronized = false;
+
             var updateResult = await _userManager.UpdateAsync(user);
 
             if (!updateResult.Succeeded)
@@ -490,6 +493,43 @@ namespace MD_365_CRM.Services
                 Image = user.Image?.ImageData.Select(i => (int)i).ToArray(),
                 jobtitle = user.Jobtitle
             };
+        }
+
+        public async Task<APIResponse> DeleteProfileImage(RetrieveProfileDataRequest emailHolder)
+        {
+            var user = await context.Users.Include(u => u.Image).SingleOrDefaultAsync(user => user.Email == emailHolder.Email);
+
+            if (user is null) return new APIResponse()
+            {
+                Success = false,
+                httpStatusCode = System.Net.HttpStatusCode.NotFound,
+                ErrorMessages = new List<string>() { "User not found. Please log out." },
+            };
+
+            if (user.Image == null) return new APIResponse()
+            {
+                Success = true,
+                httpStatusCode = System.Net.HttpStatusCode.NoContent,
+                ErrorMessages = new List<string>() { "No profile image was found" },
+            };
+
+            user.Image = null;
+
+            var success = await context.SaveChangesAsync() > 0;
+
+            if (!success) return new APIResponse()
+            {
+                Success = false,
+                httpStatusCode = System.Net.HttpStatusCode.InternalServerError,
+                ErrorMessages = new List<string>() { "Service not available. Try later." },
+            };
+
+            return new APIResponse()
+            {
+                Success = true,
+                httpStatusCode = System.Net.HttpStatusCode.OK
+            };
+
         }
     }
 }

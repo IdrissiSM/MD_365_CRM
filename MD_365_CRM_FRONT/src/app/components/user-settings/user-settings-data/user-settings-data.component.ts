@@ -26,15 +26,15 @@ export class UserSettingsDataComponent implements OnInit {
   inputsDisabled = false;
 
   contact: Contact = {
-    firstname: "Brahim",
-    lastname: "BAHI",
-    fullname: "bahiibrahim",
-    emailaddress1: "brahim.bahi@ump.ac.ma",
-    contactid: "789ee997-0f32-ee11-bdf4-6045bd905df9",
+    firstname: "",
+    lastname: "",
+    fullname: "",
+    emailaddress1: "",
+    contactid: "",
     statuscode: 1,
     gendercode: 1,
-    jobtitle: "ceo",
-    secret: "none"
+    jobtitle: "",
+    secret: ""
   };
 
   genderOptions = [
@@ -57,18 +57,7 @@ export class UserSettingsDataComponent implements OnInit {
       });
   }
 
-  dataChanged: ValidatorFn = (control: AbstractControl) => {
-
-    if (
-      control.get('firstName')?.value !== this.contact.firstname ||
-      control.get('lastName')?.value !== this.contact.lastname ||
-      control.get('username')?.value !== this.contact.fullname ||
-      control.get('jobTitle')?.value !== this.contact.jobtitle ||
-      control.get('gender')?.value !== (this.contact.gendercode === 1 ? 'Male' : 'Female')
-    ) return null;
-
-    return { noChange: true };
-  };
+  
 
   ngOnInit(): void {
 
@@ -92,6 +81,8 @@ export class UserSettingsDataComponent implements OnInit {
 
       this.appState.contact = this.contact = contact;
 
+      console.log(this.contact);
+
       this.profileImage = contact.image ? URL.createObjectURL(new Blob([new Uint8Array(contact.image)], { type: 'image/png' })) : null;
 
       console.log(`image: ${this.profileImage}`)
@@ -110,6 +101,19 @@ export class UserSettingsDataComponent implements OnInit {
 
     })
   }
+
+  dataChanged: ValidatorFn = (control: AbstractControl) => {
+
+    if (
+      control.get('firstName')?.value !== this.contact.firstname ||
+      control.get('lastName')?.value !== this.contact.lastname ||
+      control.get('username')?.value !== this.contact.fullname ||
+      control.get('jobTitle')?.value !== this.contact.jobtitle ||
+      control.get('gender')?.value !== (this.contact.gendercode === 1 ? 'Male' : 'Female')
+    ) return null;
+
+    return { noChange: true };
+  };
 
   async fileToUint8Array(file: File): Promise<Uint8Array> {
     return new Promise((resolve, reject) => {
@@ -134,6 +138,7 @@ export class UserSettingsDataComponent implements OnInit {
   }
 
   async uploadImage(event: any) {
+    console.log('upload image reached')
     const uploadedFile: File = event.files[0];
 
     this.fileUpload.clear();
@@ -146,7 +151,13 @@ export class UserSettingsDataComponent implements OnInit {
       return;
     }
 
-
+    const maxSize = 4 * 1024 * 1024; // 4 MB in bytes
+    if (uploadedFile.size > maxSize) {
+        this.messageService.add({ severity: 'error', summary: 'Failed to upload', detail: 'Image size exceeds 4MB' });
+        console.log('Uploaded image size exceeds 4MB.');
+        this.fileUpload.clear();
+        return;
+    }
 
     this.authService.addProfileImage(
       {
@@ -158,6 +169,7 @@ export class UserSettingsDataComponent implements OnInit {
     ).subscribe((response) => {
       console.log(response);
       this.messageService.add({ severity: 'success', summary: 'Profile image', detail: 'Uploaded successfully' });
+      location.reload();
     }, (error) => {
       console.log(error);
     })
@@ -170,6 +182,18 @@ export class UserSettingsDataComponent implements OnInit {
 
   deleteAvatar() {
 
+    this.authService.deleteProfileImage(
+      {
+        email: this.appState.authState.email
+      }
+    ).subscribe((reponse) => {
+      console.log(reponse);
+      location.reload();
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Image deleted successfully' });
+    }, (error) => {
+      console.log(error);
+      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Deletion failed due to internal' });
+    })
   }
 
   submit() {
@@ -186,7 +210,7 @@ export class UserSettingsDataComponent implements OnInit {
         lastName: this.userInfoForm.get('lastName')!.value,
         email: this.contact.emailaddress1,
         jobTitle: this.userInfoForm.get('jobTitle')!.value,
-        genderCode: this.userInfoForm.get('gender')!.value == 'Male' ? 1 : 0,
+        genderCode: this.userInfoForm.get('gender')!.value == 'Male' ? 1 : 2,
         contactId: this.contact.contactid
       }
     ).subscribe((contact) => {
@@ -197,7 +221,7 @@ export class UserSettingsDataComponent implements OnInit {
 
       this.contact = contact;
       console.log(contact);
-      this.loading = true;
+      this.loading = false;
     }, (error) => {
       console.log(error);
     })

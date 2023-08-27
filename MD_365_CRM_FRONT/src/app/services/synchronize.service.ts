@@ -11,7 +11,7 @@ export class SynchronizeService {
 
     constructor(private http: HttpClient) {}
 
-    synchronize() {
-        return this.http.get<APIResponse>(`${this.apiUrl}/Synchronize`);
+    synchronize(contactId: string) {
+        return this.http.get<APIResponse>(`${this.apiUrl}/Synchronize/${contactId}`);
     }
 }

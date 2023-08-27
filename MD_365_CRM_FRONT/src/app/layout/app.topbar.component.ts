@@ -72,7 +72,7 @@ export class AppTopBarComponent {
     isSynchronizing: boolean = false;
     synchronize() {
         this.synchronizeService
-            .synchronize()
+            .synchronize(this.appState.authState.contactId)
             .subscribe((response: APIResponse) => {
                 if (response.success) {
                     this.messageService.add({
@@ -81,7 +81,22 @@ export class AppTopBarComponent {
                         detail: 'Synchronized successfully !',
                     });
                     this.isSynchronizing = false;
+                } else {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Failed',
+                        detail: 'Synchronization failed !',
+                    });
+                    this.isSynchronizing = false;
                 }
+            }, (error) => {
+                console.log(error);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Failed',
+                    detail: 'Synchronization failed !',
+                });
+                this.isSynchronizing = false;
             });
     }
 

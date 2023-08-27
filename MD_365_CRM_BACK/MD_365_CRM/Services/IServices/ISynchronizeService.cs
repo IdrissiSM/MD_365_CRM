@@ -2,6 +2,6 @@
 {
     public interface ISynchronizeService
     {
-        Task<bool> SynchronizeAsync();
+        Task<bool> SynchronizeAsync(Guid contactId);
     }
 }

@@ -1,10 +1,12 @@
 <div class="flex flex-column w-full">
   <div class="flex flex-column justify-content-center sm:justify-content-start sm:flex-row gap-3 sm:gap-5 align-content-center">
-    <p-image src="{{profileImage ?? '../../../../assets/images/avatar.jpg'}}" imageClass="border-circle" class="flex flex-wrap justify-content-center align-content-center" height="150"
+    <p-image src="{{profileImage ?? '../../../../assets/images/avatar.jpg'}}" imageClass="border-circle" class="flex bg-cover bg-center flex-wrap justify-content-center align-content-center" height="150"
       width="150"></p-image>
     <p-toast></p-toast>
-    <p-fileUpload #fileUpload class="flex flex-wrap justify-content-center align-content-center" name="myfile[]" mode="basic" chooseLabel="Upload new" [customUpload]="true" (uploadHandler)="uploadImage($event)" accept="image/*" [maxFileSize]="1000000"></p-fileUpload>
-    <p-button styleClass="p-button-outlined" class="flex flex-wrap justify-content-center align-content-center" label="Delete Avatar"></p-button>
+    <div class="flex flex-wrap justify-content-center align-content-center">
+      <p-fileUpload #fileUpload class="flex align-items-center justify-content-center" name="myfile[]" mode="basic" chooseLabel="Upload new" [customUpload]="true" (uploadHandler)="uploadImage($event)" accept="image/*" uploadLabel="image.img"></p-fileUpload>
+    </div>
+    <p-button styleClass="p-button-outlined" (onClick)="deleteAvatar()" class="flex flex-wrap justify-content-center align-content-center" label="Delete Avatar"></p-button>
   </div>
   <form [formGroup]="userInfoForm" (ngSubmit)="submit()" class="w-full mt-5">
     <div class="flex flex-column w-full">
@@ -49,8 +51,8 @@
         </div>
       </div>
       <label for="gender" class="block text-900 text-lg sm:text-xl font-medium mb-2">Gender</label>
-      <p-dropdown id="gender" [options]="genderOptions" formControlName="gender" optionLabel="label"
-        styleClass="w-auto sm:w-full md:w-15rem"></p-dropdown>
+      <p-dropdown id="gender" [options]="genderOptions" formControlName="gender" optionLabel="label" optionValue="value"
+        styleClass="w-auto sm:w-full md:w-15rem" ></p-dropdown>
       <small id="gender-help" class="text-red-600 block mb-3">
         {{userInfoForm.get('gender')!.hasError('required') ? 'Precise your gender please' : ''}}
       </small>

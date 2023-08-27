@@ -60,4 +60,8 @@ export class AuthenticationService {
   retrieveUserData(retrieveProfileDataRequest: RetrieveProfileDataRequest): Observable<Contact> {
     return this.http.post<Contact>(`${this.apiUrl}/Auth/user/data`, retrieveProfileDataRequest);
   }
+
+  deleteProfileImage(emailHolder: RetrieveProfileDataRequest): Observable<APIResponse> {
+    return this.http.delete<APIResponse>(`${this.apiUrl}/Auth/user/image`, { body: emailHolder });
+  }
 }

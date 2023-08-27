@@ -15,7 +15,7 @@ export class ProductService {
         private http: HttpClient,
         private appStateService: AppStateService
     ) {
-        this.contactId = this.appStateService.authState.contactid;
+        this.contactId = this.appStateService.authState.contactId;
     }
 
     getAllProducts() {

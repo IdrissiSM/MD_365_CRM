@@ -101,6 +101,7 @@ namespace MD_365_CRM.Services
             _dbContext.SaveChanges();
 
             return isSuccess && user.IsSynchronized || (response != null && response.IsSuccessStatusCode);
+
         }
     }
 }

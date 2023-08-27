@@ -1,21 +1,22 @@
-﻿namespace MD_365_CRM.Requests
+﻿using System.Numerics;
+
+namespace MD_365_CRM.Requests
 {
     public class ProductRequest
     {
-        public string? ProductNumber { get; set; } = string.Empty;
-        public string? Name { get; set; }
-        public string? Description { get; set; }
-        public string? ProductStructure { get; set; }
-        public string? Price { get; set; }
-        public string? Price_Base { get; set; }
-        public string? ProductTypeCode { get; set; }
-        public string? QuantityOnHand { get; set; }
-        public string? StandardCost { get; set; }
-        public string? CurrentCost { get; set; }
-        public string? CurrentCost_Base { get; set; }
-        public string? StandardCost_Base { get; set; }
-        public string? StockVolume { get; set; }
-        public string? ExchangeRate { get; set; }
-        public string? VersionNumber { get; set; }
+        public string? productnumber { get; set; } = string.Empty;
+        public string? name { get; set; }
+        public string? description { get; set; }
+        public string? productstructure { get; set; }
+        public double? price { get; set; }
+        public double? price_base { get; set; }
+        public int? producttypecode { get; set; }
+        public double? quantityonhand { get; set; }
+        public double? standardcost { get; set; }
+        public double? currentcost { get; set; }
+        public double? currentcost_base { get; set; }
+        public double? standardcost_base { get; set; }
+        public double? stockvolume { get; set; }
+        public double? exchangerate { get; set; }
     }
 }

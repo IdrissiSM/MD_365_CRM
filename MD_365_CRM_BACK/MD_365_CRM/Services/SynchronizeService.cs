@@ -33,20 +33,104 @@ namespace MD_365_CRM.Services
             baseUrl = $"{_configuration.GetValue<string>("DynamicsCrmSettings:Scope")}/api/data/v9.2";
         }
 
-        async public Task<bool> SynchronizeAsync(Guid contactId)
+        //async public Task<bool> SynchronizeAsync(Guid contactId)
+        //{
+        //    // Opportunity
+        //    var UnsynchronizedOpportunities = _dbContext.Opportunities.Where(opportunity => !opportunity.IsSynchronized).ToList();
+        //    var isSuccess = true;
+        //    foreach(Opportunity opportunity in UnsynchronizedOpportunities){
+        //        OpportunityRequest opportunityRequest = _mapper.Map<OpportunityRequest>(opportunity);
+        //        isSuccess = await _opportunityService.UpdateOpportunity(opportunity.OpportunityId, opportunityRequest);
+        //        opportunity.IsSynchronized = isSuccess;
+        //        if (!isSuccess) return isSuccess;
+        //    }
+
+        //    // Incident
+        //    var UnsynchronizedIncidents = _dbContext.Incidents.Where(inc => !inc.IsSynchronized).ToList();
+        //    foreach (Incident incident in UnsynchronizedIncidents)
+        //    {
+        //        IncidentRequest incidentRequest = _mapper.Map<IncidentRequest>(incident);
+        //        isSuccess = await _incidentService.UpdateIncident(incident.incidentid, incidentRequest);
+        //        incident.IsSynchronized = isSuccess;
+        //        if (!isSuccess) return isSuccess;
+        //    }
+
+        //    // Product
+        //    //var UnsynchronizedProducts = _dbContext.Products.Where(p => !p.IsSynchronized).ToList();
+        //    //foreach (Product product in UnsynchronizedProducts)
+        //    //{
+        //    //    ProductRequest productRequest = _mapper.Map<ProductRequest>(product);
+        //    //    isSuccess = await _productService.UpdateProduct(product.ProductId, productRequest);
+        //    //    if (!isSuccess) return isSuccess;
+        //    //}
+
+        //    User user = _dbContext.Users.SingleOrDefault(user => user.ContactId == contactId);
+
+        //    HttpResponseMessage response = null;
+
+        //    if (user is not null && !user.IsSynchronized)
+        //    {
+
+        //        var body = new
+        //        {
+        //            statuscode = user.Statecode,
+        //            gendercode = user.Gendercode,
+        //            jobtitle = user.Jobtitle,
+        //            emailaddress1 = user.Email,
+        //            lastname = user.Lastname,
+        //            firstname = user.Firstname,
+        //            fullname = user.UserName,
+        //            contactid = user.ContactId,
+        //        };
+
+        //        string accessToken = await dynamicsCRM.GetAccessTokenAsync();
+
+        //        response = await dynamicsCRM.CrmRequest(
+        //            httpMethod: HttpMethod.Patch,
+        //            accessToken: accessToken,
+        //            requestUri: $"{_configuration.GetValue<string>("DynamicsCrmSettings:Scope")}/api/data/v9.2/contacts({contactId})",
+        //            body: JsonConvert.SerializeObject(body));
+
+        //        Console.WriteLine("response: "+ accessToken);
+        //    }
+
+        //    if (response != null && response.IsSuccessStatusCode) user!.IsSynchronized = true;
+
+        //    user.IsSynchronized = true;
+
+        //    _dbContext.SaveChanges();
+
+        //    return isSuccess && user.IsSynchronized || (response != null && response.IsSuccessStatusCode);
+
+        //}
+
+        async public Task<bool> SynchronizeOpportunitiesAsync(Guid contactId)
         {
-            // Opportunity
+            User user = _dbContext.Users.SingleOrDefault(user => user.ContactId == contactId);
+
+            if (user is null) return false;
+
             var UnsynchronizedOpportunities = _dbContext.Opportunities.Where(opportunity => !opportunity.IsSynchronized).ToList();
             var isSuccess = true;
-            foreach(Opportunity opportunity in UnsynchronizedOpportunities){
+            foreach (Opportunity opportunity in UnsynchronizedOpportunities)
+            {
                 OpportunityRequest opportunityRequest = _mapper.Map<OpportunityRequest>(opportunity);
                 isSuccess = await _opportunityService.UpdateOpportunity(opportunity.OpportunityId, opportunityRequest);
                 opportunity.IsSynchronized = isSuccess;
                 if (!isSuccess) return isSuccess;
             }
 
-            // Incident
+            return isSuccess;
+        }
+
+        async public Task<bool> SynchronizeIncidentsAsync(Guid contactId)
+        {
+            User user = _dbContext.Users.SingleOrDefault(user => user.ContactId == contactId);
+
+            if (user is null) return false;
+
             var UnsynchronizedIncidents = _dbContext.Incidents.Where(inc => !inc.IsSynchronized).ToList();
+            var isSuccess = true;
             foreach (Incident incident in UnsynchronizedIncidents)
             {
                 IncidentRequest incidentRequest = _mapper.Map<IncidentRequest>(incident);
@@ -55,20 +139,37 @@ namespace MD_365_CRM.Services
                 if (!isSuccess) return isSuccess;
             }
 
-            // Product
-            //var UnsynchronizedProducts = _dbContext.Products.Where(p => !p.IsSynchronized).ToList();
-            //foreach (Product product in UnsynchronizedProducts)
-            //{
-            //    ProductRequest productRequest = _mapper.Map<ProductRequest>(product);
-            //    isSuccess = await _productService.UpdateProduct(product.ProductId, productRequest);
-            //    if (!isSuccess) return isSuccess;
-            //}
+            return isSuccess;
+        }
 
+        async public Task<bool> SynchronizeProductsAsync(Guid contactId)
+        {
             User user = _dbContext.Users.SingleOrDefault(user => user.ContactId == contactId);
+
+            if (user is null) return false;
+
+            var UnsynchronizedProducts = _dbContext.Products.Where(p => !p.IsSynchronized).ToList();
+            var isSuccess = true;
+            foreach (Product product in UnsynchronizedProducts)
+            {
+                ProductRequest productRequest = _mapper.Map<ProductRequest>(product);
+                isSuccess = await _productService.UpdateProduct(product.ProductId, productRequest);
+                product.IsSynchronized = isSuccess;
+                if (!isSuccess) return isSuccess;
+            }
+
+            return isSuccess;
+        }
+
+        async public Task<bool> SynchronizeProfileAsync(Guid contactId)
+        {
+            User user = _dbContext.Users.SingleOrDefault(user => user.ContactId == contactId);
+
+            if (user is null) return false;
 
             HttpResponseMessage response = null;
 
-            if (user is not null && !user.IsSynchronized)
+            if (!user.IsSynchronized)
             {
 
                 var body = new
@@ -91,17 +192,17 @@ namespace MD_365_CRM.Services
                     requestUri: $"{_configuration.GetValue<string>("DynamicsCrmSettings:Scope")}/api/data/v9.2/contacts({contactId})",
                     body: JsonConvert.SerializeObject(body));
 
-                Console.WriteLine("response: "+ accessToken);
+                Console.WriteLine("response: " + accessToken);
             }
 
-            if (response != null && response.IsSuccessStatusCode) user!.IsSynchronized = true;
+            if (response != null && response.IsSuccessStatusCode)
+            {
+                user!.IsSynchronized = true;
 
-            user.IsSynchronized = true;
+                _dbContext.SaveChanges();
+            }
 
-            _dbContext.SaveChanges();
-
-            return isSuccess && user.IsSynchronized || (response != null && response.IsSuccessStatusCode);
-
+            return user.IsSynchronized || response != null && response.IsSuccessStatusCode;
         }
     }
 }

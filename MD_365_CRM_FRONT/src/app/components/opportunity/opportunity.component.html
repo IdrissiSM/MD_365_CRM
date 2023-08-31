@@ -1,6 +1,6 @@
-<div class="grid">
-    <div class="col-12 md:col-6">
-        <div class="card p-fluid">
+<div class="flex flex-column gap-4">
+    <div class="flex h-full w-full gap-4">
+        <div class="card p-fluid h-full w-full">
             <h5>Summary</h5>
 
             <div class="flex">
@@ -39,48 +39,7 @@
                 </span>
             </div>
         </div>
-
-        <div class="card p-fluid">
-            <h5>Situation Details</h5>
-            <div class="flex">
-                <span class="col-4 mb-0">Customer Need</span>
-                <span
-                    *ngIf="!loading; else skeletonLarge100"
-                    class="col-8 font-medium"
-                    >{{ opportunity?.customerNeed }}</span
-                >
-            </div>
-            <div class="flex">
-                <span class="col-4 mb-0">Current Situation</span>
-                <span
-                    *ngIf="!loading; else skeletonLarge100"
-                    class="col-8 font-medium"
-                >
-                    {{ opportunity?.currentSituation }}
-                </span>
-            </div>
-            <div class="flex">
-                <span class="col-4 mb-0">Proposed Solution</span>
-                <span
-                    *ngIf="!loading; else skeletonLarge100"
-                    class="col-8 font-medium"
-                >
-                    {{ opportunity?.proposedSolution }}
-                </span>
-            </div>
-            <div class="flex">
-                <span class="col-4 mb-0">Description</span>
-                <span
-                    *ngIf="!loading; else skeletonLarge100"
-                    class="col-8 font-medium"
-                    >{{ opportunity?.description }}</span
-                >
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 md:col-6">
-        <div class="card p-fluid">
+        <div class="card p-fluid h-full w-full">
             <h5>Status</h5>
             <div class="flex">
                 <span class="col-4 mb-0">State</span>
@@ -145,8 +104,46 @@
                 </span>
             </div>
         </div>
-
-        <div class="card p-fluid">
+    </div>
+    <div class="flex h-full w-full gap-4">
+        <div class="card p-fluid h-full w-full">
+            <h5>Situation Details</h5>
+            <div class="flex">
+                <span class="col-4 mb-0">Customer Need</span>
+                <span
+                    *ngIf="!loading; else skeletonLarge100"
+                    class="col-8 font-medium"
+                    >{{ opportunity?.customerNeed }}</span
+                >
+            </div>
+            <div class="flex">
+                <span class="col-4 mb-0">Current Situation</span>
+                <span
+                    *ngIf="!loading; else skeletonLarge100"
+                    class="col-8 font-medium"
+                >
+                    {{ opportunity?.currentSituation }}
+                </span>
+            </div>
+            <div class="flex">
+                <span class="col-4 mb-0">Proposed Solution</span>
+                <span
+                    *ngIf="!loading; else skeletonLarge100"
+                    class="col-8 font-medium"
+                >
+                    {{ opportunity?.proposedSolution }}
+                </span>
+            </div>
+            <div class="flex">
+                <span class="col-4 mb-0">Description</span>
+                <span
+                    *ngIf="!loading; else skeletonLarge100"
+                    class="col-8 font-medium"
+                    >{{ opportunity?.description }}</span
+                >
+            </div>
+        </div>
+        <div class="card p-fluid h-full w-full">
             <h5>Pricing</h5>
             <div class="flex">
                 <span class="col-6 mb-0">Estimated Price</span>

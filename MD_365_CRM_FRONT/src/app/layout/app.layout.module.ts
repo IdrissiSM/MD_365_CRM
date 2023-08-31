@@ -21,6 +21,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { BlockUIModule } from 'primeng/blockui';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { DialogModule } from 'primeng/dialog';
+
 
 @NgModule({
     declarations: [
@@ -45,6 +47,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
         RouterModule,
         AppConfigModule,
         ConfirmDialogModule,
+        DialogModule,
         ToastModule,
         BlockUIModule,
         ProgressSpinnerModule,

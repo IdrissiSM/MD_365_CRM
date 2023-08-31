@@ -32,6 +32,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { DialogModule } from 'primeng/dialog';
 
+
 @NgModule({
     exports: [
         ButtonModule,

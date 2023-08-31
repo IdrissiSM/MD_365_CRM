@@ -7,11 +7,24 @@ import { APIResponse } from '../Models/APIResponse';
     providedIn: 'root',
 })
 export class SynchronizeService {
+
     apiUrl = environment.apiBaseUrl;
 
     constructor(private http: HttpClient) {}
 
-    synchronize(contactId: string) {
-        return this.http.get<APIResponse>(`${this.apiUrl}/Synchronize/${contactId}`);
+    synchronizeOpportunities(contactId: string) {
+        return this.http.get<APIResponse>(`${this.apiUrl}/Synchronize/opportunities/${contactId}`);
+    }
+
+    synchronizeIncidents(contactId: string) {
+        return this.http.get<APIResponse>(`${this.apiUrl}/Synchronize/incidents/${contactId}`);
+    }
+
+    synchronizeProducts(contactId: string) {
+        return this.http.get<APIResponse>(`${this.apiUrl}/Synchronize/products/${contactId}`);
+    }
+
+    synchronizeProfile(contactId: string) {
+        return this.http.get<APIResponse>(`${this.apiUrl}/Synchronize/profile/${contactId}`);
     }
 }

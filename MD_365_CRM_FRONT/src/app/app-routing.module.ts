@@ -31,6 +31,7 @@ const routes: Routes = [
         component: AppLayoutComponent,
         canActivate: [AuthGuard],
         children: [
+            {   path: '', redirectTo: 'admin-dashboard', pathMatch: 'full'},
             { path: 'opportunities', component: OpportunitiesComponent },
             { path: 'opportunity', component: OpportunityComponent },
             { path: 'products', component: ProductsComponent },
@@ -39,7 +40,7 @@ const routes: Routes = [
             { path: 'incidents/detail/:id', component: DetailComponent },
             { path: 'users',component: UsersComponent,canActivate: [AdminGuard] },
             { path: 'dashboard', component: UserDashboardComponent },
-            {path: 'admin-dashboard' ,component: AdminDashboardComponent, canActivate: [AdminGuard]},
+            { path: 'admin-dashboard' ,component: AdminDashboardComponent, canActivate: [AdminGuard]},
             {
                 path:'user-settings',
                 component: UserSettingsComponent,

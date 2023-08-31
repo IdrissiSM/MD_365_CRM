@@ -61,9 +61,15 @@
 <p-toast></p-toast>
 <p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>
 <p-blockUI [blocked]="isSynchronizing">
-    <p-progressSpinner
-        styleClass="w-4rem h-4rem"
-        strokeWidth="8"
-        animationDuration=".5s"
-    ></p-progressSpinner>
+    <p-dialog header="Synchronization is in progress ..." [closable]="syncComplete" [(visible)]="isSynchronizing" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+        <div class="flex w-full px-4">
+          <div class="flex flex-column w-full gap-5">
+            <div *ngFor="let item of syncItems" class="flex flex-row w-full gap-3">
+              <i class="pi" [class]="item.icon" [style.color]="item.color"></i>
+              <div>{{ item.message }}</div>
+            </div>
+          </div>
+        </div>
+      </p-dialog>
 </p-blockUI>
+

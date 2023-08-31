@@ -302,7 +302,7 @@ namespace MD_365_CRM.Controllers
 
         }
 
-        [Authorize(Roles = "Admin,Userk")]
+        [Authorize(Roles = "Admin,User")]
         [HttpPost("update_user_profile")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
